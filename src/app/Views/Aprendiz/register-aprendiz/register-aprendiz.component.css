@@ -1,0 +1,11 @@
+.comtainer{
+ 
+    display: flex;
+    direction: column;
+}
+
+.butonW{
+    margin: 10px;
+    width: 40px ;
+    height: auto;
+}

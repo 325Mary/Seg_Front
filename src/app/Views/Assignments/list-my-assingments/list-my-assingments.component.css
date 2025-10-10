@@ -1,0 +1,86 @@
+.circulo-atrasado {
+    margin-top: 18%;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    /* background: #fb0000; */
+    background: linear-gradient(90deg, rgba(255, 89, 55, 1) 6%, rgba(255, 0, 69, 1) 80%);
+    box-shadow: 10px 10px 83px 0px#fff
+}
+
+.circulo-aprobado {
+    margin-top: 18%;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    /* background: #fb0000; */
+    background: linear-gradient(90deg, rgba(29,194,2,1) 6%, rgba(0,255,21,1) 80%);
+    box-shadow: 10px 10px 83px 0px#fff
+}
+
+.circulo-inicial {
+    margin-top: 18%;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    /* background: #fb0000; */
+    background: linear-gradient(90deg, rgba(202,209,200,1) 6%, rgba(223,225,226,1) 80%);
+    box-shadow: 10px 10px 83px 0px#fff
+}
+
+
+.circulo-noatrasado {
+    margin-top: 18%;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    /* background: #fb0000; */
+    background: linear-gradient(90deg, rgba(0,50,77,1) 6%, rgba(2,0,36,1) 94%);
+    box-shadow: 10px 10px 83px 0px#fff
+}
+
+.parpadea {
+    animation-name: parpadeo;
+    animation-duration: 0.80s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+}
+
+
+@keyframes parpadeo {
+    0% {
+        opacity: 1.0;
+    }
+
+    50% {
+        opacity: 0.0;
+    }
+
+    100% {
+        opacity: 1.0;
+    }
+}
+
+.cursor-pointer{
+    cursor: pointer;
+}
+
+::ng-deep ngb-modal-backdrop {
+    z-index: 1050 !important;
+  } 
+
+
+  /* styles de los botones  */
+
+  .comtainer{
+    margin-left: 65px;
+    display: flex;
+    direction: column;
+}
+
+.butonW{
+    margin: 10px;
+    width: 40px ;
+    height: auto;
+    cursor: pointer;
+}

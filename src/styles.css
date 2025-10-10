@@ -1,0 +1,23 @@
+/* You can add global styles to this file, and also import other style files */
+.azul{
+    background: linear-gradient(90deg, #00324d 6%, #020024 94%);
+}
+
+/* para los botones  */
+
+.comtainer{
+ 
+    display: flex;
+    direction: column;
+}
+
+.butonW{
+    margin: 10px;
+    width: 40px ;
+    height: auto;
+}
+
+
+.pointer{
+    cursor: pointer;
+}

@@ -1,0 +1,16 @@
+.titulo{
+    font-size: 3vw !important;
+}
+
+
+::ng-deep ngb-modal-backdrop {
+    z-index: 1050 !important;
+  } 
+
+  .margen1{
+    margin-left: 30px;
+  }
+  .pointer{
+    cursor: pointer;
+  }
+  

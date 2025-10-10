@@ -1,0 +1,65 @@
+<div class="col-md-12 containerphater margin-title">
+    <div class="card">
+      <div class="card-header card-header-sena-azul flex">
+        <div class="tittle_card-table">
+          <h4 class="card-title mt-0">Gestionar permisos</h4>
+          <p class="card-category">
+            En este apartado podras gestinar los permisos de la aplicacion 
+          </p>
+        </div>
+        <div class="button-card-table">
+          <button
+            type="button "
+            class="btn btn-success"
+            [routerLink]="['/createItemModules/']"
+          >
+            Nuevo Item Module
+          </button>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table">
+            <thead class="text-verde-sena">
+              <tr>
+                <td> Item Modulo</td>
+                <td>Perfil</td>
+                <td>Path</td>
+                <td>Estado</td>
+                <td class="text-center">Acciones</td>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let modulePerfil of itemModulePerfil">
+                <td>{{ modulePerfil.ItemModulosModel.item_modulo }}</td>
+                <td>{{ modulePerfil.ModelPerfile.perfil}}</td>
+                <td>{{ modulePerfil.ItemModulosModel.url_item_modulo }}</td>
+                <td>{{ modulePerfil.ItemModulosModel.estado }}</td>
+                <td class="text-center">
+                  <!-- <button
+                    tooltip="Actualizar datos del itemModulo perfil de  {{ modulePerfil.ItemModulosModel.item_modulo }}"
+                    placement="bottom"
+                    showDelay="200"
+                    class="btn bg-transparent"
+                    [routerLink]="['/UpdateItemModules/', modulePerfil.id_item_modulo_perfil]"
+                  >
+                    <i class="fa-solid fa-pen-to-square text-primary"></i>
+                  </button> -->
+                  <button
+                    tooltip="Eliminar Item Module Perfil {{ modulePerfil.ItemModulosModel.item_modulo }}"
+                    placement="bottom"
+                    showDelay="200"
+                    class="btn offset-1 bg-transparent"
+                    (click)="deleteItemModuloPerfil(modulePerfil.id_item_modulo_perfil)"
+                  >
+                    <i class="fa-solid fa-trash text-danger"></i>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  

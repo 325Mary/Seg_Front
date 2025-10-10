@@ -1,0 +1,263 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="col-md-6 col-lg-5 col-xl-3 mt-2 pb-3">
+          <input type="number" class="form-control" placeholder="Buscar por Identificacion Aprendiz"
+            [(ngModel)]="filterIdentificacion" />
+        </div>
+        <div class="card mt-5">
+          <div class="card-header card-header-sena-azul">
+            <h4 class="card-title">Mis Asignaciones</h4>
+            <p class="card-category">
+              En este apartado podrás ver todas tus Asignaciones
+            </p>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table" *ngIf="assignments !== null">
+                <thead class="text-verde-sena">
+                  <th class="text-center">Aprendiz</th>
+                  <th class="text-center">Responsable a Cargo</th>
+                  <th class="text-center">Identificacion Aprendiz</th>
+                  <th class="text-center">Fecha Seguimiento Inicial</th>
+                  <th class="text-center">Fase</th>
+                  <th scope="col" class="text-center">Novedad</th>
+                  <th scope="col" class="text-center">Seg 1</th>
+                  <th scope="col" class="text-center">Seg 2</th>
+                  <th scope="col" class="text-center">Seg 3</th>
+
+                  <th class="text-center">Acciones</th>
+                </thead>
+
+                <tbody>
+                  <tr class="text-center" *ngFor="
+                      let assignment of assignments
+                        | filterAssignments : filterIdentificacion
+                        | paginate
+                          : { itemsPerPage: 7, currentPage: pageActual }
+                    ">
+                    <td class="text-center">
+                      {{ assignment.nombre_aprendiz }}
+                      {{ assignment.apellido_aprendiz }}
+                    </td>
+                    <td class="text-center">
+                      {{ assignment.nombre_usuario }}
+                      {{ assignment.apellido_usuario }}
+                    </td>
+                    <td class="text-center">
+                      {{ assignment.identificacion }}
+                    </td>
+                    <td class="text-center">
+                      {{ assignment.fecha_seguimiento_inicial }}
+                    </td>
+                    <td class="text-center">
+                      {{ assignment.estado_fase }}
+                    </td>
+                    <td class="text-center">
+                      {{ assignment.tipo_novedad }}
+                    </td>
+                    <td *ngIf="assignment.seg_1 == null" class="">
+                      <div class="circulo-inicial parpadea offset-3" tooltip="El Seguimiento 1 esta en espera"
+                        placement="bottom" showDelay="200"></div>
+                    </td>
+
+                    <td *ngIf="assignment.seg_1 == 'Aprobado'" tooltip="El Seguimiento 1 esta Aprobado "
+                      placement="bottom" showDelay="200" class="">
+                      <div class="circulo-aprobado parpadea offset-3"></div>
+                    </td>
+
+                    <td *ngIf="assignment.seg_1 == 'Atrasado'" tooltip="El Seguimiento 1 esta Atrasado "
+                      placement="bottom" showDelay="200" class="">
+                      <div class="circulo-atrasado parpadea offset-3"></div>
+                    </td>
+
+                    <td *ngIf="assignment.seg_1 == 'No estas Atrasado'" tooltip="El Seguimiento 1 no esta Atrasado "
+                      placement="bottom" showDelay="200" class="">
+                      <div class="circulo-noatrasado parpadea offset-3"></div>
+                    </td>
+
+                    <!-- /////////////////////////seg_1////////////////////////////////// -->
+                    <td *ngIf="assignment.seg_2 == null" class="">
+                      <div class="circulo-inicial parpadea offset-3" tooltip="El Seguimiento esta 2 en espera"
+                        placement="bottom" showDelay="200"></div>
+                    </td>
+
+                    <td *ngIf="assignment.seg_2 == 'Aprobado'" tooltip="El Seguimiento 2 esta Aprobado "
+                      placement="bottom" showDelay="200" class="">
+                      <div class="circulo-aprobado parpadea offset-3"></div>
+                    </td>
+
+                    <td *ngIf="assignment.seg_2 == 'Atrasado'" tooltip="El Seguimiento 2 esta Atrasado "
+                      placement="bottom" showDelay="200" class="">
+                      <div class="circulo-atrasado parpadea offset-3"></div>
+                    </td>
+
+                    <td *ngIf="assignment.seg_2 == 'No estas Atrasado'" tooltip="El Seguimiento 2 no esta Atrasado "
+                      placement="bottom" showDelay="200" class="">
+                      <div class="circulo-noatrasado parpadea offset-3"></div>
+                    </td>
+
+                    <!-- /////////////////////////seg_2////////////////////////////////// -->
+
+                    <td *ngIf="assignment.seg_3 == null" class="">
+                      <div class="circulo-inicial parpadea offset-3" tooltip="El Seguimiento esta 3 en espera"
+                        placement="bottom" showDelay="200"></div>
+                    </td>
+
+                    <td *ngIf="assignment.seg_3 == 'Aprobado'" tooltip="El Seguimiento 3 esta Aprobado "
+                      placement="bottom" showDelay="200" class="">
+                      <div class="circulo-aprobado parpadea offset-3"></div>
+                    </td>
+                    <td *ngIf="assignment.seg_3 == 'Atrasado'" tooltip="El Seguimiento 3 esta Atrasado "
+                      placement="bottom" showDelay="200" class="">
+                      <div class="circulo-atrasado parpadea offset-3"></div>
+                    </td>
+                    <td *ngIf="assignment.seg_3 == 'No estas Atrasado'" tooltip="El Seguimiento 3 no esta Atrasado "
+                      placement="bottom" showDelay="200" class="">
+                      <div class="circulo-noatrasado parpadea offset-3"></div>
+                    </td>
+
+                    <td class="text-center ">
+
+
+                      <!-- botones -->
+                      <div class="comtainer">
+
+
+                      <i class="butonW offset-1 " (click)="open(content)" tooltip="Información de contacto del aprendiz {{
+                          assignment.nombre_aprendiz
+                        }}
+                      {{ assignment.apellido_aprendiz }}" placement="bottom" showDelay="200">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                          class="bi bi-person-lines-fill" viewBox="0 0 16 16">
+                          <path
+                            d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm-5 6s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zM11 3.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5zm.5 2.5a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1h-4zm2 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1h-2zm0 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1h-2z" />
+                        </svg>
+                      </i>
+                      <i tooltip="Subir seguimientos del aprendiz {{
+                          assignment.nombre_aprendiz
+                        }}
+                        {{ assignment.apellido_aprendiz }}" placement="bottom" showDelay="200" *ngIf="
+                          assignment.estado_fase == 'Asignado' &&
+                          registerseguimiento
+                        " class="butonW offset-1" [routerLink]="[
+                          '/register-seguimiento/',
+                          assignment.id_asignacion
+                        ]">
+                        <span class="fa-solid fa-file"></span>
+                      </i>
+                      <!-- <button tooltip="Subir novedades del aprendiz {{
+                          assignment.nombre_aprendiz
+                        }}
+                        {{ assignment.apellido_aprendiz }}" placement="bottom" showDelay="200" 
+                        class="btn offset-1" [routerLink]="[
+                          '/register-novedad/',
+                          assignment.aprendiz_id
+                        ]">
+                        <i class="fa-solid fa-n"></i>
+                      </button> -->
+                      <i tooltip="Subir bitácoras del aprendiz {{
+                          assignment.nombre_aprendiz
+                        }}
+                        {{ assignment.apellido_aprendiz }}" placement="bottom" showDelay="200" *ngIf="
+                          assignment.estado_fase == 'Asignado' && createbitacora
+                        " class="butonW offset-1" [routerLink]="[
+                          '/create-bitacora/',
+                          assignment.id_asignacion
+                        ]">
+                        <span class="fa fa-file" aria-hidden="true"></span>
+                      </i>
+                      <i tooltip="Aprobar bitácoras del aprendiz {{
+                          assignment.nombre_aprendiz
+                        }}
+                        {{ assignment.apellido_aprendiz }}" placement="bottom" showDelay="200" *ngIf="
+                          assignment.estado_fase == 'Asignado' &&
+                          retroalimentaciobitacoras
+                        " class="butonW offset-1" [routerLink]="[
+                          '/retroalimentacion-bitacoras/',
+                          assignment.id_asignacion
+                        ]">
+                        <span class="fa-solid fa-check-double"></span>
+                      </i>
+                      <i tooltip="Subir documentos certificación del aprendiz {{
+                          assignment.nombre_aprendiz
+                        }}
+                        {{ assignment.apellido_aprendiz }}" placement="bottom" showDelay="200"
+                        *ngIf="assignment.estado_fase == 'Por certificar'" class="butonW offset-1" [routerLink]="[
+                          '/create-certificacion/',
+                          assignment.id_asignacion
+                        ]">
+                        <span class="fa fa-file" aria-hidden="true"></span>
+                      </i>
+                      </div>
+                    </td>
+                    <ng-template #content let-modal>
+                      <div class="modal-header d-flex">
+                        <h4 class="" id="modal-basic-title text-azul-sena">
+                          Información de contacto del aprendiz
+                        </h4>
+                        <div class="cursor-pointer" aria-label="Close" (click)="modal.dismiss('Back click')">
+                          <i class="material-icons">close</i>
+                        </div>
+                      </div>
+                      <div class="modal-body">
+                        <div class="container">
+                          <div class="row justify-content-around">
+                            <div class="col-sm-6 col-md-4 col-lg-4 p-2">
+                              <label class="mt-1 font-weight-bold text-azul-sena">
+                                Nombre del aprendiz
+                              </label>
+                              <h4 class="mt-1">
+                                {{ assignment.nombre_aprendiz }}
+                                {{ assignment.apellido_aprendiz }}
+                              </h4>
+                            </div>
+
+                            <div class="col-sm-6 col-md-4 col-lg-4 p-2 offset-2">
+                              <label class="mt-1 font-weight-bold text-azul-sena">
+                                Correos del aprendiz
+                              </label>
+                              <h4 class="mt-1">
+                                {{ assignment.correo_misena }} -
+                                {{ assignment.correo_alternativo }}
+                              </h4>
+                            </div>
+                          </div>
+
+                          <div class="row justify-content-around">
+                            <div class="col-sm-6 col-md-4 col-lg-4 p-2">
+                              <label class="mt-1 font-weight-bold text-azul-sena">
+                                Teléfono del aprendiz
+                              </label>
+                              <h4 class="mt-1">
+                                {{ assignment.telefono }}
+                              </h4>
+                            </div>
+
+                            <div class="col-sm-6 col-md-4 col-lg-4 p-2 offset-2">
+                              <label class="mt-1 font-weight-bold text-azul-sena">
+                                Ficha del aprendiz
+                              </label>
+                              <h4 class="mt-1">
+                                {{ assignment.ficha }}
+                              </h4>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="modal-footer"></div>
+                    </ng-template>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 *ngIf="assignments == null">No tienes Asignaciones</h5>
+              <pagination-controls (pageChange)="pageActual = $event" previousLabel="Anterior  "
+                nextLabel="Siguiente"></pagination-controls>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,17 @@
+<div class="col-lg-4 mx-auto mt-5">
+  <div class="card">
+    <div class="card-header tittleUpload">
+      <strong>Subir Foto</strong>
+    </div>
+    <div class="card-body">
+      <form (submit)="uploadPhoto()">
+        
+        <input type="file" class="d-none" (change)="onPhotoSelected($event)" #photoInput required>
+
+        <img [src]=" photoSelected || path || '../../../../assets/img/perfil-user/photoProfile.jpg' " alt="not loadig" class="img_circle_juan " (click)="photoInput.click()">
+
+        <button class="btn btn-darke juan mt-4"> Subir </button>
+      </form>
+    </div>
+  </div>
+</div>

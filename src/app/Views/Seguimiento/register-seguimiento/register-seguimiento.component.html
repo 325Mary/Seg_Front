@@ -1,0 +1,301 @@
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <p class="text-center mt-5 m-0   titulo">Trazabilidad de Seguimiento</p>
+                    <div class="card-body col-12 d-flex flex-row flex-wrap justify-content-lg-center m-2 px-2">
+                        <!-- TERCERO -->
+                        <div *ngIf="aprobado2 == true" class="col-xl-6 d-flex col-12">
+                            <div class="w-100">
+                                <div class="container-fluid">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="col-md-6 col-lg-5 col-xl-3 mt-2 pb-3">
+                                            </div>
+                                            <div class="card">
+                                                <div class="card-header card-header-sena-azul">
+                                                    <div>
+                                                        <h4 *ngIf="aprobado3 == true">Seguimiento Final Terminado</h4>
+                                                    </div>
+                                                    <div *ngIf="aprobado3 == false">
+                                                        <div class="text-center">
+                                                            <h5 class="card-title">Documento Final</h5>
+                                                        </div>
+                                                        <div
+                                                            class="col-md-12 justify-content-center flex-row flex-wrap">
+                                                            <!-- <label>Adjuntar Archivo</label> -->
+                                                            <input hidden (ngModel)="file" #fileInput type="file"
+                                                                id="file" (change)="getFile($event)" multiple="false"
+                                                                #document accept=".pdf">
+                                                            <div class="d-flex col-8 justify-content-between">
+                                                                <button class="btn" (click)="fileInput.click()"><i
+                                                                        class="material-icons">file_open</i></button>
+                                                                <div *ngIf="nombreDoc != null" class="mt-3 ml-2">
+                                                                    <span>Documento</span>:<h6>{{nombreDoc}}</h6>
+                                                                </div>
+                                                                <button *ngIf="docValido == true"
+                                                                    class="btn btn-primary mt-3"
+                                                                    (click)="sendFile(3)">ENVIAR</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!-- <p class="card-category">
+                                                    En este apartado  podras ver todas tus Asignaciones
+                                                </p> -->
+                                                </div>
+                                                <div class="card-body">
+                                                    <div class="table-responsive">
+                                                        <table class="table ">
+                                                            <thead class="text-verde-sena">
+                                                                <th scope="col">Nombre documento</th>
+                                                                <th scope="col">Tipo seguimiento</th>
+                                                                <th scope="col">Estado</th>
+
+                                                                <th scope="col">Acción</th>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr
+                                                                    *ngFor="let datos3 of listDocumentos3 |paginate:{itemsPerPage: 2, currentPage: pageActual}">
+                                                                    <td>{{datos3.documento}}</td>
+                                                                    <td>{{datos3.tipo_seguimiento}}</td>
+                                                                    <td *ngIf="datos3.estado_documento == 'Por Aprobar'"
+                                                                        class="font-weight-bold">
+                                                                        {{datos3.estado_documento}}</td>
+                                                                    <td *ngIf="datos3.estado_documento == 'Aprobado'"
+                                                                        class="font-weight-bold text-success">
+                                                                        {{datos3.estado_documento}}
+                                                                    </td>
+                                                                    <td *ngIf="datos3.estado_documento == 'No aprobado'"
+                                                                        class="font-weight-bold text-danger">
+                                                                        {{datos3.estado_documento}}
+                                                                    </td>
+
+                                                                    <td class="text-center">
+                                                                        <i (click)="open(content , datos3.documento_id)"
+                                                                            class="fa-sharp fa-solid fa-eye pointer" tooltip="Ver Documento"></i>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                        <h4 *ngIf="listDocumentos3 == null">No hay datos aun</h4>
+
+                                                        <pagination-controls (pageChange)="pageActual = $event"
+                                                            previousLabel="Anterior  " nextLabel="Siguiente">
+                                                        </pagination-controls>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- SEGUNDO:) -->
+                        <div *ngIf="aprobado == true" class="col-xl-6 col-12">
+                            <div class="w-100 h-100">
+                                <div class="container-fluid">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="col-md-6 col-lg-5 col-xl-3 mt-2 pb-3">
+                                            </div>
+                                            <div class="card">
+                                                <div class="card-header card-header-sena-azul">
+                                                    <div>
+                                                        <h4 *ngIf="aprobado2 == true">Seguimiento Parcial Terminado</h4>
+                                                    </div>
+                                                    <div *ngIf="aprobado2 == false">
+                                                        <div class="text-center">
+                                                            <h5 class="card-title">Documento Parcial</h5>
+                                                        </div>
+                                                        <div
+                                                            class="col-md-12 justify-content-center flex-row flex-wrap">
+                                                            <!-- <label>Adjuntar Archivo</label> -->
+                                                            <input hidden (ngModel)="file" #fileInput type="file"
+                                                                id="file" (change)="getFile($event)" multiple="false"
+                                                                #document accept=".pdf">
+                                                            <div class="d-flex col-8 justify-content-between">
+                                                                <button class="btn" (click)="fileInput.click()"><i
+                                                                        class="material-icons">file_open</i></button>
+                                                                <div *ngIf="nombreDoc != null" class="mt-3 ml-2">
+                                                                    <span>Documento</span>:<h6>{{nombreDoc}}</h6>
+                                                                </div>
+                                                                <button *ngIf="docValido == true"
+                                                                    class="btn btn-primary mt-3"
+                                                                    (click)="sendFile(2)">ENVIAR</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!-- <p class="card-category">
+                                                    En este apartado  podras ver todas tus Asignaciones
+                                                </p> -->
+                                                </div>
+                                                <div class="card-body">
+                                                    <div class="table-responsive">
+                                                        <table class="table ">
+                                                            <thead class="text-verde-sena">
+                                                                <th scope="col">Nombre documento</th>
+                                                                <th scope="col">Tipo seguimiento</th>
+                                                                <th scope="col">Estado</th>
+
+                                                                <th scope="col">Acción</th>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr
+                                                                    *ngFor="let datos2 of listDocumentos2 |paginate:{itemsPerPage: 2, currentPage: pageActual}">
+                                                                    <td>{{datos2.documento}}</td>
+                                                                    <td>{{datos2.tipo_seguimiento}}</td>
+                                                                    <td *ngIf="datos2.estado_documento == 'Por Aprobar'"
+                                                                        class="font-weight-bold">
+                                                                        {{datos2.estado_documento}}
+                                                                    </td>
+                                                                    <td *ngIf="datos2.estado_documento == 'Aprobado'"
+                                                                        class="font-weight-bold text-success">
+                                                                        {{datos2.estado_documento}}</td>
+                                                                    <td *ngIf="datos2.estado_documento == 'No aprobado'"
+                                                                        class="font-weight-bold text-danger">
+                                                                        {{datos2.estado_documento}}</td>
+                                                                    <td class="text-center">
+                                                                        <i (click)="open(content , datos2.documento_id)"
+                                                                            class="fa-sharp fa-solid fa-eye pointer" tooltip="Ver Documento"></i>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                        <h4 *ngIf="listDocumentos2 == null">No hay datos aun</h4>
+                                                        <pagination-controls (pageChange)="pageActual = $event"
+                                                            previousLabel="Anterior  " nextLabel="Siguiente">
+                                                        </pagination-controls>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- primero:) -->
+                        <div class="col-xl-6 d-flex col-12">
+                            <div class="w-100">
+                                <div class="container-fluid">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="col-md-6 col-lg-5 col-xl-3 mt-2 pb-3">
+                                            </div>
+                                            <div class="card">
+                                                <div class="card-header card-header-sena-azul">
+                                                    <div>
+                                                        <h4 *ngIf="aprobado == true">Seguimiento Inicial Terminado</h4>
+                                                    </div>
+                                                    <div *ngIf="aprobado == false">
+                                                        <div class="text-center">
+                                                            <h5 class="card-title">Documento Inicial</h5>
+                                                        </div>
+                                                        <div
+                                                            class="col-md-12 justify-content-center flex-row flex-wrap">
+                                                            <!-- <label>Adjuntar Archivo</label> -->
+                                                            <input hidden (ngModel)="file" #fileInput type="file"
+                                                                id="file" (change)="getFile($event)" multiple="false"
+                                                                #document accept=".pdf">
+                                                            <div class="d-flex col-8 justify-content-between">
+                                                                <button class="btn" (click)="fileInput.click()"><i
+                                                                        class="material-icons">file_open</i></button>
+                                                                <div *ngIf="nombreDoc != null" class="mt-3 ml-2">
+                                                                    <span>Documento</span>:<h6>{{nombreDoc}}</h6>
+                                                                </div>
+                                                                <button *ngIf="docValido == true"
+                                                                    class="btn btn-primary mt-3"
+                                                                    (click)="sendFile(1)">ENVIAR</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!-- <p class="card-category">
+                                                    En este apartado  podras ver todas tus Asignaciones
+                                                </p> -->
+                                                </div>
+                                                <div class="card-body">
+                                                    <div class="table-responsive">
+                                                        <table class="table ">
+                                                            <thead class="text-verde-sena">
+                                                                <th scope="col">Nombre documento</th>
+                                                                <th scope="col">Tipo seguimiento</th>
+                                                                <th scope="col">Estado</th>
+                                                                <th scope="col">Acción</th>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr
+                                                                    *ngFor="let datos of listDocumentos | paginate:{itemsPerPage: 2, currentPage: pageActual}">
+                                                                    <td>{{datos.documento}}</td>
+                                                                    <td>{{datos.tipo_seguimiento}}</td>
+                                                                    <td *ngIf="datos.estado_documento == 'Por Aprobar'"
+                                                                        class="font-weight-bold">
+                                                                        {{datos.estado_documento}}
+                                                                    </td>
+                                                                    <td *ngIf="datos.estado_documento == 'Aprobado'"
+                                                                        class="font-weight-bold text-success">
+                                                                        {{datos.estado_documento}}
+                                                                    </td>
+                                                                    <td *ngIf="datos.estado_documento == 'No aprobado'"
+                                                                        [ngStyle]="{'color':'#c83349'}"
+                                                                        class="font-weight-bold ">
+                                                                        {{datos.estado_documento}}
+                                                                    </td>
+
+                                                                    <td class="  pointer">
+                                                                        <i tooltip="Ver Documento" (click)="open(content , datos.documento_id)"
+                                                                            class="fa-sharp fa-solid fa-eye margin1" ></i>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                        <div *ngIf="listDocumentos == null">
+                                                            <h4>Sin documentos</h4>
+                                                        </div>
+                                                        <pagination-controls (pageChange)="pageActual = $event"
+                                                            previousLabel="Anterior  " nextLabel="Siguiente">
+                                                        </pagination-controls>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #content let-modal>
+    <div class="modal-header d-flex">
+        <h4 class="" id="modal-basic-title">PDF</h4>
+        <div class="cursor-pointer" aria-label="Close" (click)="modal.dismiss('Back click')">
+            <i class="material-icons">close</i>
+        </div>
+    </div>
+    <div class="modal-body" style="height: 80vh">
+        <div class="container d-flex justify-content-center">
+            <iframe [src]="safeSrc" style="height: 80vh; width: 100%" frameborder="0"></iframe>
+        </div>
+    </div>
+    <div class="modal-footer d-flex justify-content-center ">
+        <!-- <i *ngIf="datos.estado_documento == 'Por Aprobar'" 
+        (click)="cambiarEstadoDoc('Aprobado',datos.id_bitacora,datos.tipo_seguimiento_id)"
+        class="fa-regular fa-circle-check text-success offset-2 btn-lg cursor" 
+        tooltip="Aprobar"
+        placement="bottom"
+        showDelay="200"
+        ></i>
+        <i *ngIf="datos.estado_documento == 'Por Aprobar'"
+        (click)="cambiarEstadoDoc('No aprobado',datos.id_bitacora,datos.tipo_seguimiento_id)"
+        class="fa-solid fa-xmark text-danger offset-2 btn-lg cursor"
+        tooltip="No Aprobar"
+        placement="bottom"
+        showDelay="200"
+        ></i> -->
+    </div>
+</ng-template>

@@ -1,0 +1,31 @@
+/* .circle-render{
+    width: 10rem;
+    height: 10rem;
+    border-radius:50%;
+    display: block;
+    margin: auto;
+    box-shadow: 1px;
+    box-shadow: 0 1rem 3rem rgba(0,0,0,.175)!important;
+  } */
+
+  .card2{
+    display: flex;
+    justify-content:center;
+  }
+  .size {
+    /* padding-top: 2px; */
+    /* position: absolute; */
+
+    border-radius: 50%;
+    /* border-top-left-radius: 50% 50%;
+    border-top-right-radius: 50% 50%;
+    border-bottom-right-radius: 50% 50%;
+    border-bottom-left-radius: 50% 50%; */
+}
+  
+  .label{
+    display: block;
+    margin: auto;
+    size: 4rem;
+  }
+  

@@ -1,0 +1,81 @@
+// export class Aprendiz_re_DTO{
+//     id_aprendiz?:any;
+//     nombres?:any='Maria';
+//     apellidos?:any='Campo';
+//     fecha_nacimiento?:any='20/10/2004';
+//     genero?:any='Femenino';
+//     discapacidad?:any='no';
+//     telefono?:any=20202;
+//     correo_misena?:any='maria@misena.com';
+//     correo_alternativo?:any='maria@gmail.com';
+//     municipio_nacimiento?:any='popayan';
+//     centro?:any='ctpi';
+//     programa_id?:any='2';
+//     inicio_lectiva?:any='20/08/2022';
+//     incio_productiva?:any='20/08/2022';
+//     contrato_inicio?:any='20/08/2022';
+//     contrato_fin?:any='20/08/2022';
+//     ficha?:any=2322323;
+//     identificacion?:any=10002002;
+//     // --------
+//     id_empresa?:any;
+//     nit_eps?:any=188282;
+//     eps?:any='IPS';
+//     nit_arl?:any=20202;
+//     nombre_empresa?:any='SENA';
+//     nit_empresa?:any=20202;
+//     ciudad?:any='´POPAYAN';
+//     direccion?:any='PAZ';
+//     telefono_empresa?:any=99292929;
+//     correo?:any='Sena@gmail.com';
+//     modalidad?:any='presencial';
+//     observacion?:any='si';
+//     representante_legal?:any='eduard';
+//     identificacion_representante?:any=188282;
+//     aprendiz_id?:any;
+// }
+
+export class Aprendiz_re_DTO{
+    // id_aprendiz?:any;
+    nombres?:any;
+    apellidos?:any;
+    fecha_nacimiento?:any;
+    genero?:any;
+    discapacidad?:any;
+    telefono?:any;
+    correo_misena?:any;
+    correo_alternativo?:any;
+    municipio_id?:any;
+    centro?:any;
+    programa_id?:any;
+    inicio_lectiva?:any;
+    incio_productiva?:any;
+    contrato_inicio?:any;
+    contrato_fin?:any;
+    ficha?:any;
+    identificacion?:any;
+    programa_formacion?:any;    
+    tipo_documento?:any;
+    fin_lectiva?:any;
+    fin_productiva?:any;
+    regional?:any;
+    fase_aprendiz?:any;
+    // ----
+    // id_empresa?:any;
+    nit_eps?:any;
+    eps?:any;
+    nit_arl?:any;
+    nombre_empresa?:any;
+    nit_empresa?:any;
+    ciudad_id?:any;
+    direccion?:any;
+    telefono_empresa?:any;
+    correo?:any;
+    modalidad?:any;
+    observacion?:any;
+    representante_legal?:any;
+    identificacion_representante?:any;
+    aprendiz_id?:any;
+    razon_social?:any;
+    arl?:any;
+}

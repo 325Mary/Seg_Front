@@ -1,0 +1,140 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="col-12 d-flex flex-row flex-wrap">
+          <div class="col-md-3 col-12">
+            <input type="text" class="form-control" placeholder="Buscar por Identificacion Aprendiz"
+              [(ngModel)]="filterIdentificacion" />
+          </div>
+          <div class="d-flex col-md-7 col-12 justify-content-start flex-wrap col-mt-4">
+            <div *ngIf="nombreDoc != null">
+              <span>Documento Seleccionado</span>
+              <h6>{{ nombreDoc }}</h6>
+            </div>
+            <div class="col-xl-4 col-lg-5 d-flex justify-content-end col-12">
+              <button class="btn btn-success upload w-100" mat-raised-button (click)="fileInput.click()">
+                Cargar Excel
+              </button>
+              <input hidden [(ngModel)]="file" #fileInput type="file" id="file" (change)="onDocumentChange($event)"
+                multiple="false" #documento accept=".xls,.xlsx,.csv" />
+            </div>
+            <div class="col-2 d-flex justify-content-end">
+              <button *ngIf="docValido == true" (click)="sendFile(documento.value)"
+                class="btn btn-success upload w-100">
+                Subir
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header card-header-sena-azul">
+            <h4 class="card-title">Aprendices</h4>
+            <div class="row ml-1">
+              <p class="card-category">
+                En este apartado podrás ver todos los Aprendices
+              </p>
+              <div class="d-flex col justify-content-end">
+                <button routerLink="/register-aprendiz" class="btn btn-success ml-5">
+                  NUEVO
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table *ngIf="listAprendices !== null" class="table">
+                <thead class="text-verde-sena">
+                  <th class="text-center">Empresa</th>
+                  <th class="text-center">Identificación</th>
+                  <th class="text-center">Nombre</th>
+                  <th class="text-center">Correo</th>
+                  <th class="text-center">Ficha</th>
+                  <th class="text-center">Programa</th>
+                  <th class="text-center">Asignado</th>
+                  <th class="text-center">Acciones</th>
+                </thead>
+
+                <tbody>
+                  <tr *ngFor="
+                      let aprendiz of listAprendices
+                        | filterAssignments : filterIdentificacion
+                        | paginate
+                          : { itemsPerPage: 7, currentPage: pageActual }
+                    ">
+                    <td class="text-center">
+                      {{ aprendiz.nombre_empresa }}
+                    </td>
+                    <td class="text-center">
+                      {{ aprendiz.identificacion }}
+                    </td>
+                    <td class="text-center">
+                      {{ aprendiz.nombres }} {{ aprendiz.apellidos }}
+                    </td>
+                    <td class="text-center">
+                      {{ aprendiz.correo_alternativo }}
+                    </td>
+                    <td class="text-center">
+                      {{ aprendiz.ficha }}
+                    </td>
+                    <td class="text-center">
+                      {{ aprendiz.programa_formacion }}
+                    </td>
+                    <td class="text-center">
+                        <div *ngIf="aprendiz.id_asignacion != null; else sinAsignar">
+                          <P class="text-success"><b>SI</b></P>
+                        </div>
+                        <ng-template #sinAsignar>
+                          <P class="text-danger"><b>NO</b></P>
+                        </ng-template>
+                      </td>  
+                    <td class="text-center">
+                      <!-- primer boton -->
+
+
+                      <div class="comtainer">
+                        <i tooltip="Ver datos aprendiz 
+                        {{ aprendiz.nombres }} {{ aprendiz.apellidos }} " placement="bottom" showDelay="200"
+                          class="butonW" [routerLink]="['/ver-detalle-aprendiz/', aprendiz.id_aprendiz]">
+                          <span class="fa-solid fa-eye "></span>
+                        </i>
+
+
+                        <!--                       <i tooltip="Asignar aprendiz {{ aprendiz.nombres }} {{ aprendiz.apellidos }} a un Instructor"
+                        placement="bottom" showDelay="200" [routerLink]="[
+                          '/assignment-aprendiz/',
+                          aprendiz.id_aprendiz
+                        ]" class="fa-solid fa-list-check ml-2 cursor-pointer1"></i> -->
+                        <i tooltip="Asignar aprendiz {{ aprendiz.nombres }} {{ aprendiz.apellidos }} a un Instructor "
+                          placement="bottom" showDelay="200" class="  butonW" [routerLink]="[
+                          '/assignment-aprendiz/',
+                          aprendiz.id_aprendiz
+                        ]">
+                          <span class="fa-solid fa-list-check  "></span>
+                        </i>
+                        <i tooltip="Eliminar aprendiz {{ aprendiz.nombres }} {{ aprendiz.apellidos }} "
+                          *ngIf="aprendiz.id_asignacion == null" placement="bottom" showDelay="200" class="butonW "
+                          (click)="deleteREPwithAprendiz(aprendiz.id_aprendiz)">
+                          <span class="fa-solid fa-trash text-danger"></span>
+                        </i>
+                      </div>
+
+                    </td>
+                  </tr>
+                </tbody>
+                <!-- <h5 *ngIf="listAprendices == null">
+                  No Hay Asignaciones Registradas
+                </h5> -->
+              </table>
+              <h5 *ngIf="listAprendices == null">
+                No hay aprendices registrados
+              </h5>
+              <pagination-controls (pageChange)="pageActual = $event" previousLabel="Anterior  "
+                nextLabel="Siguiente"></pagination-controls>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

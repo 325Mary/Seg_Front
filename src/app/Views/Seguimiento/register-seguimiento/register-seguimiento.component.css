@@ -1,0 +1,20 @@
+.aprobado{
+    background-color: rgb(219, 224, 230);
+    text-shadow: 0 1px 0 rgba(71, 6, 248, 0);
+    color: #FF0000;
+}
+.titulo{
+    font-size: 3vw !important;
+}
+
+::ng-deep ngb-modal-backdrop {
+    z-index: 1050 !important;
+  } 
+  .pointer{
+    cursor: pointer;
+
+}
+
+.margin1{
+margin-left: 20px;
+}

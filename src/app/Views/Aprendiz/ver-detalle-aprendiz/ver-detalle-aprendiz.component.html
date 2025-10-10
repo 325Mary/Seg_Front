@@ -1,0 +1,267 @@
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                        <p hidden>Datos Aprendiz</p>
+                        <div class="card-header card-header-sena-azul">
+                            <span class="titulo">{{titulo | uppercase}}</span>
+                            <!-- <p class="card-category">En este apartado podras Reasignar un aprendiz a un instrunctor</p> -->
+                        </div>
+                        <div class="card-body">
+                            <div *ngIf="cambiarFormulario == 0">
+                                <div class="row">
+                                    <div class="col-sm-5 col-md-4 col-lg-3 p-2 offset-lg-2">
+                                        <label class="mt-2 font-weight-bold text-verde-sena">
+                                            Identificación
+                                        </label>
+                                       <p>{{detallesAprendiz.identificacion}}</p>
+                                    </div>
+
+                                    <div class="col-sm-5 col-md-4 col-lg-3 p-2 offset-lg">
+                                        <label class="mt-2 font-weight-bold text-verde-sena">
+                                            Nombres
+                                        </label>
+                                       <p>{{detallesAprendiz.nombres}}</p>
+                                    </div>
+
+                                    <div class="col-sm-5 col-md-4 col-lg-3 p-2 offset-lg">
+                                        <label class="mt-2 font-weight-bold text-verde-sena">
+                                            Apellidos
+                                        </label>
+                                       <p>{{detallesAprendiz.apellidos}}</p>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-5 col-md-4 col-lg-3 p-2 offset-lg-2">
+                                        <label class="mt-2 font-weight-bold text-verde-sena">
+                                            Fecha Nacimiento
+                                          
+                                        </label>
+                                        <p class="mb-0">{{detallesAprendiz.fecha_nacimiento}}</p>
+                                        <h6 class="text-muted mt-0"> {{ detallesAprendiz.fecha_nacimiento | detectarFormatoFecha }} </h6>
+                                    </div>
+                            
+
+                                    <div class="col-sm-5 col-md-4 col-lg-3 p-2 offset-lg">
+                                        <label class="mt-2 font-weight-bold text-verde-sena ">
+                                            Género
+                                           
+                                        </label>
+                                        <p>{{detallesAprendiz.genero == "F" ? "Femenino":"Masculino"}}</p>
+                                    </div>
+                                    <div class="col-sm-5 col-md-4 col-lg-3 p-2 offset-lg">
+                                        <label class="mt-2 font-weight-bold text-verde-sena">
+                                            Discapacidad
+                                           
+                                        </label>
+                                        <p>{{detallesAprendiz.discapacidad}}</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-5 col-md-4 col-lg-3 p-2 offset-lg-2">
+                                        <label class="mt-2 font-weight-bold text-verde-sena">
+                                            Teléfono Movil
+                                        </label>
+                                        <p>{{detallesAprendiz.telefono}}</p>
+                                    </div>
+                                    <div class="col-sm-5 col-md-4 col-lg-3 p-2 offset-lg">
+                                        <label class="mt-2 font-weight-bold text-verde-sena">
+                                            Correo Alternativo
+                                        </label>
+                                        <p>{{detallesAprendiz.correo_alternativo}}</p>
+                                      
+                                    </div>
+
+                                    <div class="col-sm-5 col-md-4 col-lg-3 p-2 offset-lg">
+                                        <!-- {{aprendicesReForm|json}} -->
+                                        <label class="mt-2 font-weight-bold text-verde-sena">
+                                            Municipio
+                                        </label>
+                                        <p>{{municipioAprendiz == null? 'Municipio no registrado' : municipioAprendiz}}</p>
+                                    </div>
+
+                                </div>
+                                <div class="row d-flex">
+                                    <div class="col-sm-5 col-md-4 col-lg-3 p-2 offset-lg-2">
+                                        <label class="mt-2 font-weight-bold text-verde-sena">
+                                            Centro
+                                        </label>
+                                        <p>{{detallesAprendiz.centro}}</p>
+                                    </div>
+                                    <div class="col-sm-6 col-md-4 col-lg-3 p-2 offset-lg">
+                                        <label class="mt-2 font-weight-bold text-verde-sena">
+                                            Programa
+                                        </label>
+                                        <p>{{programaAprendiz}}</p>
+                                        
+                                    </div>
+                                    <div class="col-sm-5 col-md-4 col-lg-3 p-2 offset-lg">
+                                        <label class="mt-2 font-weight-bold text-verde-sena">
+                                            Fecha de Inicio Lectiva
+                                        </label>
+                                        <p class="mb-0">{{detallesAprendiz.inicio_lectiva}}</p>
+                                        <h6 class="text-muted mt-0"> {{ detallesAprendiz.inicio_lectiva | detectarFormatoFecha }}</h6>
+                                    </div>
+                                </div>
+                                <div class="row">
+
+                                    <div class="col-sm-5 col-md-4 col-lg-3 p-2 offset-lg-2">
+                                        <label class="mt-2 font-weight-bold text-verde-sena">
+                                            Fecha Inicio Productiva
+                                        </label>
+                                        <p class="mb-0">{{detallesAprendiz.incio_productiva}}</p>
+                                        <h6 class="text-muted mt-0"> {{ detallesAprendiz.incio_productiva | detectarFormatoFecha }}</h6>
+                                    </div>
+
+                                    <div class="col-sm-5 col-md-4 col-lg-3 p-2 offset-lg">
+                                        <label class="mt-2 font-weight-bold text-verde-sena">
+                                            Fecha Contrato Inicio
+                                        </label>
+                                        <p class="mb-0">{{detallesAprendiz.contrato_inicio}}</p>
+                                        <h6 class="text-muted mt-0">{{ detallesAprendiz.contrato_inicio | detectarFormatoFecha }}</h6>
+                                    </div>
+
+                                    <div class="col-sm-5 col-md-4 col-lg-3 p-2 offset-lg">
+                                        <label class="mt-2 font-weight-bold text-verde-sena">
+                                            Fecha de Contrato Fin
+                                        </label>
+                                        <p class="mb-0">{{detallesAprendiz.contrato_fin}}</p>
+                                        <h6 class="text-muted mt-0"> {{ detallesAprendiz.contrato_fin | detectarFormatoFecha }}</h6>
+    
+                                    </div>
+
+                                </div>
+                                <div class="row">
+
+                                    <div class="col-sm-5 col-md-4 col-lg-3 p-2 offset-lg-5">
+                                        <label class="mt-2 font-weight-bold text-verde-sena">
+                                            Ficha
+                                        </label>
+                                        <p>{{detallesAprendiz.ficha}}</p>
+                                    </div>
+
+
+
+                                </div>
+                                <div class="mb-3 col-7 d-flex justify-content-between m-auto">
+                                    <button routerLink="/list-aprendices"
+                                        class="btn btn-outline-secondary">CANCELAR</button>
+                                    <button (click)="changeNextForm()" class="btn btn-dark">SIGUIENTE</button>
+                                </div>
+                            </div>
+
+                            <div *ngIf="cambiarFormulario == 1">
+                                <div class="text-center">
+                                    <h3>DATOS ETAPA PRODUCTIVA</h3>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-5 col-md-4 col-lg-3 p-2 offset-lg-2">
+                                        <label class="mt-2 font-weight-bold text-verde-sena">
+                                            Nit de la EPS
+                                        </label>
+                                        <p>{{etapaProductiva.nit_eps}}</p>
+                                    </div>
+                                    <div class="col-sm-5 col-md-4 col-lg-3 p-2 offset-lg">
+                                        <label class="mt-2 font-weight-bold text-verde-sena">
+                                            Nombre de la EPS
+                                        </label>
+                                        <p>{{etapaProductiva.eps}}</p>
+                                    </div>
+
+                                    <div class="col-sm-5 col-md-4 col-lg-3 p-2 offset-lg">
+                                        <label class="mt-2 font-weight-bold text-verde-sena">
+                                            Nit ARL
+                                        </label>
+                                        <p>{{etapaProductiva.nit_arl}}</p>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-5 col-md-4 col-lg-3 p-2 offset-lg-2">
+                                        <label class="mt-2 font-weight-bold text-verde-sena">
+                                            Nombre de la Empresa
+                                        </label>
+                                        <p>{{etapaProductiva.nombre_empresa}}</p>
+
+                                    </div>
+
+                                    <div class="col-sm-5 col-md-4 col-lg-3 p-2 offset-lg">
+                                        <label class="mt-2 font-weight-bold text-verde-sena">
+                                            Nit de empresa
+                                        </label>
+                                        <p>{{etapaProductiva.nit_empresa}}</p>
+
+                                    </div>
+
+                                    <div class="col-sm-5 col-md-4 col-lg-3 p-2 offset-lg">
+                                        <label class="mt-2 font-weight-bold text-verde-sena">
+                                            Ciudad
+                                            
+                                        </label>
+                                        <p>{{ciudadEmpresa == null? 'Ciudad no registrada' : ciudadEmpresa}}</p>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-5 col-md-4 col-lg-3 p-2 offset-lg-2">
+                                        <label class="mt-2 font-weight-bold text-verde-sena">
+                                            Dirección
+                                        </label>
+                                        <p>{{etapaProductiva.direccion}}</p>
+
+                                    </div>
+
+                                    <div class="col-sm-5 col-md-4 col-lg-3 p-2 offset-lg">
+                                        <label class="mt-2 font-weight-bold text-verde-sena">
+                                            Teléfono
+                                           
+                                        </label>
+                                        <p>{{etapaProductiva.telefono}}</p>
+
+                                    </div>
+
+                                    <div class="col-sm-5 col-md-4 col-lg-3 p-2 offset-lg">
+                                        <label class="mt-2 font-weight-bold text-verde-sena">
+                                            Correo
+                                           
+                                        </label>
+                                        <p>{{etapaProductiva.correo}}</p>
+
+                                    </div>
+
+
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-5 col-md-4 col-lg-3 p-2 offset-lg-2">
+                                        <label class="mt-2 font-weight-bold text-verde-sena">
+                                            Observación
+                                           
+                                        </label>
+                                        <p>{{etapaProductiva.observacion}}</p>
+
+                                    </div>
+                                    <div class="col-sm-5 col-md-4 col-lg-3 p-2 offset-lg">
+                                        <label class="mt-2 font-weight-bold text-verde-sena">
+                                            Modalidad
+                                           
+                                        </label>
+                                        <p>{{etapaProductiva.modalidad}}</p>
+
+                                    </div>
+                                </div>
+                                
+                                <div class="mb-3 col-7 d-flex justify-content-center m-auto">
+
+                                    <button (click)="changeForm2()" class="btn btn-outline-secondary">REGRESAR</button>
+                                    
+
+                                </div>
+                            </div>
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

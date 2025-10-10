@@ -1,0 +1,16 @@
+.cursor-pointer{
+    cursor: pointer;
+}
+
+.op:hover{
+    background-color: #00324D !important;
+    -webkit-box-shadow: 10px 10px 42px -15px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: 10px 10px 42px -15px rgba(0, 0, 0, 0.75);
+    box-shadow: 10px 10px 42px -15px rgba(0, 0, 0, 0.75) !important;
+}
+.op:focus{
+    background-color: #00324D !important;
+    -webkit-box-shadow: 10px 10px 42px -15px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: 10px 10px 42px -15px rgba(0, 0, 0, 0.75);
+    box-shadow: 10px 10px 42px -15px rgba(0, 0, 0, 0.75) !important;
+}

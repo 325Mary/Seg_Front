@@ -1,0 +1,144 @@
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <p class="text-center mt-5 m-0   titulo">Mis Fichas Asignadas</p>
+                    <div class="card-body col-12 d-flex flex-column flex-wrap justify-content-lg-center m-2 px-2">
+                        <!-- tabla fichas -->
+                        <div class="card col-5 mx-auto">
+                            <div class="card-header card-header-sena-azul">
+                                <div>
+                                    <div class="text-center">
+                                        <h5 class="card-title">Mis Fichas</h5>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table ">
+                                        <thead class="text-verde-sena">
+                                            <th class="text-center">Fichas</th>
+                                            <th class="text-center">ACCIONES</th>
+                                        </thead>
+                                        <tbody>
+                                            <tr
+                                                *ngFor="let fichas of allMysFichas |paginate:{itemsPerPage: 2, currentPage: pageActual}">
+                                                <td class="text-center">
+                                                    {{ fichas.ficha }}
+                                                </td>
+                                                <td class="text-center">
+                                                    <i title="Ver Aprendices" (click)="todasMisFichas(fichas.ficha)"
+                                                        class="fa-sharp fa-solid fa-eye cursor-pointer"></i>
+
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <div *ngIf="misAsignados == null">
+                                        <h4>Sin Fichas Asignadas</h4>
+                                    </div>
+                                    <pagination-controls (pageChange)="pageActual = $event" previousLabel="Anterior  "
+                                        nextLabel="Siguiente">
+                                    </pagination-controls>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- primero:) -->
+                        <div *ngIf="mostrar_tabla==true" class="col-xl-6 mx-auto d-flex col-12">
+                            <div class="w-100">
+                                <div class="container-fluid">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="col-md-6 col-lg-6 col-xl-3 mt-2 pb-3">
+                                            </div>
+                                            <div class="card">
+                                                <div class="card-header card-header-sena-azul">
+                                                    <div class="container">
+                                                        <div class="row">
+                                                            <div class="col-3">
+                                                            </div>
+                                                            <div class="col-6 justify-content-center mt-3">
+                                                                <h5 class="card-title">Mis Aprendices</h5>
+                                                            </div>
+                                                            <div *ngIf="numero_horas > 0" class="col-3">
+                                                                <button (click)="exportExcel()"
+                                                                    class="btn btn-primary mt-3">GENERAR
+                                                                    REPORTE</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="card-body">
+                                                    <div class="table-responsive">
+                                                        <table class="table ">
+                                                            <thead class="text-verde-sena">
+                                                                <th class="text-center">Nombre del Aprendiz</th>
+                                                                <th class="text-center">Identificación</th>
+                                                                <th class="text-center">Fecha Seguimiento Inicial
+                                                                </th>
+                                                                <th class="text-center">Responsable a Cargo</th>
+                                                                <!-- <th class="text-center">Total de Horas</th> -->
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr
+                                                                    *ngFor="let assignment of misAprendicesByFichas |paginate:{itemsPerPage: 2, currentPage: pageActual}">
+                                                                    <td class="text-center">
+                                                                        {{ assignment.nombre_aprendiz }}
+                                                                        {{ assignment.apellido_aprendiz }}
+                                                                    </td>
+                                                                    <td class="text-center">
+                                                                        {{ assignment.identificacion }}
+                                                                    </td>
+                                                                    <td class="text-center">
+                                                                        {{ assignment.fecha_seguimiento_inicial }}
+                                                                    </td>
+                                                                    <td class="text-center">
+                                                                        {{ assignment.nombre_usuario }}
+                                                                        {{ assignment.apellido_usuario }}
+                                                                    </td>
+                                                                    <!-- <td class="text-center">
+                                                                        
+                                                                    </td> -->
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                        <div *ngIf="misAsignados == null">
+                                                            <h4>Sin aprendices Asignados</h4>
+                                                        </div>
+                                                        <pagination-controls (pageChange)="pageActual = $event"
+                                                            previousLabel="Anterior  " nextLabel="Siguiente">
+                                                        </pagination-controls>
+                                                        <div class="container">
+                                                            <div class="row">
+                                                                <div class="">
+                                                                    <label class="mt-2 font-weight-bold">
+                                                                        Total de Horas :
+                                                                        <span class="text-danger">
+                                                                            <h3>
+                                                                                {{numero_horas}}</h3>
+                                                                        </span>
+                                                                    </label>
+                                                                    <!-- <h4>Total de Horas</h4>
+                                                                </div>
+                                                                <div class=""> -->
+                                                                    <!-- poner titulo dejar bonito -->
+                                                                    <!-- <h3>{{numero_horas}}</h3> -->
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

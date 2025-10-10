@@ -1,0 +1,307 @@
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body" *ngIf="cambiarFormulario == 0">
+                        <h1 class="text-center mt-3 titulo">Información del Aprendiz</h1>
+                        <div class="row">
+                            <div class="col-sm-5 col-md-4 col-lg-3 p-2 offset-lg-2">
+                                <label class="mt-2 font-weight-bold">
+                                    Identificación
+
+                                </label>
+                                <h4 class="mt-3">
+                                    {{Aprendiz.identificacion}}
+                                </h4>
+                            </div>
+
+                            <div class="col-sm-5 col-md-4 col-lg-3 p-2 offset-lg">
+                                <label class="mt-2 font-weight-bold">
+                                    Nombre
+
+                                </label>
+                                <h4 class="mt-3">
+                                    {{Aprendiz.nombres + ' ' +Aprendiz.apellidos}}
+                                </h4>
+
+                            </div>
+                            <div class="col-sm-5 col-md-4 col-lg-3 p-2 offset-lg">
+                                <label class="mt-2 font-weight-bold">
+                                    Teléfono
+
+                                </label>
+                                <h4 class="mt-3">
+                                    {{Aprendiz.telefono}}
+                                </h4>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-5 col-md-4 col-lg-3 p-2 offset-lg-2">
+                                <label class="mt-2 font-weight-bold">
+                                    Fecha Nacimiento
+
+                                </label>
+                                <h4 class="mt-3">
+                                    {{Aprendiz.fecha_nacimiento}}
+                                </h4>
+                            </div>
+
+                            <div class="col-sm-5 col-md-4 col-lg-3 p-2 offset-lg-">
+                                <label class="mt-2 font-weight-bold">
+                                    Género
+                                </label>
+                                <h4 class="mt-3">
+                                    {{Aprendiz.genero}}
+                                </h4>
+                            </div>
+                            <div class="col-sm-5 col-md-4 col-lg-3 p-2 offset-lg">
+                                <label class="mt-2 font-weight-bold">
+                                    Centro
+                                </label>
+                                <h4 class="mt-3">
+                                    {{Aprendiz.centro}}
+                                </h4>
+                            </div>
+
+
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-5 col-md-4 col-lg-3 p-2 offset-lg-2">
+                                <label class="mt-2 font-weight-bold">
+                                    Ficha
+
+                                </label>
+                                <h4 class="mt-3">
+                                    {{Aprendiz.ficha}}
+                                </h4>
+                            </div>
+
+                            <div class="col-sm-5 col-md-4 col-lg-3 p-2 offset-lg-">
+                                <label class="mt-2 font-weight-bold">
+                                    Tipo de programa
+                                </label>
+                                <h4 class="mt-3">
+                                    {{Aprendiz.tipo_programa}}
+                                </h4>
+                            </div>
+                            <!-- <div class="col-sm-5 col-md-4 col-lg-3 p-2 offset-lg">
+                                <label class="mt-2 font-weight-bold">
+                                    Código del Programa
+                                </label>
+                                <h4 class="mt-3">
+                                    {{Aprendiz.codigo_programa}}
+                                </h4>
+                            </div> -->
+
+
+
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-5 col-md-4 col-lg-3 p-2 offset-lg-2">
+                                <label class="mt-2 font-weight-bold">
+                                    Discapacidad
+
+                                </label>
+                                <h4 class="mt-3">
+                                    {{Aprendiz.discapacidad}}
+                                </h4>
+                            </div>
+
+                            <div class="col-sm-5 col-md-4 col-lg-3 p-2 offset-lg-">
+                                <label class="mt-2 font-weight-bold">
+                                    Correo misena
+                                </label>
+                                <h4 class="mt-3">
+                                    {{Aprendiz.correo_misena}}
+                                </h4>
+                            </div>
+                            <div class="col-sm-5 col-md-4 col-lg-3 p-2 offset-lg">
+                                <label class="mt-2 font-weight-bold">
+                                    Correo alternativo
+                                </label>
+                                <h4 class="mt-3">
+                                    {{Aprendiz.correo_alternativo}}
+                                </h4>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-5 col-md-4 col-lg-3 p-2 offset-lg-2">
+                                <label class="mt-2 font-weight-bold">
+                                    Municipio de Nacimiento
+
+                                </label>
+                                <h4 class="mt-3">
+                                    {{Aprendiz.municipio_nacimiento}}
+                                </h4>
+                            </div>
+
+                            <div class="col-sm-5 col-md-4 col-lg-3 p-2 offset-lg-">
+                                <label class="mt-2 font-weight-bold">
+                                    Inicio de fecha Lectiva
+                                </label>
+                                <h4 class="mt-3">
+                                    {{Aprendiz.inicio_lectiva}}
+                                </h4>
+                            </div>
+                            <div class="col-sm-5 col-md-4 col-lg-3 p-2 offset-lg">
+                                <label class="mt-2 font-weight-bold">
+                                    Incio de fecha Productiva
+                                </label>
+                                <h4 class="mt-3">
+                                    {{Aprendiz.incio_productiva}}
+                                </h4>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-5 col-md-4 col-lg-3 p-2 offset-lg-2">
+                                <label class="mt-2 font-weight-bold">
+                                    Contrato fecha de Inicio
+
+                                </label>
+                                <h4 class="mt-3">
+                                    {{Aprendiz.contrato_inicio}}
+                                </h4>
+                            </div>
+
+                            <div class="col-sm-5 col-md-4 col-lg-3 p-2 offset-lg-">
+                                <label class="mt-2 font-weight-bold">
+                                    Contrato fecha Fin
+                                </label>
+                                <h4 class="mt-3">
+                                    {{Aprendiz.contrato_fin}}
+                                </h4>
+                            </div>
+                        </div>
+                        <!-- botones -->
+                        <div class="mb-3 col-7 d-flex justify-content-between m-auto">
+                            <button routerLink="/reporte-aprendices" class="btn btn-outline-secondary">ATRAS</button>
+                            <button (click)="changeNextForm()" class="btn btn-dark">SIGUIENTE</button>
+                        </div>
+                    </div>
+                    <div class="card-body" *ngIf="cambiarFormulario == 1">
+                        <h1 class="text-center mt-3 titulo">Información de la empresa</h1>
+                        <div class="row">
+                            <div class="col-sm-5 col-md-4 col-lg-3 p-2 offset-lg-2">
+                                <label class="mt-2 font-weight-bold">
+                                    Nit de La Eps
+
+                                </label>
+                                <h4 class="mt-3">
+                                    {{Aprendiz.nit_eps}}
+                                </h4>
+                            </div>
+
+                            <div class="col-sm-5 col-md-4 col-lg-3 p-2 offset-lg-">
+                                <label class="mt-2 font-weight-bold">
+                                    Nombre de la EPS
+                                </label>
+                                <h4 class="mt-3">
+                                    {{Aprendiz.eps}}
+                                </h4>
+                            </div>
+                            <div class="col-sm-5 col-md-4 col-lg-3 p-2 offset-lg">
+                                <label class="mt-2 font-weight-bold">
+                                    Nombre de la Empresa
+                                </label>
+                                <h4 class="mt-3">
+                                    {{Aprendiz.nombre_empresa}}
+                                </h4>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-5 col-md-4 col-lg-3 p-2 offset-lg-2">
+                                <label class="mt-2 font-weight-bold">
+                                    Nit Arl
+
+                                </label>
+                                <h4 class="mt-3">
+                                    {{Aprendiz.nit_arl}}
+                                </h4>
+                            </div>
+
+                            <div class="col-sm-5 col-md-4 col-lg-3 p-2 offset-lg-">
+                                <label class="mt-2 font-weight-bold">
+                                    Correo
+                                </label>
+                                <h4 class="mt-3">
+                                    {{Aprendiz.correo}}
+                                </h4>
+                            </div>
+                            <div class="col-sm-5 col-md-4 col-lg-3 p-2 offset-lg">
+                                <label class="mt-2 font-weight-bold">
+                                    Modalidad
+                                </label>
+                                <h4 class="mt-3">
+                                    {{Aprendiz.modalidad }}
+                                </h4>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-5 col-md-4 col-lg-3 p-2 offset-lg-2">
+                                <label class="mt-2 font-weight-bold">
+                                    Ciudad de la Empresa
+
+                                </label>
+                                <h4 class="mt-3">
+                                    {{Aprendiz.ciudad}}
+                                </h4>
+                            </div>
+
+                            <div class="col-sm-5 col-md-4 col-lg-3 p-2 offset-lg-">
+                                <label class="mt-2 font-weight-bold">
+                                    Dirección de la Empresa
+                                </label>
+                                <h4 class="mt-3">
+                                    {{Aprendiz.direccion}}
+                                </h4>
+                            </div>
+                            <div class="col-sm-5 col-md-4 col-lg-3 p-2 offset-lg">
+                                <label class="mt-2 font-weight-bold">
+                                    Correo de la Empresa
+                                </label>
+                                <h4 class="mt-3">
+                                    {{Aprendiz.correo}}
+                                </h4>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-5 col-md-4 col-lg-3 p-2 offset-lg-2">
+                                <label class="mt-2 font-weight-bold">
+                                    Observacion
+
+                                </label>
+                                <h4 class="mt-3">
+                                    {{Aprendiz.observacion }}
+                                </h4>
+                            </div>
+
+                            <div class="col-sm-5 col-md-4 col-lg-3 p-2 offset-lg-">
+                                <label class="mt-2 font-weight-bold">
+                                    Representante Legal o supervisor
+                                </label>
+                                <h4 class="mt-3">
+                                    {{Aprendiz.representante_legal}}
+                                </h4>
+                            </div>
+                            <div class="col-sm-5 col-md-4 col-lg-3 p-2 offset-lg">
+                                <label class="mt-2 font-weight-bold">
+                                    Identificacion del Representante o supervisor
+                                </label>
+                                <h4 class="mt-3">
+                                    {{Aprendiz.identificacion_representante}}
+                                </h4>
+                            </div>
+                        </div>
+                        <div class="mb-3 col-7 d-flex justify-content-between m-auto">
+
+                            <button (click)="changeForm2()" class="btn btn-primary">REGRESAR</button>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

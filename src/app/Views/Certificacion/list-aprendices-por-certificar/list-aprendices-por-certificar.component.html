@@ -1,0 +1,83 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="col-12 d-flex flex-row ">
+          <!-- <input
+            type="number"
+            class="form-control"
+            placeholder="Buscar por Identificacion Aprendiz"
+            [(ngModel)]="filterIdentificacion"
+          /> -->
+
+        </div>
+        <div class="card">
+          <div class="card-header card-header-sena-azul">
+            <h4 class="card-title">Aprendices por Certificar</h4>
+            <div class="row ml-1">
+              <p class="card-category">En este apartado podrás ver todos los Aprendices por certificar</p>
+              <div class="d-flex col justify-content-end">
+              </div>
+
+            </div>
+
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table *ngIf="ListAprendicesPC?.length > 0" class="table">
+                <thead class="text-success">
+
+                  <th class="text-center">Identificación</th>
+                  <th class="text-center">Nombre</th>
+                  <th class="text-center">Fase</th>
+                  <th class="text-center">Instructor Responsable</th>
+
+                  <th class="text-center">ACCIONES</th>
+                </thead>
+
+                <tbody>
+                  <tr *ngFor="
+                  let aprendiz of ListAprendicesPC
+                  | paginate
+                          : { itemsPerPage: 7, currentPage: pageActual}
+                  ">
+                    <td class="text-center">
+                      {{aprendiz.identificacion}}
+                    </td>
+                    <td class="text-center">
+                      {{aprendiz.nombre_aprendiz}}
+                    </td>
+                    <td class="text-center">
+                      {{aprendiz.estado_fase}}
+                    </td>
+                    <td class="text-center">
+                      {{aprendiz.nombre_usuario}}
+                    </td>
+
+                    <td class="text-center">
+<!--                       <i [routerLink]="['/aprobar-certificacion/',aprendiz.id_asignacion]"
+                        class="fa-solid fa-file-circle-check text-primary"></i>
+                      <i class="fa-light fa-file-check"></i> -->
+
+                      <i placement="bottom" showDelay="200" class=""
+                      [routerLink]="['/aprobar-certificacion/',aprendiz.id_asignacion]">
+                      <span class="fa-solid fa-file-circle-check text-dark pointer" tooltip="Aprobar Documentos Por Certificar"></span>
+                      <span class="fa-light fa-file-check"></span>
+                    </i>
+                    </td>
+                  </tr>
+                </tbody>
+                <h5 *ngIf="ListAprendicesPC == null">
+                  No hay asignaciones en esta Fase
+                </h5>
+              </table>
+              <h5 *ngIf="ListAprendicesPC == null">No hay asignaciones en esta fase para mostrar</h5>
+              <pagination-controls (pageChange)="pageActual = $event" previousLabel="Anterior " nextLabel="Siguiente">
+              </pagination-controls>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

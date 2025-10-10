@@ -1,0 +1,18 @@
+.margin-title {
+    margin-top: 10vh;
+}
+
+.containerphater {
+    margin-top: 8rem;
+}
+.flex{
+    display: flex;
+    justify-content: space-between;
+}
+.tittle_card-table{
+    flex-direction: column;
+    
+}
+.button-card-table{
+    flex-direction: row-reverse;
+}

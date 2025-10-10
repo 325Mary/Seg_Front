@@ -1,0 +1,22 @@
+.back1 {
+    background-color: #D8DBE6;
+    height: 50vh;
+  }
+
+.cursor-pointer{
+    cursor: pointer;
+}
+  
+  .textColor {
+    color: #FF5E00;
+    font-family: 'Courier New', Courier, monospace;
+  }
+  
+  .textColor2 {
+    color: #575151;
+  }
+  
+
+  ::ng-deep ngb-modal-backdrop {
+    z-index: 1050 !important;
+  } 

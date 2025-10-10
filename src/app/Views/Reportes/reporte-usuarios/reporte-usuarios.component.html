@@ -1,0 +1,145 @@
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card h-100">
+                    <p class="text-center mt-5 m-0   titulo">Reporte de Usuarios</p>
+                    <form [formGroup]="filtroFechas" (ngSubmit)="filtrar(filtroFechas.value)">
+                        <div class="row col-12 d-flex mt-5">
+                            <div class="col-md-6 col-6 d-flex justify-content-center">
+                                <div>
+                                    <mat-form-field appearance="fill">
+                                        <mat-label>Elige una fecha Inicial</mat-label>
+                                        <input formControlName="fecha_inicial" (ngModelChange)="validarFechas()"
+                                            matInput [matDatepicker]="picker2" />
+                                        <mat-hint>MM/DD/YYYY</mat-hint>
+                                        <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                                        <mat-datepicker #picker2></mat-datepicker>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-6 d-flex justify-content-center ">
+                                <div>
+                                    <mat-form-field appearance="fill">
+                                        <mat-label>Elige una fecha Final</mat-label>
+                                        <input formControlName="fecha_final" matInput [disabled]="fecha_condicion"
+                                            [min]="fecha_ini" [matDatepicker]="picker3" />
+                                        <mat-hint>MM/DD/YYYY</mat-hint>
+                                        <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+                                        <mat-datepicker #picker3></mat-datepicker>
+                                    </mat-form-field>
+                                </div>
+                                <div class="p-1 d-flex align-items-center">
+                                    <button [disabled]="filtroFechas.invalid" type="submit" class="btn text-white"><i
+                                            class="fa-solid fa-magnifying-glass"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <div>
+                        <div class="col-12 d-flex flex-wrap justify-content-center mt-5">
+                            <button *ngIf=" mostrarTabla == 0" type="button" class="btn btn-outline-secondary"
+                                (click)="changeTable()">Ver Tabla</button>
+
+                            <button *ngIf=" mostrarGraficas == 0" type="button" class="btn btn-outline-secondary"
+                                (click)="changeGraficas()">Ver Gráfica</button>
+                        </div>
+                        <!-- tabla -->
+                        <div *ngIf=" mostrarTabla == 1" class="mt-3">
+                            <div class="d-flex flex-column justify-content-center">
+                                <div class="col-11 d-flex justify-content-end mt-2">
+                                    <div class="col-2 d-flex mr-5">
+                                        <button (click)="exportExcel()"
+                                            class="btn btn-block ml-0 shadow-3 text-white card-header-sena-azul ">GENERAR
+                                            REPORTE</button>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12 d-flex col-12 mt-3  ml-3 justify-content-center">
+                                    <div class="w-75">
+                                        <div class="container-fluid">
+                                            <div class="row">
+                                                <div class="col-md-12">
+
+                                                    <div class="card w-100">
+                                                        <div class="card-header card-header-sena-azul">
+                                                            <div>
+                                                                <div class="text-center">
+                                                                    <h5 class="card-title">Aprendices</h5>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="card-body">
+                                                            <div class="table-responsive">
+                                                                <table class="table">
+                                                                    <thead class="text-verde-sena">
+                                                                        <th class="text-center">Centro</th>
+                                                                        <th class="text-center">Nombre Completo</th>
+                                                                        <th class="text-center">Correo institucional
+                                                                        </th>
+                                                                        <!-- <th class="text-center">Correo alternativo</th> -->
+                                                                        <th class="text-center">Identificación</th>
+                                                                        <th class="text-center">Género</th>
+                                                                        <th class="text-center">Ciudad residencia</th>
+                                                                        <th class="text-center">ACCIONES</th>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <tr *ngFor="let usuario of listUsuariosFiltrado
+                                                                        | paginate: { itemsPerPage: 4, currentPage: pageActual }
+                                                                        ">
+                                                                            <td>{{ usuario.centro }}</td>
+                                                                            <td>{{ usuario.nombres }} {{
+                                                                                usuario.apellidos }}</td>
+                                                                            <td>{{ usuario.correo_institucional }}</td>
+                                                                            <!-- <td>{{ usuario.correo_alternativo }}</td> -->
+                                                                            <td>{{ usuario.identificacion }}</td>
+                                                                            <td>{{ usuario.genero }}</td>
+                                                                            <td>{{ usuario.ciudad_residencia }}</td>
+                                                                            <td class="text-center pointer">
+                                                                                <i  
+                                                                                placement="bottom" showDelay="200" tooltip="Ver Documento" 
+                                                                                (click)="misAsignados(usuario.id_usuario)"
+                                                                            
+                                                                                    class="fa-sharp fa-solid fa-eye pointer" ></i>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </tbody>
+
+                                                                </table>
+                                                                <h4 *ngIf="listUsuariosFiltrado == null">No hay
+                                                                    datos
+                                                                    aun</h4>
+                                                                <pagination-controls (pageChange)="pageActual = $event"
+                                                                    previousLabel="Anterior  "
+                                                                    nextLabel="Siguiente"></pagination-controls>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- graficas -->
+                        <div class="container">
+                            <div class="row">
+                                <div *ngIf=" mostrarGraficas == 1" class="card-body col-12">
+                                    <div class="row mt-2 d-flex flex-wrap  col-12">
+                                        <div class="col-lg-6 col-md-12 col-sm-12 d-flex justify-content-center"
+                                            style="height:60vh; width:40vh;">
+                                            <canvas>{{chart}}</canvas>
+                                        </div>
+                                        <div class="col-lg-6 col-md-12 col-sm-12 d-flex justify-content-end"
+                                            style="height:30vh; width:40vh;">
+                                            <canvas>{{chart2}}</canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

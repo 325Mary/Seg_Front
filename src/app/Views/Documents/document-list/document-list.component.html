@@ -1,0 +1,58 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <!-- <div class="col-md-6 col-lg-5 col-xl-3 mt-2 pb-3">
+            <input
+              type="number"
+              class="form-control"
+              placeholder="Buscar por Identificacion Aprendiz"
+              [(ngModel)]="filterIdentificacion"
+            />
+          </div> -->
+        <div class="card">
+          <div class="card-header card-header-sena-azul">
+            <h4 class="card-title">Documentos</h4>
+            <p class="card-category">
+              En este apartado podras ver todos los documentos
+            </p>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table" *ngIf="pdfs != null">
+                <thead class="text-verde-sena">
+                  <th class="text-center">Documento</th>
+                  <th class="text-center">Acciones</th>
+                </thead>
+
+                <tbody>
+                  <tr *ngFor="let pdf of pdfs | paginate: { itemsPerPage: 7, currentPage: pageActual }">
+                    <td class="text-center">
+                      {{ pdf.documento }}
+                    </td>
+
+                    <td class="text-center">
+                      <button
+                        type="button"
+                        class="btn btn-dark text-center"
+                        (click)="viewDocument(pdf.id_documento)"
+                      >
+                        Ver PDF
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <h5 *ngIf="pdfs == null">No Hay Documentos Registrados</h5>
+              <pagination-controls
+                (pageChange)="pageActual = $event"
+                previousLabel="Anterior  "
+                nextLabel="Siguiente"
+              ></pagination-controls>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

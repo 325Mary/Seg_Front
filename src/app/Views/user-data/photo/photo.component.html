@@ -1,0 +1,22 @@
+<div class="card card-profile card2">
+  <div class="card-avatar size">
+    <a>
+      <img
+        class="w-100 h-100"
+        [src]="path || '../../../../assets/img/perfil-user/photoProfile.jpg'"
+      />
+    </a>
+  </div>
+  <div class="card-body">
+    <h6 class="card-category text-gray">
+      {{ data_user_photo.identificacion }}
+    </h6>
+    <h4 class="card-title">
+      {{ data_user_photo.nombres }} {{ data_user_photo.apellidos }}
+    </h4>
+    <p class="card-description">actualizar imagen de perfil</p>
+    <button class="btn btn-dark" (click)="iredit()">
+      <i class="fa fa-cog fa-fw"></i>
+    </button>
+  </div>
+</div>

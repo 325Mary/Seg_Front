@@ -1,0 +1,19 @@
+export class reporteEtapa {
+    id_empresa?:any;
+    nit_eps?:any;
+    eps?:any;
+    nit_arl?:any;
+    nombre_empresa?:any;
+    nit_empresa?:any;
+    ciudad_id?:any;
+    direccion?:any;
+    telefono?:any;
+    correo?:any;
+    modalidad?:any;
+    observacion?:any;
+    representante_legal?:any;
+    identificacion_representante?:any;
+    aprendiz_id?:any;
+    razon_social?:any;
+    arl?:any;
+}

@@ -1,0 +1,167 @@
+<div class="card margin">
+  <div class="card-header card-header-sena-azul">
+    <h4 class="card-title">Crear un nuevo usuario </h4>
+    <p class="card-category">En este apartado podrás crear un nuevo usuario</p>
+  </div>
+  <div class="card-body">
+    <form [formGroup]="editarForm">
+      <p hidden>{{ editarForm.status | json }}</p>
+      <div class="row">
+        <div class="col-md-3">
+          <mat-form-field class="example-full-width">
+            <input matInput placeholder="Nombres" type="text" formControlName="nombres">
+          </mat-form-field>
+          <div class="text-danger">
+            <label *ngIf="editarForm.get('nombres').hasError('required') && editarForm.get('nombres')?.touched"><strong
+                class="text-danger">Campo requerido </strong></label>
+            <span *ngIf="editarForm.get('nombres').errors?.maxlength"><strong>maximo 25 caracteres</strong></span>
+
+          </div>
+        </div>
+        <div class="col-md-4">
+          <mat-form-field class="example-full-width">
+            <input matInput placeholder="Apellidos" type="text" formControlName="apellidos">
+          </mat-form-field>
+          <div class="text-danger">
+            <label
+              *ngIf="editarForm.get('apellidos').hasError('required') && editarForm.get('apellidos')?.touched"><strong
+                class="text-danger">Campo requerido </strong></label>
+            <span *ngIf="editarForm.get('apellidos').errors?.maxlength"><strong>maximo 25 caracteres</strong></span>
+          </div>
+        </div>
+        <div class="col-md-4">
+
+          <mat-form-field appearance="fill">
+            <mat-label>Selecciona tu género</mat-label>
+            <mat-select formControlName="genero">
+              <mat-option value="M">Masculino</mat-option>
+              <mat-option value="F">Femenino</mat-option>
+            </mat-select>
+            <div class="text-danger">
+              <label *ngIf="editarForm.get('genero').hasError('required') && editarForm.get('genero')?.touched"><strong
+                  class="text-danger">Campo requerido </strong></label>
+            </div>
+          </mat-form-field>
+
+          <!-- <mat-form-field class="example-full-width">
+                    <input matInput placeholder="Genero" type="text" formControlName="genero" >
+                  </mat-form-field> -->
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <mat-form-field class="example-full-width">
+            <input matInput placeholder="correo_institucional" type="email" formControlName="correo_institucional">
+          </mat-form-field>
+          <div class="text-danger">
+            <label
+              *ngIf="editarForm.get('correo_institucional').errors?.email && editarForm.get('correo_institucional')?.touched"><strong
+                class="text-danger">Campo Tipo Email </strong></label>
+            <label
+              *ngIf="editarForm.get('correo_institucional').hasError('required') && editarForm.get('correo_institucional')?.touched"><strong
+                class="text-danger">Campo requerido </strong></label>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <mat-form-field class="example-full-width">
+            <input matInput placeholder="secondary email" type="correo_alternativo"
+              formControlName="correo_alternativo">
+          </mat-form-field>
+          <div class="text-danger">
+            <label
+              *ngIf="editarForm.get('correo_alternativo').errors?.email && editarForm.get('correo_alternativo')?.touched"><strong
+                class="text-danger">Campo Tipo Email </strong></label>
+            <label
+              *ngIf="editarForm.get('correo_alternativo').hasError('required') && editarForm.get('correo_alternativo')?.touched"><strong
+                class="text-danger">Campo requerido </strong></label>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-4">
+          <mat-form-field class="example-full-width">
+            <input matInput placeholder="ciudad de recidencia" type="text" formControlName="ciudad_residencia">
+          </mat-form-field>
+          <div class="text-danger">
+            <label
+              *ngIf="editarForm.get('ciudad_residencia').hasError('required') && editarForm.get('ciudad_residencia')?.touched"><strong
+                class="text-danger">Campo requerido </strong></label>
+            <span *ngIf="editarForm.get('ciudad_residencia').errors?.maxlength"><strong>maximo 20
+                caracteres</strong></span>
+
+          </div>
+        </div>
+        <div class="col-md-4">
+
+          <mat-form-field appearance="fill">
+            <mat-label>Selecciona el Área </mat-label>
+            <mat-select formControlName="area_id">
+              <mat-option *ngFor="let area of areas" [value]="area.id_area">{{area.area}}</mat-option>
+            </mat-select>
+            <div class="text-danger">
+              <label
+                *ngIf="editarForm.get('area_id').hasError('required') && editarForm.get('area_id')?.touched"><strong
+                  class="text-danger">Campo requerido </strong></label>
+            </div>
+          </mat-form-field>
+        </div>
+        <div class="col-md-4">
+
+          <mat-form-field appearance="fill">
+            <mat-label>Selecciona el Perfil</mat-label>
+            <mat-select formControlName="perfil_id">
+              <mat-option *ngFor="let perfil of perfiles" [value]="perfil.id_perfil">{{perfil.perfil}}</mat-option>
+            </mat-select>
+            <div class="text-danger">
+              <label
+                *ngIf="editarForm.get('perfil_id').hasError('required') && editarForm.get('perfil_id')?.touched"><strong
+                  class="text-danger">Campo requerido </strong></label>
+            </div>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-4">
+          <mat-form-field appearance="fill">
+            <mat-label>Selecciona tu Centro</mat-label>
+            <mat-select formControlName="centro">
+                <mat-option value="CTPI">CTPI</mat-option>
+                <mat-option value="SENA CENTRO AGROPECUARIO">SENA CENTRO AGROPECUARIO</mat-option>
+                <mat-option value="CENTRO INDUSTRIAL -POPAYAN-">CENTRO INDUSTRIAL -POPAYAN-</mat-option>
+                <mat-option value="SENA CENTRO DE COMERCIO Y SERVICIOS">SENA CENTRO DE COMERCIO Y SERVICIOS</mat-option>
+            </mat-select>
+        </mat-form-field>
+          <div class="text-danger">
+            <label *ngIf="editarForm.get('centro').hasError('required') && editarForm.get('centro')?.touched"><strong
+                class="text-danger">Campo requerido </strong></label>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <mat-form-field class="example-full-width">
+            <input matInput placeholder="Identificación" type="number" formControlName="identificacion">
+          </mat-form-field>
+          <div class="text-danger">
+            <label
+              *ngIf="editarForm.get('identificacion').hasError('required') && editarForm.get('identificacion')?.touched"><strong
+                class="text-danger">Campo requerido </strong></label>
+            <span *ngIf="editarForm.get('identificacion').errors?.max"><strong>maximo 10 digitos</strong></span>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <mat-form-field class="example-full-width">
+            <input matInput placeholder="Contraseña" type="password" formControlName="contrasena">
+          </mat-form-field>
+          <div class="text-danger">
+            <label
+              *ngIf="editarForm.get('contrasena').hasError('required') && editarForm.get('contrasena')?.touched"><strong
+                class="text-danger">Campo requerido </strong></label>
+          </div>
+        </div>
+      </div>
+      <button mat-raised-button type="submit" class="btn  pull-right"
+        (click)="PostForm(editarForm.value)">Guardar</button>
+      <div class="clearfix"></div>
+    </form>
+  </div>
+</div>

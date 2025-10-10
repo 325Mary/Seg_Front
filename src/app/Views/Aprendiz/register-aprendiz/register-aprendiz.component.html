@@ -1,0 +1,633 @@
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <!-- (ngSubmit)="saveAprendizWithEP()" -->
+                    <form [formGroup]="aprendicesReForm">
+                        <p hidden>{{ aprendicesReForm.status | json }}</p>
+                        <div class="card-header card-header-sena-azul">
+                            <span class="titulo">{{titulo | uppercase}}</span>
+                            <!-- <p class="card-category">En este apartado podras Reasignar un aprendiz a un instrunctor</p> -->
+                        </div>
+                        <div class="card-body">
+                            <div *ngIf="cambiarFormulario == 0">
+                                <!-- <div class="text-center"><h3>REGISTRO APRENDIZ</h3></div> -->
+                                <div class="row">
+                                    <div class="col-sm-5 col-md-4 col-lg-3 p-2 offset-lg-2">
+                                        <label class="mt-2 font-weight-bold">
+                                            Identificación
+                                            <span class="text-danger">*</span>:
+                                        </label>
+                                        <input formControlName="identificacion" type="number"
+                                            placeholder="Ingrese la Identificación" class="form-control">
+                                        <small class="text-danger"></small>
+                                        <div class="text-danger">
+                                            <span
+                                                *ngIf="aprendicesReForm.get('identificacion').errors?.max && aprendicesReForm.get('identificacion')?.touched"><strong>maximo
+                                                    10 digitos</strong></span>
+                                            <span
+                                                *ngIf="aprendicesReForm.get('identificacion').hasError('required') && aprendicesReForm.get('identificacion')?.touched"><strong>
+                                                    Obligatorio</strong></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-5 col-md-4 col-lg-3 p-2 offset-lg">
+                                        <label class="mt-2 font-weight-bold">
+                                            Nombres
+                                            <span class="text-danger">*</span>:
+                                        </label>
+                                        <input formControlName="nombres" type="text" placeholder="Ingrese su Nombre"
+                                            class="form-control">
+                                        <small class="text-danger"></small>
+                                        <div class="text-danger">
+                                            <span
+                                                *ngIf="aprendicesReForm.get('nombres').errors?.maxlength && aprendicesReForm.get('nombres')?.touched"><strong>maximo
+                                                    25 caracteres</strong></span>
+                                            <span
+                                                *ngIf="aprendicesReForm.get('nombres').hasError('required') && aprendicesReForm.get('nombres')?.touched"><strong>
+                                                    Obligatorio</strong></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-5 col-md-4 col-lg-3 p-2 offset-lg">
+                                        <label class="mt-2 font-weight-bold">
+                                            Apellidos
+                                            <span class="text-danger">*</span>:
+                                        </label>
+                                        <input formControlName="apellidos" type="text" placeholder="Ingrese Apellidos"
+                                            class="form-control">
+                                        <small class="text-danger"></small>
+                                        <div class="text-danger">
+                                            <span
+                                                *ngIf="aprendicesReForm.get('apellidos').errors?.maxlength && aprendicesReForm.get('apellidos')?.touched"><strong>maximo
+                                                    20 caracteres</strong></span>
+                                            <span
+                                                *ngIf="aprendicesReForm.get('apellidos').hasError('required') && aprendicesReForm.get('apellidos')?.touched"><strong>
+                                                    Obligatorio</strong></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-5 col-md-4 col-lg-3 p-2 offset-lg-2">
+                                        <label class="mt-2 font-weight-bold">
+                                            Fecha Nacimiento
+                                            <span class="text-danger">*</span>:
+                                        </label>
+                                        <input formControlName="fecha_nacimiento" [max]="fecha_max" type="date"
+                                            placeholder="Ingrese Fecha Nacimiento" class="form-control">
+                                        <!-- <mat-form-field appearance="fill">
+                                            <mat-label>Elige una fecha de Nacimiento</mat-label>
+                                            <input formControlName="fecha_nacimiento" [max]="fecha_max" matInput
+                                                [matDatepicker]="picker9" />
+                                            <mat-hint>MM/DD/YYYY</mat-hint>
+                                            <mat-datepicker-toggle matSuffix [for]="picker9"></mat-datepicker-toggle>
+                                            <mat-datepicker #picker9></mat-datepicker>
+                                        </mat-form-field> -->
+                                        <small class="text-danger"></small>
+                                        <div class="text-danger"
+                                            *ngIf="aprendicesReForm.get('fecha_nacimiento')?.hasError('required') && aprendicesReForm.get('fecha_nacimiento')?.touched">
+                                            <span><strong> Obligatorio</strong></span>
+                                        </div>
+                                    </div>
+                            
+
+                                    <div class="col-sm-5 col-md-4 col-lg-3 p-2 offset-lg">
+                                        <label class="mt-2 font-weight-bold">
+                                            Género
+                                            <span class="text-danger">*</span>:
+                                        </label>
+                                        <mat-form-field appearance="fill">
+                                            <mat-label>Selecciona tu género</mat-label>
+                                            <mat-select formControlName="genero">
+                                                <mat-option value="M">Masculino</mat-option>
+                                                <mat-option value="F">Femenino</mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                        <!-- <input formControlName="genero" type="text" placeholder="Ingrese Genero"
+                                            class="form-control"> -->
+                                        <small class="text-danger"></small>
+                                        <div class="text-danger"
+                                            *ngIf="aprendicesReForm.get('genero')?.hasError('required') && aprendicesReForm.get('genero')?.touched">
+                                            <span><strong> Obligatorio</strong></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-5 col-md-4 col-lg-3 p-2 offset-lg">
+                                        <label class="mt-2 font-weight-bold">
+                                            Discapacidad
+                                            <span class="text-danger">*</span>: 
+                                        </label>
+                                        <!-- <select name="" id="" class="form-group">
+                                            <option value="">{{aprendicesReForm.get('discapacidad').value}}</option>
+                                            <option value="si">SI</option>
+                                            <option value="no">no</option>
+                                        </select> -->
+                                        <mat-form-field appearance="fill">
+                                            <mat-label>{{aprendicesReForm.get('discapacidad').value}}</mat-label>
+                                            <mat-select  formControlName="discapacidad">
+                                                <mat-option value="si">Si</mat-option>
+                                                <mat-option value="no">No</mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                        <!-- <input formControlName="genero" type="text" placeholder="Ingrese Genero"
+                                            class="form-control"> -->
+                                        <small class="text-danger"></small>
+                                        <div class="text-danger"
+                                            *ngIf="aprendicesReForm.get('discapacidad')?.hasError('required') && aprendicesReForm.get('discapacidad')?.touched">
+                                            <span><strong> Obligatorio</strong></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-5 col-md-4 col-lg-3 p-2 offset-lg-2">
+                                        <label class="mt-2 font-weight-bold">
+                                            Teléfono Movil
+                                            <span class="text-danger">*</span>:
+                                        </label>
+                                        <input formControlName="telefono"  type="text"
+                                            placeholder="Ingrese Teléfono Movil" class="form-control">
+                                        <small class="text-danger"></small>
+                                        <div class="text-danger">
+                                            <span
+                                                *ngIf="aprendicesReForm.get('telefono').errors?.max && aprendicesReForm.get('telefono')?.touched"><strong>el
+                                                    numero debe ser de 10 dígitos</strong></span>
+                                            <span
+                                                *ngIf="aprendicesReForm.get('telefono').hasError('required') && aprendicesReForm.get('telefono')?.touched"><strong>Obligatorio</strong></span>
+                                        </div>
+                                    </div>
+
+                                    <!-- <div class="col-sm-5 col-md-4 col-lg-3 p-2 offset-lg">
+                                        <label class="mt-2 font-weight-bold">
+                                            Correo Misena
+                                            <span class="text-danger">*</span>:
+                                        </label>
+                                        <input formControlName="correo_misena" type="text"
+                                            placeholder="Ingrese Correo Misena" class="form-control">
+                                        <small class="text-danger"></small>
+                                        <div class="text-danger">
+                                            <span
+                                                *ngIf="aprendicesReForm.get('correo_misena').errors?.maxlength && aprendicesReForm.get('correo_misena')?.touched"><strong>maximo
+                                                    50 caracteres</strong></span>
+                                            <span
+                                                *ngIf="aprendicesReForm.get('correo_misena').errors?.email && aprendicesReForm.get('correo_misena')?.touched"><strong>
+                                                    Debe ingresar un correo</strong></span>
+                                            <span
+                                                *ngIf="aprendicesReForm.get('correo_misena').hasError('required') && aprendicesReForm.get('correo_misena')?.touched"><strong>
+                                                    Obligatorio</strong></span>
+                                        </div>
+                                    </div> -->
+
+                                    <div class="col-sm-5 col-md-4 col-lg-3 p-2 offset-lg">
+                                        <label class="mt-2 font-weight-bold">
+                                            Correo Alternativo
+                                            <span class="text-danger">*</span>:
+                                        </label>
+                                        <input formControlName="correo_alternativo" type="text"
+                                            placeholder="Ingrese Correo Alternativo" class="form-control">
+                                        <small class="text-danger"></small>
+                                        <div class="text-danger">
+                                            <span
+                                                *ngIf="aprendicesReForm.get('correo_alternativo').errors?.maxlength && aprendicesReForm.get('correo_alternativo')?.touched"><strong>maximo
+                                                    50 caracteres</strong></span>
+                                            <span
+                                                *ngIf="aprendicesReForm.get('correo_alternativo').errors?.email && aprendicesReForm.get('correo_alternativo')?.touched"><strong>debe
+                                                    ingresar un correo</strong></span>
+                                            <span
+                                                *ngIf="aprendicesReForm.get('correo_alternativo').hasError('required') && aprendicesReForm.get('correo_alternativo')?.touched"><strong>
+                                                    Obligatorio</strong></span>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                                <div class="row d-flex">
+                                    <div class="col-sm-5 col-md-4 col-lg-3 p-2 offset-lg-2">
+                                        <!-- {{aprendicesReForm|json}} -->
+                                        <label class="mt-2 font-weight-bold">
+                                            Municipio
+                                            <span class="text-danger">*</span>:
+                                        </label>
+                                        <mat-form-field appearance="fill">
+                                            <mat-label>{{aprendicesReForm.get('municipio_nacimiento').value}}</mat-label>
+                                            <mat-select formControlName="municipio_nacimiento">
+                                                <mat-option *ngFor="let municipio of municipios" value="{{municipio.municipio}}">{{municipio.municipio}}</mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                        <!-- <input formControlName="genero" type="text" placeholder="Ingrese Genero"
+                                            class="form-control"> -->
+                                        <small class="text-danger"></small>
+                                        <div class="text-danger"
+                                            *ngIf="aprendicesReForm.get('municipio_nacimiento')?.hasError('required') && aprendicesReForm.get('municipio_nacimiento')?.touched">
+                                            <span><strong> Obligatorio</strong></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-5 col-md-4 col-lg-3 p-2 offset-lg">
+                                        <label class="mt-2 font-weight-bold">
+                                            Centro
+                                            <span class="text-danger">*</span>:
+                                        </label>
+                                        <mat-form-field appearance="fill">
+                                            <mat-label>Selecciona tu Centro</mat-label>
+                                            <mat-select formControlName="centro">
+                                                <mat-option value="CTPI">CTPI</mat-option>
+                                                <mat-option value="SENA CENTRO AGROPECUARIO">SENA CENTRO
+                                                    AGROPECUARIO</mat-option>
+                                                <mat-option value="CENTRO INDUSTRIAL -POPAYAN-">CENTRO INDUSTRIAL
+                                                    -POPAYAN-</mat-option>
+                                                <mat-option value="SENA CENTRO DE COMERCIO Y SERVICIOS">SENA CENTRO DE
+                                                    COMERCIO Y SERVICIOS</mat-option>
+                                            </mat-select>
+                                            <div class="text-danger">
+                                                <label
+                                                    *ngIf="aprendicesReForm.get('centro').hasError('required') && aprendicesReForm.get('centro')?.touched"><strong
+                                                        class="text-danger">Campo requerido </strong></label>
+                                            </div>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-sm-6 col-md-4 col-lg-3 p-2 offset-lg">
+                                        <!-- <h4>Registrar el programa</h4> -->
+
+                                        <label class="mt-2 font-weight-bold">
+                                            Programa
+                                            <span class="text-danger">*</span>:
+                                        </label>
+                                        <div>
+                                            <mat-form-field appearance="fill">
+                                                <mat-label>Seleccione un Programa</mat-label>
+                                                <mat-select formControlName="programa_id">
+                                                    <mat-option value="{{ programa.id_programa_formacion }}"
+                                                        *ngFor="let programa of listPrograms">
+                                                        {{programa.tipo_programa}}
+                                                    </mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-5 col-md-4 col-lg-3 p-2 offset-lg-2">
+                                        <label class="mt-2 font-weight-bold">
+                                            Fecha de Inicio Lectiva
+                                            <span class="text-danger">*</span>:
+                                        </label>
+                                        <!-- <mat-form-field appearance="fill">
+                                            <mat-label>Elige una fecha Inicial</mat-label>
+                                            <input formControlName="inicio_lectiva" matInput 
+                                                [matDatepicker]="picker5" />
+                                            <mat-hint>MM/DD/YYYY</mat-hint>
+                                            <mat-datepicker-toggle matSuffix [for]="picker5"></mat-datepicker-toggle>
+                                            <mat-datepicker #picker5></mat-datepicker>
+                                        </mat-form-field> -->
+                                        <input formControlName="inicio_lectiva"  type="date"
+                                        placeholder="Ingrese Inicio de Fecha de Lectiva" class="form-control">
+                                        <small class="text-danger"></small>
+                                        <div class="text-danger"
+                                            *ngIf="aprendicesReForm.get('inicio_lectiva')?.hasError('required') && aprendicesReForm.get('inicio_lectiva')?.touched">
+                                            <span><strong> Obligatorio</strong></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-5 col-md-4 col-lg-3 p-2 offset-lg">
+                                        <label class="mt-2 font-weight-bold">
+                                            Fecha Inicio Productiva
+                                            <span class="text-danger">*</span>:
+                                        </label>
+                                        <!-- <mat-form-field appearance="fill">
+                                            <mat-label>Elige una Inicio Productiva</mat-label>
+                                            <input formControlName="incio_productiva" matInput  
+                                            [min]="fecha_inicio_productiva"
+                                                [matDatepicker]="picker6" />
+                                            <mat-hint>MM/DD/YYYY</mat-hint>
+                                            <mat-datepicker-toggle matSuffix [for]="picker6"></mat-datepicker-toggle>
+                                            <mat-datepicker #picker6></mat-datepicker>
+                                        </mat-form-field> -->
+                                        <input formControlName="incio_productiva" type="date"
+                                        placeholder="Ingrese Inicio de Fecha Productiva" class="form-control">
+                                        <small class="text-danger"></small>
+                                        <div class="text-danger"
+                                            *ngIf="aprendicesReForm.get('incio_productiva')?.hasError('required') && aprendicesReForm.get('incio_productiva')?.touched">
+                                            <span><strong> Obligatorio</strong></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-5 col-md-4 col-lg-3 p-2 offset-lg">
+                                        <label class="mt-2 font-weight-bold">
+                                            Fecha Contrato Inicio
+                                            <span class="text-danger">*</span>:
+                                        </label>
+                                        <!-- <mat-form-field appearance="fill">
+                                            <mat-label>Elige una fecha Contrato Inicio</mat-label>
+                                            <input formControlName="contrato_inicio" 
+                                            [min]="fecha_contrato_inicio"
+                                                matInput [matDatepicker]="picker2" />
+                                            <mat-hint>MM/DD/YYYY</mat-hint>
+                                            <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                                            <mat-datepicker #picker2></mat-datepicker>
+                                        </mat-form-field> -->
+                                        <input formControlName="contrato_inicio"  type="date"
+                                        placeholder="Ingrese Fecha del Inicio del contrato" class="form-control">
+                                        <small class="text-danger"></small>
+                                        <div class="text-danger"
+                                            *ngIf="aprendicesReForm.get('contrato_inicio')?.hasError('required') && aprendicesReForm.get('contrato_inicio')?.touched">
+                                            <span><strong> Obligatorio</strong></span>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-5 col-md-4 col-lg-3 p-2 offset-lg-2">
+                                        <label class="mt-2 font-weight-bold">
+                                            Fecha de Contrato Fin
+                                            <span class="text-danger">*</span>:
+                                        </label>
+                                        <!-- <mat-form-field appearance="fill">
+                                            <mat-label>Elige una fecha Contrato Fin</mat-label>
+                                            <input formControlName="contrato_fin" matInput 
+                                                [min]="fecha_termina_contrato" [matDatepicker]="picker3" />
+                                            <mat-hint>MM/DD/YYYY</mat-hint>
+                                            <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+                                            <mat-datepicker #picker3></mat-datepicker>
+                                        </mat-form-field> -->
+                                        <input formControlName="contrato_fin"  type="date"
+                                        placeholder="Ingrese Fecha del Fin del contrato" class="form-control">
+                                        <small class="text-danger"></small>
+                                        <div class="text-danger"
+                                            *ngIf="aprendicesReForm.get('contrato_fin')?.hasError('required') && aprendicesReForm.get('contrato_fin')?.touched">
+                                            <span><strong> Obligatorio</strong></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-5 col-md-4 col-lg-3 p-2 offset-lg">
+                                        <label class="mt-2 font-weight-bold">
+                                            Ficha
+                                            <span class="text-danger">*</span>:
+                                        </label>
+                                        <input formControlName="ficha" type="number" placeholder="Ingrese Ficha"
+                                            class="form-control">
+                                        <small class="text-danger">
+                                            <span
+                                                *ngIf="aprendicesReForm.get('ficha').errors?.max && aprendicesReForm.get('ficha')?.touched"><strong>maximo
+                                                    10 digitos</strong></span>
+                                            <span
+                                                *ngIf="aprendicesReForm.get('ficha').hasError('required') && aprendicesReForm.get('ficha')?.touched"><strong>
+                                                    Obligatorio</strong></span>
+                                        </small>
+                                        <div class="text-danger">
+
+                                        </div>
+                                    </div>
+
+
+
+                                </div>
+                                <div class="mb-3 col-7 d-flex justify-content-between m-auto">
+                                    <button routerLink="/list-aprendices"
+                                        class="btn btn-outline-secondary">CANCELAR</button>
+                                    <button (click)="changeNextForm()" class="btn btn-dark">SIGUIENTE</button>
+                                </div>
+                            </div>
+
+                            <div *ngIf="cambiarFormulario == 1">
+                                <div class="text-center">
+                                    <h3>REGISTRO ETAPA PRODUCTIVA</h3>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-5 col-md-4 col-lg-3 p-2 offset-lg-2">
+                                        <label class="mt-2 font-weight-bold">
+                                            Nit de la EPS
+                                            <span class="text-danger">*</span>:
+                                        </label>
+                                        <input formControlName="nit_eps" type="number"
+                                            placeholder="Ingrese el Nit de la EPS" class="form-control">
+                                        <small class="text-danger"></small>
+                                        <div class="text-danger">
+                                            <span
+                                                *ngIf="aprendicesReForm.get('nit_eps').errors?.max && aprendicesReForm.get('nit_eps')?.touched"><strong>maximo
+                                                    10 digitos</strong></span>
+                                            <span
+                                                *ngIf="aprendicesReForm.get('nit_eps').hasError('required') && aprendicesReForm.get('nit_eps')?.touched"><strong>
+                                                    Obligatorio</strong></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-5 col-md-4 col-lg-3 p-2 offset-lg">
+                                        <label class="mt-2 font-weight-bold">
+                                            Nombre de la EPS
+                                            <span class="text-danger">*</span>:
+                                        </label>
+                                        <input formControlName="eps" type="text" placeholder="Ingrese la EPS"
+                                            class="form-control">
+                                        <small class="text-danger"></small>
+                                        <div class="text-danger">
+                                            <span
+                                                *ngIf="aprendicesReForm.get('eps').errors?.maxlength && aprendicesReForm.get('eps')?.touched"><strong>maximo
+                                                    50 caracteres</strong></span>
+                                            <span
+                                                *ngIf="aprendicesReForm.get('eps').hasError('required') && aprendicesReForm.get('eps')?.touched"><strong>
+                                                    Obligatorio</strong></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-5 col-md-4 col-lg-3 p-2 offset-lg">
+                                        <label class="mt-2 font-weight-bold">
+                                            Nit ARL
+                                            <span class="text-danger">*</span>:
+                                        </label>
+                                        <input formControlName="nit_arl" type="number" placeholder="Ingrese el Nit ARL"
+                                            class="form-control">
+                                        <small class="text-danger"></small>
+                                        <div class="text-danger">
+                                            <span
+                                                *ngIf="aprendicesReForm.get('nit_arl').errors?.max && aprendicesReForm.get('nit_arl')?.touched"><strong>el
+                                                    número debe ser de 10 dígitos</strong></span>
+                                            <span
+                                                *ngIf="aprendicesReForm.get('nit_arl').hasError('required') && aprendicesReForm.get('nit_arl')?.touched"><strong>Obligatorio</strong></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-5 col-md-4 col-lg-3 p-2 offset-lg-2">
+                                        <label class="mt-2 font-weight-bold">
+                                            Nombre de la Empresa
+                                            <span class="text-danger">*</span>:
+                                        </label>
+                                        <input formControlName="nombre_empresa" type="text"
+                                            placeholder="Ingrese el nombre de la empresa" class="form-control">
+                                        <small class="text-danger"></small>
+                                        <div class="text-danger">
+                                            <span
+                                                *ngIf="aprendicesReForm.get('nombre_empresa').errors?.maxlength && aprendicesReForm.get('nombre_empresa')?.touched"><strong>maximo
+                                                    50 caracteres</strong></span>
+                                            <span
+                                                *ngIf="aprendicesReForm.get('nombre_empresa').hasError('required') && aprendicesReForm.get('nombre_empresa')?.touched"><strong>
+                                                    Obligatorio</strong></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-5 col-md-4 col-lg-3 p-2 offset-lg">
+                                        <label class="mt-2 font-weight-bold">
+                                            Nit de empresa
+                                            <span class="text-danger">*</span>:
+                                        </label>
+                                        <input formControlName="nit_empresa" type="number"
+                                            placeholder="Ingrese el nit de la empresa" class="form-control">
+                                        <div class="text-danger">
+                                            <span
+                                                *ngIf="aprendicesReForm.get('nit_empresa').errors?.max && aprendicesReForm.get('nit_empresa')?.touched"><strong>el
+                                                    número debe ser de 10 dígitos</strong></span>
+                                            <span
+                                                *ngIf="aprendicesReForm.get('nit_empresa').hasError('required') && aprendicesReForm.get('nit_empresa')?.touched"><strong>Obligatorio</strong></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-5 col-md-4 col-lg-3 p-2 offset-lg">
+                                        <label class="mt-2 font-weight-bold">
+                                            Ciudad
+                                            <span class="text-danger">*</span>:
+                                        </label>
+                                        <input formControlName="ciudad" type="text" placeholder="Ingrese la ciudad"
+                                            class="form-control">
+                                        <small class="text-danger"></small>
+                                        <div class="text-danger">
+                                            <span
+                                                *ngIf="aprendicesReForm.get('ciudad').errors?.maxlength && aprendicesReForm.get('ciudad')?.touched"><strong>maximo
+                                                    25 caracteres</strong></span>
+                                            <span
+                                                *ngIf="aprendicesReForm.get('ciudad').hasError('required') && aprendicesReForm.get('ciudad')?.touched"><strong>Obligatorio</strong></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-5 col-md-4 col-lg-3 p-2 offset-lg-2">
+                                        <label class="mt-2 font-weight-bold">
+                                            Dirección
+                                            <span class="text-danger">*</span>:
+                                        </label>
+                                        <input formControlName="direccion" type="text"
+                                            placeholder="Ingrese la direccion" class="form-control">
+                                        <small class="text-danger"></small>
+                                        <div class="text-danger">
+                                            <span
+                                                *ngIf="aprendicesReForm.get('direccion').errors?.maxlength && aprendicesReForm.get('direccion')?.touched"><strong>debe
+                                                    ingresar un correo</strong></span>
+                                            <span
+                                                *ngIf="aprendicesReForm.get('direccion').hasError('required') && aprendicesReForm.get('direccion')?.touched"><strong>
+                                                    Obligatorio</strong></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-5 col-md-4 col-lg-3 p-2 offset-lg">
+                                        <label class="mt-2 font-weight-bold">
+                                            Teléfono
+                                            <span class="text-danger">*</span>:
+                                        </label>
+                                        <input formControlName="telefono_empresa" type="text"
+                                            placeholder="Ingrese Teléfono " class="form-control">
+                                        <small class="text-danger"></small>
+                                        <div class="text-danger">
+                                            <span
+                                                *ngIf="aprendicesReForm.get('telefono_empresa').errors?.max && aprendicesReForm.get('telefono_empresa')?.touched"><strong>el
+                                                    número debe ser de 10 digitos</strong></span>
+                                            <span
+                                                *ngIf="aprendicesReForm.get('telefono_empresa').hasError('required') && aprendicesReForm.get('telefono_empresa')?.touched"><strong>Obligatorio</strong></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-5 col-md-4 col-lg-3 p-2 offset-lg">
+                                        <label class="mt-2 font-weight-bold">
+                                            Correo
+                                            <span class="text-danger">*</span>:
+                                        </label>
+                                        <input formControlName="correo" type="text" placeholder="Ingrese Correo"
+                                            class="form-control">
+                                        <small class="text-danger"></small>
+                                        <div class="text-danger">
+                                            <span
+                                                *ngIf="aprendicesReForm.get('correo').errors?.maxlength && aprendicesReForm.get('correo')?.touched"><strong>maximo
+                                                    100 caracteres</strong></span>
+                                            <span
+                                                *ngIf="aprendicesReForm.get('correo').errors?.email && aprendicesReForm.get('correo')?.touched"><strong>debe
+                                                    ingresar un correo</strong></span>
+                                            <span
+                                                *ngIf="aprendicesReForm.get('correo').hasError('required') && aprendicesReForm.get('correo')?.touched"><strong>
+                                                    Obligatorio</strong></span>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-5 col-md-4 col-lg-3 p-2 offset-lg-2">
+                                        <label class="mt-2 font-weight-bold">
+                                            Observación
+                                            <span class="text-danger">*</span>:
+                                        </label>
+                                        <input formControlName="observacion" type="text" placeholder="Observacion"
+                                            class="form-control">
+                                        <small class="text-danger"></small>
+                                        <div class="text-danger">
+                                            <span
+                                                *ngIf="aprendicesReForm.get('observacion').errors?.maxlength && aprendicesReForm.get('observacion')?.touched"><strong>maximo
+                                                    25 caracteres</strong></span>
+                                            <span
+                                                *ngIf="aprendicesReForm.get('observacion').hasError('required') && aprendicesReForm.get('observacion')?.touched"><strong>Obligatorio</strong></span>
+                                        </div>
+                                    </div>
+
+                                    <!-- <div class="col-sm-5 col-md-4 col-lg-3 p-2 offset-lg">
+                                        <label class="mt-2 font-weight-bold">
+                                            Nombre del representante legal o supervisor del contrato
+                                            <span class="text-danger">*</span>:
+                                        </label>
+                                        <input formControlName="representante_legal" type="text"
+                                            placeholder="Ingrese Nombre" class="form-control">
+                                        <small class="text-danger"></small>
+                                        <div class="text-danger">
+                                            <span
+                                                *ngIf="aprendicesReForm.get('representante_legal').errors?.maxlength && aprendicesReForm.get('representante_legal')?.touched"><strong>maximo
+                                                    40 caracteres</strong></span>
+                                            <span
+                                                *ngIf="aprendicesReForm.get('representante_legal').hasError('required') && aprendicesReForm.get('representante_legal')?.touched"><strong>Obligatorio</strong></span>
+                                        </div>
+                                    </div> -->
+
+                                    <!-- <div class="col-sm-5 col-md-4 col-lg-3 p-2 offset-lg">
+                                        <label class="mt-2 font-weight-bold">
+                                            Identificación del Representante o supervisor
+                                            <span class="text-danger">*</span>:
+                                        </label>
+                                        <input formControlName="identificacion_representante" type="number"
+                                            placeholder="Ingrese Identificacion" class="form-control">
+                                        <small class="text-danger"></small>
+                                        <div class="text-danger">
+                                            <span
+                                                *ngIf="aprendicesReForm.get('identificacion_representante').errors?.max && aprendicesReForm.get('identificacion_representante')?.touched"><strong>maximo
+                                                    10 digitos</strong></span>
+                                            <span
+                                                *ngIf="aprendicesReForm.get('identificacion_representante').hasError('required') && aprendicesReForm.get('identificacion_representante')?.touched"><strong>
+                                                    Obligatorio</strong></span>
+                                        </div>
+                                    </div> -->
+
+
+                                </div>
+                                
+                                <div class="mb-3 col-7 d-flex justify-content-between m-auto">
+
+                                    <button (click)="changeForm2()" class="btn btn-outline-secondary">REGRESAR</button>
+                                    <button (click)="saveAprendizWithEP()" type="submit"
+                                        class="btn btn-success">{{nombreBoton}}</button>
+
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

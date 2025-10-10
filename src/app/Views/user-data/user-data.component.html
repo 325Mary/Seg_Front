@@ -1,0 +1,15 @@
+<div class="box-photo">
+  <div class="main-content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-8">
+          <app-mydatauser *ngIf="bollId" [data_user]="dataMyProfile"></app-mydatauser>
+          <app-mydataaprendiz *ngIf="!bollId" [dataAprendiz]="dataMyProfile"></app-mydataaprendiz>
+        </div>
+        <div class="col-md-4">
+          <app-photo [data_user_photo]="dataMyProfile"></app-photo>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

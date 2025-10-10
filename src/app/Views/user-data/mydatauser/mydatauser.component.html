@@ -1,0 +1,130 @@
+   <div class="card">
+    <div class="card-header card-header-sena-azul">
+        <h4 class="card-title">Editar perfil </h4>
+        <p class="card-category">Completa tu perfil</p>
+    </div>
+    <div class="card-body">
+        <form>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="card">
+                  <div class="card-header card-header-sena-azul flex">
+                    <div class="tittle_card-table"></div>
+                    <div class="button-card-table"></div>
+                  </div>
+                  <div class="card-body">
+                    <div class="table-responsive">
+                      <table class="table">
+                        <thead class="text-verde-sena">
+                          <tr>
+                            <td>nombres </td>
+                            <td>apellidos</td>
+                            <td>genero</td>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>{{ data_user.nombres }}</td>
+                            <td>{{ data_user.apellidos }}</td>
+                            <td>{{ data_user.genero }}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="card">
+                    <div class="card-header card-header-sena-azul flex">
+                      <div class="tittle_card-table"></div>
+                      <div class="button-card-table"></div>
+                    </div>
+                    <div class="card-body">
+                      <div class="table-responsive">
+                        <table class="table">
+                          <thead class="text-verde-sena">
+                            <tr>
+                              <td>correo institucional </td>
+                              <td>correo alternativo</td>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td>{{ data_user.correo_institucional }}</td>
+                              <td>{{ data_user.correo_alternativo }}</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+               
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="card">
+                    <div class="card-header card-header-sena-azul flex">
+                      <div class="tittle_card-table"></div>
+                      <div class="button-card-table"></div>
+                    </div>
+                    <div class="card-body">
+                      <div class="table-responsive">
+                        <table class="table">
+                          <thead class="text-verde-sena">
+                            <tr>
+                              <td>ciudad_residencia </td>
+                              <td>centro</td>
+                              <td>identificacion</td>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td>{{ data_user.ciudad_residencia }}</td>
+                              <td>{{ data_user.centro }}</td>
+                              <td>{{ data_user.identificacion }}</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            <div class="clearfix"></div>
+          </form>
+          <div>
+            <button mat-raised-button (click)="cambiarPassword()" type="button" class="btn  pull-right">Cambiar contraseña</button>
+          </div>
+          <br><br><br>
+          <div *ngIf="Password">
+          <form [formGroup]="formChangesPaswordnew" (submit)="updatedPasword(formChangesPaswordnew.value)">
+          <div class="row">
+              <div class="col-md-4">
+                  <mat-form-field class="example-full-width">
+                    <input formControlName="oldpassword" matInput placeholder="contraseña anterior" type="text">
+                  </mat-form-field>
+              </div>
+              <div class="col-md-4">
+                <mat-form-field class="example-full-width">
+                  <input formControlName="password" matInput placeholder="nueva contraseña" type="text">
+                </mat-form-field>
+            </div>
+            <div class="col-md-4">
+              <mat-form-field class="example-full-width">
+                <input formControlName="confirmpassword" matInput placeholder="confirmar contraseña" type="text">
+              </mat-form-field>
+          </div>
+          </div>
+          <button mat-raised-button type="submit" class="btn  pull-right">Guardar</button>
+            <div class="clearfix"></div>
+        </form>
+      </div>
+    </div>
+</div>
+
+
+   

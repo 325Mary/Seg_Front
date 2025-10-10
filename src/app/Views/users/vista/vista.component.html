@@ -1,0 +1,59 @@
+<div class="col-md-12 containerphater">
+  <div class="card">
+    <div class="card-header card-header-sena-azul flex">
+      <div class="tittle_card-table">
+        <h4 class="card-title mt-0">Usuarios</h4>
+        <p class="card-category">
+          En este apartado podrás ver a todos los usuarios del aplicativo
+        </p>
+      </div>
+      <div class="button-card-table">
+        <button type="button " class="btn btn-success" [routerLink]="['/createuser/']">
+          Nuevo Usuario
+        </button>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table">
+          <thead class="text-verde-sena">
+              <th>Centro</th>
+              <th>Nombre Completo</th>
+              <th>Correo institucional</th>
+              <th>Correo alternativo</th>
+              <th>Identificación</th>
+              <th>Género</th>
+              <th>Ciudad de residencia</th>
+              <th>Acciones</th>  
+          </thead>
+          <tbody>
+            <tr *ngFor="let user of users">
+              <td>{{ user.centro }}</td>
+              <td>{{ user.nombres }} {{ user.apellidos }}</td>
+              <td>{{ user.correo_institucional }}</td>
+              <td>{{ user.correo_alternativo }}</td>
+              <td>{{ user.identificacion }}</td>
+              <td>{{ user.genero }}</td>
+              <td>{{ user.ciudad_residencia }}</td>
+
+              <td class="">
+                <div class="comtainer">
+                <i tooltip="Actualizar datos del usuario {{ user.nombres }} {{
+                    user.apellidos
+                  }}" placement="bottom" showDelay="200" class=" butonW"
+                  [routerLink]="['/updateuser/', user.id_usuario]">
+                  <span class="fa-solid fa-pen-to-square "></span>
+                </i>
+                <i tooltip="Eliminar usuario {{ user.nombres }} {{ user.apellidos }}" placement="bottom"
+                  showDelay="200" class= "butonW" (click)="deleteUser(user.id_usuario)">
+                  <span class="fa-solid fa-trash text-danger"></span>
+                </i>
+              </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

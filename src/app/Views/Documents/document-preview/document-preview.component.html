@@ -1,0 +1,79 @@
+<section class="vh-100 gradient-custom">
+  <div class="container py-5 h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col-12 col-md-8 col-lg-12 col-xl-6">
+        <div class="col-md-12">
+          <div class="card card-profile">
+            <div class="card-avatar">
+              <a class="cursor-pointer" (click)="open(content)">
+                <img class="img" src="assets/img/imgDoc.png" />
+              </a>
+            </div>
+            <div class="card-body">
+              <h4 class="card-title">Nombre del Documento </h4>
+              <p class="card-description">
+                {{ doc.documento }}
+              </p>
+              <a
+                href="javascript:void(0)"
+                (click)="open(content)"
+                class="btn  btn-round"
+                >Ver PDF</a
+              >
+            </div>
+          </div>
+        </div>
+        <!-- <div class="card back1" style="border-radius: 1rem">
+          <div class="card-body p-5 text-center">
+            <h3 class="fw-bold mb-2 text-uppercase textColor">
+              Datos del Docuemnto
+            </h3>
+
+            <div class="mb-md-5 pb-1 row">
+              <div class="form-outline form-white mb-4">
+                <h5 class="fw-bold mb-2 text-uppercase textColor">
+                  Nombre del Documento
+                </h5>
+                <label class="font-weight-bold mt-1 textColor2">{{
+                  doc.documento
+                }}</label>
+              </div>
+              <div class="form-outline form-white mt-5 mb-4">
+                <button
+                  type="button"
+                  class="btn btn-dark text-center"
+                  (click)="open(content)"
+                >
+                  Ver PDF
+                </button>
+              </div>
+            </div>
+          </div>
+        </div> -->
+      </div>
+    </div>
+  </div>
+</section>
+
+<ng-template #content let-modal>
+  <div class="modal-header d-flex">
+    <h4 class="" id="modal-basic-title">PDF</h4>
+    <div
+      class="cursor-pointer"
+      aria-label="Close"
+      (click)="modal.dismiss('Back click')"
+    >
+      <i class="material-icons">close</i>
+    </div>
+  </div>
+  <div class="modal-body" style="height: 80vh">
+    <div class="container d-flex justify-content-center">
+      <iframe
+        [src]="safeSrc"
+        style="height: 80vh; width: 100%"
+        frameborder="0"
+      ></iframe>
+    </div>
+  </div>
+  <div class="modal-footer"></div>
+</ng-template>

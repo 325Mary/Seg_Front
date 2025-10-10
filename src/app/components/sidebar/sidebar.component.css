@@ -1,0 +1,32 @@
+.avatar {
+    border-radius: 50%;
+     
+     /* border-top-left-radius: 50% 50%;
+     border-top-right-radius: 70% 70%;
+     border-bottom-right-radius: 50% 50%;
+     border-bottom-left-radius: 70% 70%; */
+    height: 7rem;
+    width: 7rem;
+}
+
+.active a {
+    background-color: #00324D !important;
+    -webkit-box-shadow: 10px 10px 42px -15px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: 10px 10px 42px -15px rgba(0, 0, 0, 0.75);
+    box-shadow: 10px 10px 42px -15px rgba(0, 0, 0, 0.75) !important;
+}
+
+.parrafo {
+    color: black !important;
+    /* font-family: 'Cascadia Code'; */
+    font-size: 15px !important;
+}
+
+.parrafo2 {
+    color: black !important;
+    /* font-family: 'Cascadia Code'; */
+    font-size: 14px !important;
+}
+.click {
+    cursor: pointer;
+}

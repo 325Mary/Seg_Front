@@ -1,0 +1,33 @@
+<div class="col-md-12 containerphater margin-title">
+    <div class="card">
+      <div class="card-header card-header-sena-azul flex">
+        <div class="tittle_card-table">
+          <h4 class="card-title mt-0">editar Item Modulo </h4>
+          <p class="card-category">
+            En este apartado podras Editar los permisos del Item modulo .. 
+          </p>
+        </div>
+      </div>
+      <div class="card-body">
+            <div class="row">
+                <div class="col-md-4">
+                    <mat-form-field appearance="fill">
+                        <mat-label>Toppings</mat-label>
+                        <mat-select >
+                          <mat-option *ngFor="let perfil of allPerfiles" [value]="perfil">{{perfil}}</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                </div>
+                <!-- <div class="col-md-4">
+                    <mat-form-field appearance="fill">
+                        <mat-label>Toppings</mat-label>
+                        <mat-select [formControlName]="toppings" multiple>
+                          <mat-option *ngFor="let topping of toppingList" [value]="topping">{{topping}}</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                </div> -->
+            </div>
+      </div>
+    </div>
+  </div>
+  

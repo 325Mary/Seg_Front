@@ -1,0 +1,348 @@
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <p class="text-center mt-5 m-0   titulo">Aprobación de Documentos por certificar</p>
+                    <div class="card-body col-12 d-flex flex-row flex-wrap justify-content-lg-center m-2 px-2">
+                        <!-- primero:) -->
+                        <div class="col-xl-5 d-flex col-12">
+                            <div class="w-100">
+                                <div class="container-fluid">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="col-md-6 col-lg-5 col-xl-3 mt-2 pb-3">
+                                            </div>
+                                            <div class="card">
+                                                <div class="card-header card-header-sena-azul">
+                                                    <div>
+                                                        <h4 *ngIf="aprobado == true">Evidencia carnet destruido aprobada
+                                                        </h4>
+                                                    </div>
+                                                    <div *ngIf="aprobado != true">
+                                                        <div class="text-center">
+                                                            <h5 class="card-title">Evidencia carnet destruido</h5>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="card-body">
+                                                    <div class="table-responsive">
+                                                        <table class="table">
+                                                            <thead class="text-success">
+                                                                <th scope="col">Nombre</th>
+                                                                <th scope="col">Estado</th>
+                                                                <th scope="col">Acciones</th>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr *ngFor="let datos of listDocumentos">
+                                                                    <td>{{datos.nombre}}</td>
+                                                                    <td>{{datos.estado}}</td>
+                                                                    <td class="text-center">
+                                                                        <i tooltip="Ver Documento"(click)="open(content , datos.documento_id)"
+                                                                            class="fa-sharp fa-solid fa-eye pointer" ></i>
+
+                                                                        <i *ngIf="datos.estado == 'Por Aprobar'"
+                                                                        tooltip="Aprobar Documento" (click)="cambiarEstadoDoc('Aprobado',datos.id_documentos_cert,datos.requisito_id)"
+                                                                            class="fa-regular fa-circle-check text-success offset-2 "></i>
+                                                                        <i *ngIf="datos.estado == 'Por Aprobar'"
+                                                                        tooltip="No Aprobar Documento"  (click)="cambiarEstadoDoc('No aprobado',datos.id_documentos_cert,datos.requisito_id)"
+                                                                            class="fa-solid fa-xmark text-danger offset-2"></i>
+                                                                    </td>
+                                                                    <ng-template #content let-modal>
+                                                                        <div class="modal-header d-flex">
+                                                                            <h4 class="" id="modal-basic-title">PDF</h4>
+                                                                            <div class="cursor-pointer"
+                                                                                aria-label="Close"
+                                                                                (click)="modal.dismiss('Back click')">
+                                                                                <i class="material-icons">close</i>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="modal-body" style="height: 80vh">
+                                                                            <div
+                                                                                class="container d-flex justify-content-center">
+                                                                                <iframe [src]="safeSrc"
+                                                                                    style="height: 80vh; width: 100%"
+                                                                                    frameborder="0"></iframe>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div
+                                                                            class="modal-footer d-flex justify-content-center ">
+                                                                            <i *ngIf="datos.estado == 'Por Aprobar'"
+                                                                                (click)="cambiarEstadoDoc('Aprobado',datos.id_documentos_cert,datos.requisito_id)"
+                                                                                class="fa-regular fa-circle-check text-success offset-2 "></i>
+                                                                            <i *ngIf="datos.estado == 'Por Aprobar'"
+                                                                                (click)="cambiarEstadoDoc('No aprobado',datos.id_documentos_cert,datos.requisito_id)"
+                                                                                class="fa-solid fa-xmark text-danger offset-2"></i>
+                                                                        </div>
+                                                                    </ng-template>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                        <div *ngIf="listDocumentos == null">
+                                                            <h4>Sin documentos</h4>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- dos -->
+                        <div class="col-xl-5 d-flex col-12">
+                            <div class="w-100">
+                                <div class="container-fluid">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="col-md-6 col-lg-5 col-xl-3 mt-2 pb-3">
+                                            </div>
+                                            <div class="card">
+                                                <div class="card-header card-header-sena-azul">
+                                                    <div>
+                                                        <h4 *ngIf="aprobado2 == true">Pruebas TyT aprobado</h4>
+                                                    </div>
+                                                    <div *ngIf="aprobado2 != true">
+                                                        <div class="text-center">
+                                                            <h5 class="card-title">Pruebas TyT</h5>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="card-body">
+                                                    <div class="table-responsive">
+                                                        <table class="table ">
+                                                            <thead class="text-success">
+                                                                <th scope="col">Nombre</th>
+                                                                <th scope="col">Estado</th>
+                                                                <th scope="col">Accion</th>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr *ngFor="let datos2 of listDocumentos2 ">
+                                                                    <td>{{datos2.nombre}}</td>
+                                                                    <td>{{datos2.estado}}</td>
+                                                                    <td class="text-center">
+                                                                        <i tooltip="Ver Documento" (click)="open(content , datos2.documento_id)"
+                                                                            class="fa-sharp fa-solid fa-eye pointer" tooltip="Ver Documento"></i>
+                                                                        <i *ngIf="datos2.estado == 'Por Aprobar'"
+                                                                            (click)="cambiarEstadoDoc('Aprobado',datos2.id_documentos_cert,datos2.requisito_id)"
+                                                                            class="fa-regular fa-circle-check text-success offset-2 pointer " tooltip="Aprobar Documento"></i>
+                                                                        <i *ngIf="datos2.estado == 'Por Aprobar'"
+                                                                            (click)="cambiarEstadoDoc('No aprobado',datos2.id_documentos_cert,datos2.requisito_id)"
+                                                                            class="fa-solid fa-xmark text-danger offset-2 pointer" tooltip="No Aprobar Documento"></i>
+                                                                    </td>
+                                                                    <ng-template #content let-modal>
+                                                                        <div class="modal-header d-flex">
+                                                                            <h4 class="" id="modal-basic-title">PDF</h4>
+                                                                            <div class="cursor-pointer"
+                                                                                aria-label="Close"
+                                                                                (click)="modal.dismiss('Back click')">
+                                                                                <i class="material-icons">close</i>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="modal-body" style="height: 80vh">
+                                                                            <div
+                                                                                class="container d-flex justify-content-center">
+                                                                                <iframe [src]="safeSrc"
+                                                                                    style="height: 80vh; width: 100%"
+                                                                                    frameborder="0"></iframe>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div
+                                                                            class="modal-footer d-flex justify-content-center ">
+                                                                            <i *ngIf="datos2.estado == 'Por Aprobar'"
+                                                                                (click)="cambiarEstadoDoc('Aprobado',datos2.id_documentos_cert,datos2.requisito_id)"
+                                                                                class="fa-regular fa-circle-check text-success offset-2 "></i>
+                                                                            <i *ngIf="datos2.estado == 'Por Aprobar'"
+                                                                                (click)="cambiarEstadoDoc('No aprobado',datos2.id_documentos_cert,datos2.requisito_id)"
+                                                                                class="fa-solid fa-xmark text-danger offset-2"></i>
+                                                                        </div>
+                                                                    </ng-template>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                        <div *ngIf="listDocumentos2 == null">
+                                                            <h4>Sin documentos</h4>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- tres -->
+                        <div class="col-xl-5 d-flex col-12">
+                            <div class="w-100">
+                                <div class="container-fluid">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="col-md-6 col-lg-5 col-xl-3 mt-2 pb-3">
+                                            </div>
+                                            <div class="card">
+                                                <div class="card-header card-header-sena-azul">
+                                                    <div>
+                                                        <h4 *ngIf="aprobado3 == true">Documento de Identidad aprobado
+                                                        </h4>
+                                                    </div>
+                                                    <div *ngIf="aprobado3 != true">
+                                                        <div class="text-center">
+                                                            <h5 class="card-title">Documento de Identidad</h5>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="card-body">
+                                                    <div class="table-responsive">
+                                                        <table class="table ">
+                                                            <thead class="text-success">
+                                                                <th scope="col">Nombre</th>
+                                                                <th scope="col">Estado</th>
+                                                                <th scope="col">Accion</th>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr *ngFor="let datos3 of listDocumentos3 ">
+                                                                    <td>{{datos3.nombre}}</td>
+                                                                    <td>{{datos3.estado}}</td>
+                                                                    <td class="text-center">
+                                                                        <i (click)="open(content , datos3.documento_id)"
+                                                                            class="fa-sharp fa-solid fa-eye pointer" tooltip="Ver Documento"></i>
+                                                                        <i *ngIf="datos3.estado == 'Por Aprobar'"
+                                                                            (click)="cambiarEstadoDoc('Aprobado',datos3.id_documentos_cert,datos3.requisito_id)"
+                                                                            class="fa-regular fa-circle-check text-success offset-2 pointer " tooltip="Aprobar Documento"></i>
+                                                                        <i *ngIf="datos3.estado == 'Por Aprobar'"
+                                                                            (click)="cambiarEstadoDoc('No aprobado',datos3.id_documentos_cert,datos3.requisito_id)"
+                                                                            class="fa-solid fa-xmark text-danger offset-2 pointer" tooltip="No AprobaR Documento"></i>
+                                                                    </td>
+                                                                    <ng-template #content let-modal>
+                                                                        <div class="modal-header d-flex">
+                                                                            <h4 class="" id="modal-basic-title">PDF</h4>
+                                                                            <div class="cursor-pointer"
+                                                                                aria-label="Close"
+                                                                                (click)="modal.dismiss('Back click')">
+                                                                                <i class="material-icons">close</i>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="modal-body" style="height: 80vh">
+                                                                            <div
+                                                                                class="container d-flex justify-content-center">
+                                                                                <iframe [src]="safeSrc"
+                                                                                    style="height: 80vh; width: 100%"
+                                                                                    frameborder="0"></iframe>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div
+                                                                            class="modal-footer d-flex justify-content-center ">
+                                                                            <i *ngIf="datos3.estado == 'Por Aprobar'"
+                                                                                (click)="cambiarEstadoDoc('Aprobado',datos3.id_documentos_cert,datos3.requisito_id)"
+                                                                                class="fa-regular fa-circle-check text-success offset-2 "></i>
+                                                                            <i *ngIf="datos3.estado == 'Por Aprobar'"
+                                                                                (click)="cambiarEstadoDoc('No aprobado',datos3.id_documentos_cert,datos3.requisito_id)"
+                                                                                class="fa-solid fa-xmark text-danger offset-2"></i>
+                                                                        </div>
+                                                                    </ng-template>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                        <div *ngIf="listDocumentos3 == null">
+                                                            <h4>Sin documentos</h4>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- cuatro -->
+                        <div class="col-xl-5 d-flex col-12">
+                            <div class="w-100">
+                                <div class="container-fluid">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="col-md-6 col-lg-5 col-xl-3 mt-2 pb-3">
+                                            </div>
+                                            <div class="card">
+                                                <div class="card-header card-header-sena-azul">
+                                                    <div>
+                                                        <h4 *ngIf="aprobado4 == true">Certificación etapa productiva
+                                                            aprobada</h4>
+                                                    </div>
+                                                    <div *ngIf="aprobado4 != true">
+                                                        <div class="text-center">
+                                                            <h5 class="card-title">Certificación etapa productiva</h5>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="card-body">
+                                                    <div class="table-responsive">
+                                                        <table class="table ">
+                                                            <thead class="text-success">
+                                                                <th scope="col">Nombre</th>
+                                                                <th scope="col">Estado</th>
+                                                                <th scope="col">Accion</th>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr *ngFor="let datos4 of listDocumentos4 ">
+                                                                    <td>{{datos4.nombre}}</td>
+                                                                    <td>{{datos4.estado}}</td>
+                                                                    <td class="text-center">
+                                                                        <i (click)="open(content , datos4.documento_id)"
+                                                                            class="fa-sharp fa-solid fa-eye pointer" tooltip="Ver Documento"></i>
+                                                                        <i *ngIf="datos4.estado == 'Por Aprobar'"
+                                                                            (click)="cambiarEstadoDoc('Aprobado',datos4.id_documentos_cert,datos4.requisito_id)"
+                                                                            class="fa-regular fa-circle-check text-success offset-2 pointer " tooltip="Probar Documento"></i>
+                                                                        <i *ngIf="datos4.estado == 'Por Aprobar'"
+                                                                            (click)="cambiarEstadoDoc('No aprobado',datos4.id_documentos_cert,datos4.requisito_id)"
+                                                                            class="fa-solid fa-xmark text-danger offset-2 pointer" tooltip="No Probar Documento"></i>
+                                                                    </td>
+                                                                    <ng-template #content let-modal>
+                                                                        <div class="modal-header d-flex">
+                                                                            <h4 class="" id="modal-basic-title">PDF</h4>
+                                                                            <div class="cursor-pointer"
+                                                                                aria-label="Close"
+                                                                                (click)="modal.dismiss('Back click')">
+                                                                                <i class="material-icons">close</i>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="modal-body" style="height: 80vh">
+                                                                            <div
+                                                                                class="container d-flex justify-content-center">
+                                                                                <iframe [src]="safeSrc"
+                                                                                    style="height: 80vh; width: 100%"
+                                                                                    frameborder="0"></iframe>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div
+                                                                            class="modal-footer d-flex justify-content-center ">
+                                                                            <i *ngIf="datos4.estado == 'Por Aprobar'"
+                                                                                (click)="cambiarEstadoDoc('Aprobado',datos4.id_documentos_cert,datos4.requisito_id)"
+                                                                                class="fa-regular fa-circle-check text-success offset-2 "></i>
+                                                                            <i *ngIf="datos4.estado == 'Por Aprobar'"
+                                                                                (click)="cambiarEstadoDoc('No aprobado',datos4.id_documentos_cert,datos4.requisito_id)"
+                                                                                class="fa-solid fa-xmark text-danger offset-2"></i>
+                                                                        </div>
+                                                                    </ng-template>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                        <div *ngIf="listDocumentos4 == null">
+                                                            <h4>Sin documentos</h4>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

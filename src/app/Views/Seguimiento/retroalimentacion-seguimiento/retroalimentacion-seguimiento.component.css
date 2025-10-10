@@ -1,0 +1,11 @@
+.titulo{
+    font-size: 3vw !important;
+}
+
+::ng-deep ngb-modal-backdrop {
+    z-index: 1050 !important;
+}
+ 
+.pointer{
+    cursor: pointer;
+}

@@ -1,0 +1,33 @@
+.button-back {
+  margin-top: 5rem;
+}
+
+.img_circle_juan{
+  width: 10rem;
+  height: 10rem;
+  border-radius:50%;
+  display: block;
+  margin: auto;
+  box-shadow: 1px;
+  box-shadow: 0 1rem 3rem rgba(0,0,0,.175)!important;
+
+  /* background-color: black; */
+}
+
+.juan{
+  display: block;
+  margin: auto;
+}
+.juan:hover {
+  background-color: black;
+  color: white;
+}
+.tittleUpload{
+  text-align: center;
+  font-family: 'Cascadia Code';
+}
+.inputUserName::placeholder{
+  color: black;
+  text-align: center;
+}
+
