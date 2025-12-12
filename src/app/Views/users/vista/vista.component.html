@@ -28,7 +28,7 @@
           </thead>
           <tbody>
             <tr *ngFor="let user of users">
-              <td>{{ user.centro }}</td>
+              <td>{{ user.CentroFormacion?.nombre }}</td>
               <td>{{ user.nombres }} {{ user.apellidos }}</td>
               <td>{{ user.correo_institucional }}</td>
               <td>{{ user.correo_alternativo }}</td>

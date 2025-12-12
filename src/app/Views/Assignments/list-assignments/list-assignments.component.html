@@ -18,6 +18,7 @@
               <table class="table" *ngIf="assignments !== null">
                 <thead class="text-verde-sena">
                   <th class="text-center">Aprendiz</th>
+                  <th class="text-center">Centro de Formación</th>
                   <th class="text-center">Identificación</th>
                   <th class="text-center">Fecha Seguimiento Inicial</th>
                   <th scope="col" class="text-center">Fase</th>
@@ -38,6 +39,9 @@
                     <td class="text-center">
                       {{ assignment.nombre_aprendiz }}
                       {{ assignment.apellido_aprendiz }}
+                    </td>
+                    <td class="text-center">
+                      {{ assignment.nombre_centro }}
                     </td>
                     <td class="text-center">
                       {{ assignment.identificacion }}

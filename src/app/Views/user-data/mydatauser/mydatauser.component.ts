@@ -38,7 +38,7 @@ export class MydatauserComponent implements OnInit {
   updatedPasword(form : any  ) {
       console.log(form);
     if (this.formChangesPaswordnew.valid) {
-      this.loginService.changePasswordUser(form , localStorage.getItem('id_user')).subscribe(data => {
+      this.loginService.changePasswordUser(form , sessionStorage.getItem('id_user')).subscribe(data => {
         if (data.status === 'success') {
           Swal.fire({
             position: 'center',

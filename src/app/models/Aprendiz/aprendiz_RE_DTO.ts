@@ -60,6 +60,7 @@ export class Aprendiz_re_DTO{
     fin_productiva?:any;
     regional?:any;
     fase_aprendiz?:any;
+    id_centro_formacion?:any;
     // ----
     // id_empresa?:any;
     nit_eps?:any;
@@ -67,7 +68,7 @@ export class Aprendiz_re_DTO{
     nit_arl?:any;
     nombre_empresa?:any;
     nit_empresa?:any;
-    ciudad_id?:any;
+    id_ciudad?:any;
     direccion?:any;
     telefono_empresa?:any;
     correo?:any;
@@ -78,4 +79,5 @@ export class Aprendiz_re_DTO{
     aprendiz_id?:any;
     razon_social?:any;
     arl?:any;
+    ciudad_id?:any;
 }

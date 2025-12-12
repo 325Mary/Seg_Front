@@ -53,10 +53,10 @@ export class RegisterNovedadComponent implements OnInit {
           cancelButtonColor: '#d33',
           confirmButtonText: 'Aceptar'
         })
-        this.route.navigate(['/list-my-assignments'])
+        this.route.navigate(['/list-assignments'])
           // this.toastr.info('La novedad fue registrada con exito', 'Registro');
       }else{
-        Swal.fire({
+        Swal.fire({ 
           title:'Escoger otra novedad',
           text:data.message,
           icon:'question',

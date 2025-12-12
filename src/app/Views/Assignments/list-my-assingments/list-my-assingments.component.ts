@@ -1,8 +1,5 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, OnDestroy } from "@angular/core";
 import { AssignmentI2 } from "../../../models/Assignments/Assignment.interface";
-import { EstadoFaseI } from "../../../models/Fases/Fase.interface";
-import { Aprendiz } from "../../../models/Aprendiz/aprendiz";
-import { User } from "../../../models/users/user.interface";
 import { AssignmentService } from "../../../Services/assignment/assignment.service";
 import { SeguimientoService } from "../../../Services/seguimiento.service";
 import { PerfilesService } from "../../../Services/perfiles/perfiles.service";
@@ -15,7 +12,7 @@ import { NgbModal, ModalDismissReasons } from "@ng-bootstrap/ng-bootstrap";
   templateUrl: "./list-my-assingments.component.html",
   styleUrls: ["./list-my-assingments.component.css"],
 })
-export class ListMyAssingmentsComponent implements OnInit {
+export class ListMyAssingmentsComponent implements OnInit, OnDestroy {
   registernovedad: boolean = false;
   registerseguimiento: boolean = false;
   createbitacora: boolean = false;
@@ -26,6 +23,7 @@ export class ListMyAssingmentsComponent implements OnInit {
   assignments: AssignmentI2[] = [];
   filterIdentificacion = "";
   pageActual: number = 1;
+  private modalRef: any;
 
   constructor(
     private assignmentapiservice: AssignmentService,
@@ -35,26 +33,32 @@ export class ListMyAssingmentsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    let id_user = this.getIdLoguedIn();
+    const id_user = this.getIdLoguedIn();
     this.setpermisos();
     this.getMyAssignments(id_user);
   }
 
+  ngOnDestroy(): void {
+    if (this.modalRef) {
+      this.modalRef.close();
+    }
+  }
+
   open(content: any) {
-    this.modalService
-      .open(content, {
-        ariaLabelledBy: "modal-basic-title",
-        size: "lg",
-        scrollable: true,
-      })
-      .result.then(
-        (result) => {
-          this.closeResult = `Closed with: ${result}`;
-        },
-        (reason) => {
-          this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-        }
-      );
+    this.modalRef = this.modalService.open(content, {
+      ariaLabelledBy: "modal-basic-title",
+      size: "lg",
+      scrollable: true,
+    });
+    
+    this.modalRef.result.then(
+      (result) => {
+        this.closeResult = `Closed with: ${result}`;
+      },
+      (reason) => {
+        this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+      }
+    );
   }
 
   private getDismissReason(reason: any): string {
@@ -68,44 +72,44 @@ export class ListMyAssingmentsComponent implements OnInit {
   }
 
   setpermisos() {
-    const permisos = JSON.parse(localStorage.getItem("data_perfil"));
+    const permisosString = sessionStorage.getItem("data_perfil");
+    
+    if (!permisosString) {
+      console.warn("No hay permisos en sessionStorage");
+      return;
+    }
 
-    const resultadonovedad = (valor) =>
-      valor.url_item_modulo == "/register-novedad/";
-    const permisosregisternovedad = permisos.some(resultadonovedad);
-    this.registernovedad = permisosregisternovedad;
+    try {
+      const permisos = JSON.parse(permisosString);
+      
+      if (!Array.isArray(permisos)) {
+        console.warn("Los permisos no son un array válido");
+        return;
+      }
 
-    const resultadoseguimiento = (valor) =>
-      valor.url_item_modulo == "/register-seguimiento/";
-    const permisoseguimiento = permisos.some(resultadoseguimiento);
-    this.registerseguimiento = permisoseguimiento;
-
-    const resultadocreatebitacora = (valor) =>
-      valor.url_item_modulo == "/create-bitacora/";
-    const permisoscreatebitacora = permisos.some(resultadocreatebitacora);
-    this.createbitacora = permisoscreatebitacora;
-
-    const resultadoretroalimentaciobitacoras = (valor) =>
-      valor.url_item_modulo == "/retroalimentacion-bitacoras/";
-    const permisosretroalimentaciobitacoras = permisos.some(
-      resultadoretroalimentaciobitacoras
-    );
-    this.retroalimentaciobitacoras = permisosretroalimentaciobitacoras;
+      this.registernovedad = permisos.some(p => p.url_item_modulo === "/register-novedad/");
+      this.registerseguimiento = permisos.some(p => p.url_item_modulo === "/register-seguimiento/");
+      this.createbitacora = permisos.some(p => p.url_item_modulo === "/create-bitacora/");
+      this.retroalimentaciobitacoras = permisos.some(p => p.url_item_modulo === "/retroalimentacion-bitacoras/");
+    } catch (error) {
+      console.error("Error al parsear permisos:", error);
+    }
   }
 
   getMyAssignments(id: any) {
     this.assignmentapiservice.getMyAssignments(id).subscribe(
       (data) => {
-        if (data.status == "success") {
+        if (data.status === "success" && data.results && Array.isArray(data.results)) {
           this.assignments = data.results;
-          for (let assignment of this.assignments) {
-            this.segAprobados(assignment.id_asignacion);
-          }
+          // Procesar seguimientos de forma secuencial para evitar race conditions
+          this.procesarSeguimientosSecuencial(0);
         } else {
-          this.assignments = null;
+          this.assignments = [];
         }
       },
       (err) => {
+        console.error("Error al obtener asignaciones:", err);
+        this.assignments = [];
         Swal.fire({
           title: "Error",
           text: "Hay un error de servidor",
@@ -115,131 +119,129 @@ export class ListMyAssingmentsComponent implements OnInit {
     );
   }
 
-  getIdLoguedIn() {
-    return localStorage.getItem("id_user");
+  private procesarSeguimientosSecuencial(index: number) {
+    if (index >= this.assignments.length) {
+      return; // Terminamos de procesar todos
+    }
+
+    const assignment = this.assignments[index];
+    this.segAprobados(assignment.id_asignacion, () => {
+      // Callback para procesar el siguiente
+      this.procesarSeguimientosSecuencial(index + 1);
+    });
   }
 
-  segAprobados(id: string) {
+  getIdLoguedIn() {
+    return sessionStorage.getItem("id_user");
+  }
+
+  segAprobados(id: string, callback?: () => void) {
     this.seguimientoService.segAprobados(id).subscribe(
       (data) => {
         const hoy = moment().format("YYYY-MM-DD");
-        if (data.status == "success") {
-          let results = data.results;
+        
+        if (data.status === "success" && data.results && Array.isArray(data.results)) {
+          const results = data.results;
           
-          for (let seguimiento of results) {
+          // Inicializar contadores de seguimientos
+          let tieneSeg1 = false;
+          let tieneSeg2 = false;
+          let tieneSeg3 = false;
+          let seg1Aprobado = false;
+          let seg2Aprobado = false;
+          let seg3Aprobado = false;
 
-            const estado_seg = seguimiento.tipo_seguimiento_id;
-            if (estado_seg == "1") {
-              if (seguimiento.estado_documento != "Aprobado") {
-                // console.log(
-                //   "es diferente de aprobado " + estado_seg + " " + id
-                // );
-                if (!(seguimiento.Asignacion.fecha_seguimiento_inicial >= hoy)) {
-                  // console.log("estas atrasado" + " " + id + " " + estado_seg);
-                  
-                  this.assignmentapiservice.changeStatusSeg1("Atrasado", id).subscribe(data => {console.log({data})})
+          // Analizar todos los seguimientos
+          for (const seguimiento of results) {
+            const tipoSeg = seguimiento.tipo_seguimiento_id;
+            const esAprobado = seguimiento.estado_documento === "Aprobado";
 
-                } else {
-                  // console.log("no estas atrasado" + " " + id + " " + estado_seg);
-                  this.assignmentapiservice.changeStatusSeg1("No estas Atrasado", id).subscribe(data => {console.log({data})})
-
-                }
-              }else if(seguimiento.estado_documento == "Aprobado"){
-                // console.log('estas Aprobado'  + " " + estado_seg);
-
-                this.assignmentapiservice.changeStatusSeg1("Aprobado", id).subscribe(data => {console.log({data})})
-
-              }
-            }
-            if (estado_seg == "2") {
-              if (seguimiento.estado_documento != "Aprobado") {
-                // console.log("es diferente de aprobado " + estado_seg + " " + id);
-                if (!(seguimiento.Asignacion.fecha_seguimiento_parcial >= hoy)) {
-                  // console.log("estas atrasado case 2");
-                  this.assignmentapiservice.changeStatusSeg2("Atrasado", id).subscribe(data => {console.log({data})})
-
-                } else {
-                  // console.log("no estas atrasado" + " " + id + " " + estado_seg);
-                  this.assignmentapiservice.changeStatusSeg2("No estas Atrasado", id).subscribe(data => {console.log({data})})
-                }
-              }
-              if(seguimiento.estado_documento == "Aprobado"){
-                // console.log('estas Aprobado'  + " " + estado_seg);
-                
-                this.assignmentapiservice.changeStatusSeg2("Aprobado", id).subscribe(data => {console.log({data})})
-                // return;
-              }
-
-              // console.log('entre al if ');
-                // return;
-
-              
-            }else {
-              if (!(seguimiento.Asignacion.fecha_seguimiento_parcial >= hoy)) {
-                // console.log(seguimiento.Asignacion.fecha_seguimiento_parcial);
-                // console.log("estas atrasado case 2");
-                this.assignmentapiservice.changeStatusSeg2("Atrasado", id).subscribe(data => {console.log({data})})
-
-              } else {
-                // console.log("no estas atrasado" + " " + id + " " + estado_seg);
-                this.assignmentapiservice.changeStatusSeg2("No estas Atrasado", id).subscribe(data => {console.log({data})})
-                // return;
-              }
-              // console.log('No hay 2');
-              // console.log('entre al else ');
-
-              
-            }
-            if (estado_seg == "3") {
-              // case "3":
-              if (seguimiento.estado_documento != "Aprobado") {
-                // console.log(
-                //   "es diferente de aprobado " + estado_seg + " " + id
-                // );
-                if (!(seguimiento.Asignacion.fecha_seguimiento_final >= hoy)) {
-                  // console.log("estas atrasado case 3");
-                  this.assignmentapiservice.changeStatusSeg3("Atrasado", id).subscribe(data => {console.log({data})})
-                } else {
-                  this.assignmentapiservice.changeStatusSeg3("No estas Atrasado", id).subscribe(data => {console.log({data})})
-                  
-                }
-              }else if(seguimiento.estado_documento == "Aprobado"){
-                // console.log('estas Aprobado'  + " " + estado_seg);
-                this.assignmentapiservice.changeStatusSeg3("Aprobado", id).subscribe(data => {console.log({data})})
-              }
-            }else {
-              if (!(seguimiento.Asignacion.fecha_seguimiento_final >= hoy)) {
-                // console.log(seguimiento.Asignacion.fecha_seguimiento_final);
-                // console.log("estas atrasado case 3");
-                this.assignmentapiservice.changeStatusSeg3("Atrasado", id).subscribe(data => {console.log({data})})
-
-              } else {
-                // console.log("no estas atrasado" + " " + id + " " + estado_seg);
-                this.assignmentapiservice.changeStatusSeg3("No estas Atrasado", id).subscribe(data => {console.log({data})})
-              }
+            if (tipoSeg === "1") {
+              tieneSeg1 = true;
+              if (esAprobado) seg1Aprobado = true;
+            } else if (tipoSeg === "2") {
+              tieneSeg2 = true;
+              if (esAprobado) seg2Aprobado = true;
+            } else if (tipoSeg === "3") {
+              tieneSeg3 = true;
+              if (esAprobado) seg3Aprobado = true;
             }
           }
-        } else {
-          let asignacion = data.results;
 
-          if (!(asignacion.fecha_seguimiento_inicial >= hoy)) {
-            // console.log(
-            //   "estas atrasado porque no tienes seguimientos" + " " + id 
-            // );
-            this.assignmentapiservice.changeStatusSeg1("Atrasado", id).subscribe(data => {})
+          // Obtener las fechas de la asignación (del primer seguimiento)
+          const asignacion = results[0]?.Asignacion;
+          if (!asignacion) {
+            if (callback) callback();
+            return;
+          }
+
+          // Actualizar seg_1
+          if (seg1Aprobado) {
+            this.actualizarSeg(1, "Aprobado", id);
+          } else if (tieneSeg1) {
+            const atrasado = moment(hoy).isAfter(asignacion.fecha_seguimiento_inicial);
+            this.actualizarSeg(1, atrasado ? "Atrasado" : "No estas Atrasado", id);
           } else {
-            // console.log("no estas atrasado" + " " + id);
-            this.assignmentapiservice.changeStatusSeg1("No estas Atrasado", id).subscribe(data => {console.log({data})})
+            const atrasado = moment(hoy).isAfter(asignacion.fecha_seguimiento_inicial);
+            this.actualizarSeg(1, atrasado ? "Atrasado" : "No estas Atrasado", id);
+          }
+
+          // Actualizar seg_2
+          if (seg2Aprobado) {
+            this.actualizarSeg(2, "Aprobado", id);
+          } else if (tieneSeg2) {
+            const atrasado = moment(hoy).isAfter(asignacion.fecha_seguimiento_parcial);
+            this.actualizarSeg(2, atrasado ? "Atrasado" : "No estas Atrasado", id);
+          } else {
+            const atrasado = moment(hoy).isAfter(asignacion.fecha_seguimiento_parcial);
+            this.actualizarSeg(2, atrasado ? "Atrasado" : "No estas Atrasado", id);
+          }
+
+          // Actualizar seg_3
+          if (seg3Aprobado) {
+            this.actualizarSeg(3, "Aprobado", id);
+          } else if (tieneSeg3) {
+            const atrasado = moment(hoy).isAfter(asignacion.fecha_seguimiento_final);
+            this.actualizarSeg(3, atrasado ? "Atrasado" : "No estas Atrasado", id);
+          } else {
+            const atrasado = moment(hoy).isAfter(asignacion.fecha_seguimiento_final);
+            this.actualizarSeg(3, atrasado ? "Atrasado" : "No estas Atrasado", id);
+          }
+
+        } else {
+          // No hay seguimientos, verificar solo fecha inicial
+          const asignacion = data.results;
+          if (asignacion && asignacion.fecha_seguimiento_inicial) {
+            const atrasado = moment(hoy).isAfter(asignacion.fecha_seguimiento_inicial);
+            this.actualizarSeg(1, atrasado ? "Atrasado" : "No estas Atrasado", id);
           }
         }
+
+        if (callback) callback();
       },
       (err) => {
-        Swal.fire({
-          title: "Error",
-          text: "Hay un error de servidor",
-          icon: "error",
-        });
+        console.error("Error en segAprobados:", err);
+        if (callback) callback();
       }
+    );
+  }
+
+  private actualizarSeg(tipo: 1 | 2 | 3, estado: string, id: string) {
+    const metodosActualizacion = {
+      1: (est: string, idAsig: string) => this.assignmentapiservice.changeStatusSeg1(est, idAsig),
+      2: (est: string, idAsig: string) => this.assignmentapiservice.changeStatusSeg2(est, idAsig),
+      3: (est: string, idAsig: string) => this.assignmentapiservice.changeStatusSeg3(est, idAsig)
+    };
+
+    metodosActualizacion[tipo](estado, id).subscribe(
+      () => {
+        // Actualizar el array local para reflejar el cambio inmediatamente
+        const assignment = this.assignments.find(a => a.id_asignacion === id);
+        if (assignment) {
+          assignment[`seg_${tipo}`] = estado;
+        }
+      },
+      (error) => console.error(`Error actualizando seg_${tipo}:`, error)
     );
   }
 }

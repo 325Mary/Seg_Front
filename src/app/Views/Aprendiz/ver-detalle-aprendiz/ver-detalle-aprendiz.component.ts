@@ -32,6 +32,7 @@ export class VerDetalleAprendizComponent implements OnInit {
         this.detallesAprendiz = data.results;
         this.getProgramAprendiz(data.results?.programa_id);
         this.getMunicipioAprendiz(data.results?.municipio_id);
+        console.log(this.detallesAprendiz);
       },
       error => {
         console.error('Error al obtener el detalle del aprendiz:', error);

@@ -1,6 +1,6 @@
 import { ResponseI } from "../../models/response.interface";
 import { Injectable } from "@angular/core";
-import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
 import { Observable, throwError, Subject } from "rxjs";
 import { BaseUrlService } from "../../../GlobalConstanst"; //interface base url service
 import {
@@ -15,11 +15,11 @@ import { tap } from "rxjs/operators";
 })
 export class AssignmentService {
   urlNovedad = "novedad";
-  // token : any = localStorage.getItem('token');
-  //  headers = new HttpHeaders({
-  //   "Content-Type": "application/json",
-  //   "Authorization": "Bearer " + this.token
-  // })
+  token : any = sessionStorage.getItem('token');
+   headers = new HttpHeaders({
+    "Content-Type": "application/json",
+    "Authorization": "Bearer " + this.token
+  })
 
   private _refresh$ = new Subject<void>();
 
@@ -29,12 +29,15 @@ export class AssignmentService {
     return this._refresh$;
   }
 
-  getAllAssignments(): Observable<ResponseI> {
+  getAllAssignments(user_id_centro: string, user_id_perfil: string): Observable<ResponseI> {
     let urlApi = "seeassignments";
+    const params = new HttpParams()
+    .set('id_centro', user_id_centro)
+    .set('id_perfil', user_id_perfil);
 
     let direccion = BaseUrlService + urlApi;
 
-    return this.http.get<ResponseI>(direccion);
+    return this.http.get<ResponseI>(direccion, { headers: this.headers, params: params });
   }
 
   getAssignment(id_asignacion: any): Observable<ResponseI> {
@@ -53,12 +56,15 @@ export class AssignmentService {
     return this.http.get<ResponseI>(direccion);
   }
 
-  getDataForm(): Observable<ResponseI> {
+  getDataForm(user_id_centro: string, user_id_perfil: string): Observable<ResponseI> {
     let urlApi = "createassignment";
+  const params = new HttpParams()
+    .set('id_centro', user_id_centro)
+    .set('id_perfil', user_id_perfil);
 
     let direccion = BaseUrlService + urlApi;
 
-    return this.http.get<ResponseI>(direccion);
+    return this.http.get<ResponseI>(direccion, { headers: this.headers, params: params });
   }
 
   getAprendiz(id_aprendiz: any): Observable<ResponseI> {

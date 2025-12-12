@@ -6,6 +6,9 @@ import { Router, ActivatedRoute } from '@angular/router'
 import { FormGroup, FormControl, Validators } from '@angular/forms'
 import Swal from 'sweetalert2';
 import { max } from 'moment';
+import { CentroFormacionService } from '../../../Services/CentroFormacion/centro-formacion.service';
+import { u } from 'chart.js/dist/chunks/helpers.core';
+
 
 @Component({
   selector: 'app-create',
@@ -16,11 +19,14 @@ export class CreateComponentUser implements OnInit {
 
   perfiles: any[] = []
   areas: any[] = []
+   centros: any[] = []; 
+  user_id_centro = sessionStorage.getItem("user_id_centro");
+  user_id_perfil = sessionStorage.getItem("user_id_perfil");
 
   editarForm = new FormGroup({
     //campos form
     perfil_id:new  FormControl('', Validators.required ),
-    centro: new FormControl('', Validators.required),
+    // centro: new FormControl('', Validators.required),
     nombres: new FormControl('', [Validators.required , Validators.maxLength(25)]),
     apellidos: new FormControl('',  [Validators.required , Validators.maxLength(25)]),
     correo_institucional: new FormControl('', [Validators.required ,Validators.email] ),
@@ -30,21 +36,26 @@ export class CreateComponentUser implements OnInit {
     ciudad_residencia: new FormControl('', [Validators.required , Validators.maxLength(20)]),
     area_id: new FormControl('', Validators.required),
     contrasena: new FormControl('', Validators.required),
+    id_centro_formacion: new FormControl('', Validators.required),
   })
 
   constructor(
     private api: UsersService,
     private servicesPerfiles: PerfilesService,
     private areaservices: AreaApiService,
+    private centroService: CentroFormacionService, 
     private router: Router
   ) { }
 
   ngOnInit() {
     this.getAllPerfiles()
     this.getAllAreas()
+    this.getAllCentros(); 
   }
 
   PostForm(form: any) {
+     this.editarForm.markAllAsTouched();
+console.log(this.editarForm.value);     
     if (this.editarForm.valid) {
       this.api.postUser(form).subscribe(data =>{
         if (data.status === 'success' ){
@@ -98,5 +109,10 @@ export class CreateComponentUser implements OnInit {
       this.areas = area.results
     })
   }
+  getAllCentros() {
+  this.centroService.getcentroFormacion(this.user_id_centro, this.user_id_perfil).subscribe((response: any) => {
+    this.centros = response.results.filter(centro => centro.estado === true);
+  });
+}
 
 }

@@ -73,12 +73,12 @@ export class RegistrarBitacoraComponent implements OnInit {
 
   existIdAsignacion() {
     this.id_asignacionExist =
-      localStorage.getItem("id_asignacion") == null ||
-        localStorage.getItem("id_asignacion") == "null"
+      sessionStorage.getItem("id_asignacion") == null ||
+        sessionStorage.getItem("id_asignacion") == "null"
         ? false
         : true;
 
-    // console.log(localStorage.getItem("id_asignacion"));
+    // console.log(sessionStorage.getItem("id_asignacion"));
 
     if (this.id_asignacionExist) {
       this.listarBitacorasTipo();

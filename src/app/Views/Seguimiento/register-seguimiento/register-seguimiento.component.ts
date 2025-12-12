@@ -40,6 +40,8 @@ export class RegisterSeguimientoComponent implements OnInit {
   tipo_de_segumiento = ''
   id: string
   assignment:any;
+  user_id_centro = sessionStorage.getItem("user_id_centro");
+  user_id_perfil = sessionStorage.getItem("user_id_perfil");
 
 
   doc: DocumentI = {};
@@ -321,7 +323,7 @@ export class RegisterSeguimientoComponent implements OnInit {
 
   bodysendEmailSeguimiento(datos: any , infoDoc : any ) {
     let emailusers = []
-    this.usuarioServices.getAllusers().subscribe(users => {
+    this.usuarioServices.getAllusers(this.user_id_centro, this.user_id_perfil).subscribe(users => {
       for (const user of users.results) {
         if (user.perfil_id == '3') {
           emailusers.push(user.correo_institucional)

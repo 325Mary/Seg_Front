@@ -49,10 +49,20 @@ import { ListaMisAsignadosComponent } from './Views/Reportes/lista-mis-asignados
 import { ModulePermissionsComponent } from './Views/module-permissions/module-permissions.component';
 // import { CreateComponentModulePermiss } from './Views/module-permissions/create/create.component';
 // import { UpdateComponentModulePermiss } from './Views/module-permissions/update/update.component';
-import { PublicComponent } from './views/Public/public/public.component';
+import { PublicComponent } from './Views/Public/public/public.component';
 import { ReporteHorasComponent } from './Views/Reportes/reporte-horas/reporte-horas.component';
 import { VerDetalleAprendizComponent } from './Views/Aprendiz/ver-detalle-aprendiz/ver-detalle-aprendiz.component';
 import { DetectarFormatoFechaPipe } from './detectar-formato-fecha.pipe';
+import { CentroFormacionComponent } from './Views/centros_data/centro-formacion/centro-formacion.component';
+import { CiudadComponent } from './Views/ciudad-data/ciudad/ciudad.component';
+import { UpdateCiudadComponent } from './Views/ciudad-data/update-ciudad/update-ciudad.component';
+import { CreatedCiudadComponent } from './Views/ciudad-data/created-ciudad/created-ciudad.component';
+import { EmpresaComponent } from './Views/Empresa/empresa/empresa.component';
+import { CrearEmpresaComponent } from './Views/Empresa/crear-empresa/crear-empresa.component';
+import { EditarEmpresaComponent } from './Views/Empresa/editar-empresa/editar-empresa.component';
+import { EpsComponent } from './Views/Eps/eps/eps.component';
+import { CrearEpsComponent } from './Views/Eps/crear-eps/crear-eps.component';
+import { EditarrEpsComponent } from './Views/Eps/editarr-eps/editarr-eps.component';
   
 @NgModule({
   imports: [
@@ -107,10 +117,15 @@ import { DetectarFormatoFechaPipe } from './detectar-formato-fecha.pipe';
     ModulePermissionsComponent,
     // UpdateComponentModulePermiss,
     // CreateComponentModulePermiss,
-    PublicComponent,
     ReporteHorasComponent,
     VerDetalleAprendizComponent,
     DetectarFormatoFechaPipe,
+    CentroFormacionComponent,
+    CiudadComponent,
+    EmpresaComponent,
+    EpsComponent,
+    CrearEpsComponent,
+    EditarrEpsComponent,
     // ReporteAprendicesComponent,
     // RegisterAprendizComponent,
 

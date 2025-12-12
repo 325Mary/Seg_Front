@@ -33,6 +33,8 @@ export class ReporteAprendicesComponent implements OnInit {
   fecha_condicion = "true"
   public chart: any;
   public chart2: any;
+  user_id_centro = sessionStorage.getItem("user_id_centro");
+  user_id_perfil = sessionStorage.getItem("user_id_perfil");
   filtroFechas = new FormGroup({
     fecha_inicial: new FormControl('', [Validators.required]),
     fecha_final: new FormControl("", [Validators.required]),
@@ -58,7 +60,7 @@ export class ReporteAprendicesComponent implements OnInit {
   this.mostrarTabla = 0
   }
   listarAprendices(){
-    this.asignadoServices.getAllAssignments().subscribe(data =>{
+    this.asignadoServices.getAllAssignments(this.user_id_centro, this.user_id_perfil).subscribe(data =>{
       this.listAprendices = data.results
       this.listarAprendicesFiltrado = data.results
       this.generarContadores()

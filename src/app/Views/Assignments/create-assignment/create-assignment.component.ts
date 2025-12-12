@@ -38,6 +38,8 @@ export class CreateAssignmentComponent implements OnInit {
   fecha_seg_parcial: any;
   fecha_seg_final: any;
   fecha_eva_final: any;
+    user_id_centro = sessionStorage.getItem("user_id_centro");
+  user_id_perfil = sessionStorage.getItem("user_id_perfil");
 
   assignmentForm = new FormGroup({
     aprendiz_id: new FormControl(parseInt(this.id_aprendiz)),
@@ -108,7 +110,7 @@ export class CreateAssignmentComponent implements OnInit {
   }
 
   getDataForm() {
-    this.assignmentapiservice.getDataForm().subscribe((data) => {
+    this.assignmentapiservice.getDataForm(this.user_id_centro,this.user_id_perfil).subscribe((data) => {
       if (data.status != "success") {
         Swal.fire({
           title: "Error",

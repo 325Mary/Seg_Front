@@ -35,6 +35,9 @@ export class ReporteUsuariosComponent implements OnInit {
   mostrarGraficas = 0
   public chart: any;
   public chart2: any;
+    user_id_centro = sessionStorage.getItem("user_id_centro");
+  user_id_perfil = sessionStorage.getItem("user_id_perfil");
+
   filtroFechas = new FormGroup({
     fecha_inicial: new FormControl('', [Validators.required]),
     fecha_final: new FormControl("", [Validators.required]),
@@ -63,7 +66,7 @@ export class ReporteUsuariosComponent implements OnInit {
     this.mostrarTabla = 0
   }
   listarUsuarios() {
-    this.usuarioServices.getAllusers().subscribe(data => {
+    this.usuarioServices.getAllusers(this.user_id_centro, this.user_id_perfil).subscribe(data => {
       this.listUsarios = data.results
       this.generarContadores()
     })
@@ -130,7 +133,7 @@ export class ReporteUsuariosComponent implements OnInit {
     XLSX.writeFile(workbook, `${filename}.xlsx`);
   }
   getAprendices() {
-    this.aprendicezServices.getAprendices().subscribe(data => {
+    this.aprendicezServices.getAprendices(this.user_id_centro, this.user_id_perfil).subscribe(data => {
       this.allAprendices = data.results.length
     })
   }

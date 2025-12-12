@@ -13,7 +13,7 @@ export class PhotosService {
   @Output() EmitThePaht = new EventEmitter<any>()
   private _resfresPath$ = new Subject<void>()
 
-    id_user = localStorage.getItem('id_user')
+    id_user = sessionStorage.getItem('id_user')
 
   constructor(private http : HttpClient  ) { }
 
@@ -22,8 +22,8 @@ export class PhotosService {
   }
 
   UploadPhoto (userName : string, photo : string , id_user: any , aprendiz_id : any ) :Observable<ResponseI> {
-    // let id_user =  localStorage.getItem('id_user')
-    // let aprendiz_id = localStorage.getItem('id_aprendiz')
+    // let id_user =  sessionStorage.getItem('id_user')
+    // let aprendiz_id = sessionStorage.getItem('id_aprendiz')
     id_user == null ? id_user = '' : aprendiz_id = ''
 
     const data = new FormData()

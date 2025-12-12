@@ -18,8 +18,10 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private api: LoginService,
-    private router: Router, private cookies: CookieService,
-    private render2: Renderer2) { }
+    private router: Router, 
+    private cookies: CookieService,
+    private render2: Renderer2
+  ) { }
 
   perfil: any[] = []
 
@@ -39,8 +41,17 @@ export class LoginComponent implements OnInit {
   })
 
   ngOnInit(): void {
-    this.checkLocalStorage()
+    this.checkSessionStorage();
+    this.preventBackButton();
   }
+
+  preventBackButton() {
+    window.history.pushState(null, '', window.location.href);
+    window.addEventListener('popstate', () => {
+      window.history.pushState(null, '', window.location.href);
+    });
+  }
+
   async onLoginUser(form: any) {
     let formdefinitive = {
       identificacion: form.identificacion.toString(),
@@ -49,8 +60,9 @@ export class LoginComponent implements OnInit {
     this.api.loginByUser(formdefinitive).subscribe(data => {
       if (data.status == 'success') {
         this.loading = false
-        localStorage.setItem('id_user', data.results.id)//save the id of user in localStorage
-        // this.cookies.set('id_user', data.results.id)//save the token in cookie service
+        sessionStorage.setItem('id_user', data.results.id) 
+        sessionStorage.setItem('user_id_centro', data.results.id_centro_formacion) 
+        sessionStorage.setItem('user_id_perfil', data.results.perfil_id) 
         this.redirectTo(data)
         this.getMyPerfiles(data.results.perfil_id)
       } else {
@@ -73,12 +85,10 @@ export class LoginComponent implements OnInit {
     this.api.loginByAprendiz(formCompleted).subscribe(data => {
       if (data.status == 'success') {
         this.loading = false
-        localStorage.setItem('id_aprendiz', data.results.id)//save the id of user in localStorage
-        localStorage.setItem('id_asignacion', data.results.id_asignacion)//save the id of user in localStorage
-        // this.cookies.set('id_user', data.results.id)//save the token in cookie service
+        sessionStorage.setItem('id_aprendiz', data.results.id) 
+        sessionStorage.setItem('id_asignacion', data.results.id_asignacion) 
         this.redirectTo(data)
         this.getMyPerfiles(data.results.perfil_id)
-
       } else {
         Swal.fire({
           position: 'center',
@@ -90,13 +100,14 @@ export class LoginComponent implements OnInit {
       }
     })
   }
-  checkLocalStorage() {
-    if (localStorage.getItem('token')) {
+
+  checkSessionStorage() {
+    if (sessionStorage.getItem('token')) {
       this.router.navigate(['dashboard']);
     }
   }
 
-  showPassword() {//ocualtar password
+  showPassword() { 
     const change = document.getElementById('password') as HTMLInputElement
     if (change.type === 'password') {
       change.type = 'text'
@@ -106,24 +117,27 @@ export class LoginComponent implements OnInit {
   }
 
   redirectTo(data) {
-    localStorage.setItem('token', data.results.token)//save the token in localStorage
-    // this.cookies.set('token', data.results.token)//save the token in cookie service
-    localStorage.setItem('perfil_id', data.results.perfil_id)//save the id of user in localStorage
-    // this.cookies.set('perfil_id', data.results.perfil_id)//save the token in cookie service
+    sessionStorage.setItem('token', data.results.token) 
+    sessionStorage.setItem('perfil_id', data.results.perfil_id) 
   }
 
   clickSignIn() {
     const container = this.container.nativeElement
     this.render2.removeClass(container, "right-panel-active")
   }
+
   clickSignUp() {
     const container = this.container.nativeElement
     this.render2.addClass(container, "right-panel-active")
   }
+
   async getMyPerfiles(idPerfil: number | string) {
+    
     await this.api.getMyModulesByPerfil(idPerfil).subscribe(data => {
+          console.log("data perfil", data);
+
       if (data.status == 'success') {
-        localStorage.setItem('data_perfil', JSON.stringify(data.results))
+        sessionStorage.setItem('data_perfil', JSON.stringify(data.results))
         this.perfil = data.results
         this.getAllItemModule()
       }
@@ -132,7 +146,9 @@ export class LoginComponent implements OnInit {
 
   async getAllItemModule() {
     await this.api.getAllItemModule().subscribe(modules => {
-      localStorage.setItem('modules', JSON.stringify(modules.results))
+      console.log("moduel",JSON.stringify(modules.results));
+      
+      sessionStorage.setItem('modules', JSON.stringify(modules.results))
       this.router.navigate(['dashboard'])
       this.loading = true
     })

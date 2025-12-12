@@ -19,22 +19,24 @@ declare interface RouteInfo {
   class: string;
 }
 export let ROUTES: RouteInfo[] = [
-  // { path: '/dashboard', title: 'Dashboard',  icon: 'dashboard', class: '' },
-  // { path: '/user-profile', title: 'User Profile',  icon:'person', class: '' },
-  // { path: '/table-list', title: 'Table List',  icon:'content_paste', class: '' },
-  // { path: '/typography', title: 'Typography',  icon:'library_books', class: '' },
-  // { path: '/icons', title: 'Icons',  icon:'bubble_chart', class: '' },
-  // { path: '/maps', title: 'Maps',  icon:'location_on', class: '' },
-  // { path: '/notifications', title: 'Notifications',  icon:'notifications', class: '' },
-  // { path: '/list-assignments', title: 'Asignaciones',  icon:'fact_check', class: '' },
-  // { path: '/list-my-assignments', title: 'Mis Asignaciones',  icon:'fact_check', class: '' },
-  // { path: '/list-aprendices', title: 'Aprendices', icon:'wc', class: ''},
-  // { path: '/vistausuarios', title: 'Usuarios', icon:'person', class: ''},
-  // { path: '/view-documets', title: 'Documentos', icon:'description', class: ''},
-  // { path: '/create-document', title: 'Subir Documento', icon:'post_add', class: ''},
-  // { path: '/lista-aprendices-por-certificar', title: 'Aprendices por Certificar', icon:'rule_folder', class:''},
-  // { path: '/reporte-aprendices', title:'Reportes Aprendices', icon: 'bar_chart', class: ''},
-  // { path: '/reporte-usuarios' , title:'Reportes Usuarios', icon: 'bar_chart', class: ''}
+  { path: '/dashboard', title: 'Dashboard',  icon: 'dashboard', class: '' },
+  // { path: '/centro-de-formacion', title: 'Centros de Formación',  icon: 'fa-school', class: '' },
+  { path: '/user-profile', title: 'User Profile',  icon:'person', class: '' },
+  { path: '/table-list', title: 'Table List',  icon:'content_paste', class: '' },
+  { path: '/typography', title: 'Typography',  icon:'library_books', class: '' },
+  { path: '/icons', title: 'Icons',  icon:'bubble_chart', class: '' },
+  { path: '/maps', title: 'Maps',  icon:'location_on', class: '' },
+  { path: '/notifications', title: 'Notifications',  icon:'notifications', class: '' },
+  { path: '/list-assignments', title: 'Asignaciones',  icon:'fact_check', class: '' },
+  { path: '/list-my-assignments', title: 'Mis Asignaciones',  icon:'fact_check', class: '' },
+  { path: '/list-aprendices', title: 'Aprendices', icon:'wc', class: ''},
+  { path: '/vistausuarios', title: 'Usuarios', icon:'person', class: ''},
+  { path: '/view-documets', title: 'Documentos', icon:'description', class: ''},
+  { path: '/create-document', title: 'Subir Documento', icon:'post_add', class: ''},
+  { path: '/lista-aprendices-por-certificar', title: 'Aprendices por Certificar', icon:'rule_folder', class:''},
+  { path: '/reporte-aprendices', title:'Reportes Aprendices', icon: 'bar_chart', class: ''},
+  { path: '/reporte-usuarios' , title:'Reportes Usuarios', icon: 'bar_chart', class: ''},
+  { path: '/register-seguimiento' , title:'Seguimientos', icon: 'bar_chart', class: ''}
 ];
 
 @Component({
@@ -44,8 +46,8 @@ export let ROUTES: RouteInfo[] = [
 })
 export class SidebarComponent implements OnInit {
 
-  id_user = localStorage.getItem('id_user');
-  dataperfiles: any = JSON.parse(localStorage.getItem('data_perfil'))
+  id_user = sessionStorage.getItem('id_user');
+  dataperfiles: any = JSON.parse(sessionStorage.getItem('data_perfil'))
   menuItems: any[];
   path: string
   subscription: Subscription
@@ -55,7 +57,7 @@ export class SidebarComponent implements OnInit {
   countNofications: number = 0;
   pageActual: number = 1;
 
-  id_aprendiz = localStorage.getItem('id_aprendiz')
+  id_aprendiz = sessionStorage.getItem('id_aprendiz')
 
   dataMyProfile : any 
   bollId : any
@@ -73,7 +75,7 @@ export class SidebarComponent implements OnInit {
     await this.getSiderBar(this.dataperfiles)
     await this.obtenerMyphoto(this.id_user , this.id_aprendiz)
 
-    localStorage.getItem('id_aprendiz') == null ? this.bollId = true : this.bollId = false
+    sessionStorage.getItem('id_aprendiz') == null ? this.bollId = true : this.bollId = false
     this.bollId == true ?  this.obtenerMyProfile() : this.getDataAprendiz()
 
     this.subscription = this.photosService.resfresh$.subscribe(() => {
@@ -95,11 +97,13 @@ export class SidebarComponent implements OnInit {
 
   obtenerMyProfile () {
     this.photosService.myprofile(this.id_user).subscribe(data => {
+      
      this.dataMyProfile = data.results
+      console.log(this.dataMyProfile);
    })
  }
  getDataAprendiz () {
-     this.serviceAprendiz.getByIdAprendiz(localStorage.getItem('id_aprendiz')).subscribe(data => {
+     this.serviceAprendiz.getByIdAprendiz(sessionStorage.getItem('id_aprendiz')).subscribe(data => {
        this.dataMyProfile = data.results
      })
  }
@@ -109,24 +113,24 @@ export class SidebarComponent implements OnInit {
   }
 
   async getSiderBar(permisos: any) {
-    ROUTES = []
-    for (let permiso of permisos) {
-      if (permiso.estado != null) {      
-        const valor = {
-          path: permiso.url_item_modulo,
-          title: permiso.item_modulo,
-          icon: permiso.icono_item_modulo,
-          class: ''
-        }
-        if (localStorage.getItem('id_aprendiz') != null && permiso.url_item_modulo == '/create-bitacora/') {
-          valor.path = `create-bitacora/${localStorage.getItem('id_asignacion')}`
-        }
-        ROUTES.push(valor)
+  ROUTES = []
+  for (let permiso of permisos) {
+    if (permiso.url_item_modulo) { 
+      const valor = {
+        path: permiso.url_item_modulo,
+        title: permiso.item_modulo,
+        icon: permiso.icono_item_modulo,
+        class: ''
       }
-
+      if (sessionStorage.getItem('id_aprendiz') != null && permiso.url_item_modulo == '/create-bitacora/') {
+        valor.path = `create-bitacora/${sessionStorage.getItem('id_asignacion')}`
+      }
+      ROUTES.push(valor)
     }
-    this.menuItems = ROUTES.filter(menuItem => menuItem)
   }
+  this.menuItems = ROUTES.filter(menuItem => menuItem)
+}
+
 
   getMyNotifications(id: any) {
     this.notificationService.getMyNotifications(id).subscribe(
@@ -188,7 +192,7 @@ export class SidebarComponent implements OnInit {
       } else {
         this.path = null
       }
-      localStorage.setItem('pathImageURL', this.path)
+      sessionStorage.setItem('pathImageURL', this.path)
     })
   }
 }

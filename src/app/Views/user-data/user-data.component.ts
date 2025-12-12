@@ -19,20 +19,22 @@ export class UserDataComponent implements OnInit {
   constructor(private photoService : PhotosService , private serviceAprendiz : AprendizService) { }
 
   ngOnInit(){
-    this.id_user = localStorage.getItem('id_user')
-    localStorage.getItem('id_aprendiz') == null ? this.bollId = true : this.bollId = false
+    this.id_user = sessionStorage.getItem('id_user')
+    sessionStorage.getItem('id_aprendiz') == null ? this.bollId = true : this.bollId = false
     this.bollId == true ?  this.obtenerMyProfile() : this.getDataAprendiz()
     
   }
 
    obtenerMyProfile () {
      this.photoService.myprofile(this.id_user).subscribe(data => {
-      this.dataMyProfile = data.results
+      this.dataMyProfile = data.results,
+      console.log('Mi perfil:', this.dataMyProfile); 
     })
   }
   getDataAprendiz () {
-      this.serviceAprendiz.getByIdAprendiz(localStorage.getItem('id_aprendiz')).subscribe(data => {
-        this.dataMyProfile = data.results
+      this.serviceAprendiz.getByIdAprendiz(sessionStorage.getItem('id_aprendiz')).subscribe(data => {
+        this.dataMyProfile = data.results,
+        console.log('Mi perfil:', this.dataMyProfile); 
       })
   }
 

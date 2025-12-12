@@ -24,6 +24,8 @@ export class LoginService {
     let direction = this.url + "login"
     return this.http.post<ResponseI>(direction ,form)
     .pipe(tap(() => {
+          console.log(form)
+
       this.__resfresPermisos$.next()
     }),catchError((err : any ) => {
       Swal.fire({

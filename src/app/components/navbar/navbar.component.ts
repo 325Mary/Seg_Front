@@ -8,6 +8,7 @@ import {
 import { Router } from "@angular/router";
 import { CookieService } from "ngx-cookie-service";
 import { NotificationService } from "../../Services/notification/notification.service";
+import { InactivityService } from "../../Services/Security/inactivity.service";
 import { NotificationI } from "./../../models/Notification/Notification.interface";
 import Swal from "sweetalert2";
 import { Subscription } from "rxjs";
@@ -25,19 +26,18 @@ export class NavbarComponent implements OnInit, OnDestroy {
   private sidebarVisible: boolean;
   pageActual: number = 1;
 
-
-  //////////Notificaciones////////////
   susbscription: Subscription;
   notifications: NotificationI[];
   countNofications: number = 0;
-  id_user = localStorage.getItem("id_user");
+  id_user = sessionStorage.getItem("id_user");
 
   constructor(
     location: Location,
     private element: ElementRef,
     private router: Router,
     private cookie: CookieService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private inactivityService: InactivityService
   ) {
     this.location = location;
     this.sidebarVisible = false;
@@ -69,7 +69,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.susbscription.unsubscribe();
-    // console.log('Observable destruido');
   }
 
   cambiarEstadoNotificacion(estado_notificacion: string, id: any) {
@@ -78,7 +77,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
       .subscribe(
         (data) => {
           this.ngOnInit();
-          // console.log(data);
         },
         (err) => {
           Swal.fire({
@@ -93,13 +91,9 @@ export class NavbarComponent implements OnInit, OnDestroy {
   getMyNotifications(id: any) {
     this.notificationService.getMyNotifications(id).subscribe(
       (data) => {
-        // console.log(data);
-
         if (data.status == "success") {
           this.notifications = data.results;
           this.countNofications = this.notifications.length;
-
-          // console.log(this.notifications);
         } else {
           this.notifications = null;
           this.countNofications = 0;
@@ -116,7 +110,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   goBack() {
-    // window.history.back();
     this.location.back();
   }
 
@@ -131,15 +124,15 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
     this.sidebarVisible = true;
   }
+
   sidebarClose() {
     const body = document.getElementsByTagName("body")[0];
     this.toggleButton.classList.remove("toggled");
     this.sidebarVisible = false;
     body.classList.remove("nav-open");
   }
+
   sidebarToggle() {
-    // const toggleButton = this.toggleButton;
-    // const body = document.getElementsByTagName('body')[0];
     var $toggle = document.getElementsByClassName("navbar-toggler")[0];
 
     if (this.sidebarVisible === false) {
@@ -150,7 +143,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
     const body = document.getElementsByTagName("body")[0];
 
     if (this.mobile_menu_visible == 1) {
-      // $('html').removeClass('nav-open');
       body.classList.remove("nav-open");
       if ($layer) {
         $layer.remove();
@@ -181,7 +173,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
       }, 100);
 
       $layer.onclick = function () {
-        //asign a function
         body.classList.remove("nav-open");
         this.mobile_menu_visible = 0;
         $layer.classList.remove("visible");
@@ -211,11 +202,44 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   logout() {
-    localStorage.clear();
-    this.cookie.deleteAll("perfil_id");
-    this.cookie.deleteAll("token");
-    this.cookie.deleteAll("id_user");
-    // sessionStorage.clear();
-    this.router.navigate(["login"]);
+    Swal.fire({
+      title: '¿Cerrar sesión?',
+      text: '¿Estás seguro de que quieres cerrar tu sesión?',
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonText: 'Sí, cerrar',
+      cancelButtonText: 'Cancelar',
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        
+        this.inactivityService.stopWatching();
+        
+        
+        sessionStorage.clear();
+        
+        
+        this.cookie.deleteAll();
+        
+        
+        sessionStorage.clear();
+        
+        Swal.fire({
+          title: 'Sesión cerrada',
+          text: 'Has cerrado sesión correctamente',
+          icon: 'success',
+          timer: 1500,
+          showConfirmButton: false
+        }).then(() => {
+          
+          this.router.navigate(['/login']).then(() => {
+            
+            window.history.replaceState(null, '', '/login');
+            window.history.pushState(null, '', '/login');
+          });
+        });
+      }
+    });
   }
 }

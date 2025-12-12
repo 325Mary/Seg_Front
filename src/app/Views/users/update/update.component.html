@@ -121,21 +121,23 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-md-4">
-          <mat-form-field appearance="fill">
-            <mat-label>Selecciona tu Centro</mat-label>
-            <mat-select formControlName="centro">
-                <mat-option value="CTPI">CTPI</mat-option>
-                <mat-option value="SENA CENTRO AGROPECUARIO">SENA CENTRO AGROPECUARIO</mat-option>
-                <mat-option value="CENTRO INDUSTRIAL -POPAYAN-">CENTRO INDUSTRIAL -POPAYAN-</mat-option>
-                <mat-option value="SENA CENTRO DE COMERCIO Y SERVICIOS">SENA CENTRO DE COMERCIO Y SERVICIOS</mat-option>
+      <div class="col-md-4">
+          <mat-form-field appearance="fill" class="example-full-width">
+            <mat-label>Selecciona el Centro Formación</mat-label>
+            <mat-select formControlName="id_centro_formacion" required>
+              <mat-option *ngFor="let centro of centros" [value]="centro.id_centro_formacion">
+                {{ centro.nombre }}
+              </mat-option>
             </mat-select>
-        </mat-form-field>
-          <div class="text-danger">
-            <label *ngIf="editarForm.get('centro').hasError('required') && editarForm.get('centro')?.touched"><strong
-                class="text-danger">Campo requerido </strong></label>
-          </div>
+
+            <div class="text-danger">
+              <label *ngIf="editarForm.get('id_centro_formacion').hasError('required') && editarForm.get('id_centro_formacion')?.touched">
+                <strong class="text-danger">Campo requerido</strong>
+              </label>
+            </div>
+          </mat-form-field>
         </div>
+
         <div class="col-md-4">
           <mat-form-field class="example-full-width">
             <input matInput placeholder="Identificación" type="number" formControlName="identificacion">

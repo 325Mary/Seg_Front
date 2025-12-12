@@ -3,7 +3,7 @@ import { BaseUrlService } from '../../../GlobalConstanst'//interface base url se
 import { Observable, throwError } from 'rxjs'
 import { ResponseI } from '../../models/response.interface';
 import { catchError } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -12,9 +12,13 @@ export class CertificacionService {
 
   constructor(private http: HttpClient) { }
 
-  getAllPorCertificar():Observable<ResponseI>{
+  getAllPorCertificar(user_id_centro: string, user_id_perfil: string):Observable<ResponseI>{
     let url = 'allAprendicesPorCertificar'
-    return this.http.get<ResponseI>(BaseUrlService + url)
+      const params = new HttpParams()
+    .set('id_centro', user_id_centro)
+    .set('id_perfil', user_id_perfil);
+
+    return this.http.get<ResponseI>(BaseUrlService + url,  { params: params })
     .pipe(
       catchError(err => {
         // console.log("Error en el servidor");

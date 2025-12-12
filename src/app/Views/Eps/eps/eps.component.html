@@ -1,0 +1,61 @@
+<div class="col-md-12 containerphater">
+  <div class="card">
+    <div class="card-header card-header-sena-azul flex">
+      <div class="tittle_card-table">
+        <h4 class="card-title mt-0">EPS</h4>
+        <p class="card-category">
+          En este apartado podrás ver todas las EPS registradas en el sistema.
+        </p>
+      </div>
+      <div class="button-card-table">
+        <button type="button" class="btn btn-success" [routerLink]="['/crearEps']">
+          Nueva EPS
+        </button>
+      </div>
+    </div>
+
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table">
+          <thead class="text-verde-sena">
+            <tr>
+              <th>ID</th>
+              <th>Nombre</th>
+              <th>NIT</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let eps of Eps">
+              <td>{{ eps.id_eps }}</td>
+              <td>{{ eps.nombre }}</td>
+              <td>{{ eps.nit }}</td>
+              <td>
+                <div class="container d-flex gap-2">
+                  <i 
+                    tooltip="Actualizar datos de la EPS {{ eps.nombre }}"
+                    placement="bottom"
+                    showDelay="200"
+                    class="butonW"
+                    [routerLink]="['/editarEps', eps.id_eps]"
+                  >
+                    <span class="fa-solid fa-pen-to-square"></span>
+                  </i>
+                  <i 
+                    tooltip="Eliminar EPS {{ eps.nombre }}"
+                    placement="bottom"
+                    showDelay="200"
+                    class="butonW"
+                    (click)="deleteEps(eps.id_eps)"
+                  >
+                    <span class="fa-solid fa-trash text-danger"></span>
+                  </i>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

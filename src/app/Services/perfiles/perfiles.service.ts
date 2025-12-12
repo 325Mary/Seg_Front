@@ -20,7 +20,7 @@ export class PerfilesService {
   gestionarPermisos (array : any ) {
     return new Promise(resolved  => {
       const dataroute = Object.values(array.data);
-      const perfil_id = localStorage.getItem('perfil_id')
+      const perfil_id = sessionStorage.getItem('perfil_id')
       const resultado = valor =>  valor == perfil_id
       const result = dataroute.some(resultado)
       resolved(result)

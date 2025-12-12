@@ -45,7 +45,18 @@ import { UpdateComponentModulePermiss } from '../../Views/module-permissions/upd
 import { UpdateComponentUser } from '../../Views/users/update/update.component';
 import { ReporteHorasComponent } from '../../Views/Reportes/reporte-horas/reporte-horas.component';
 import { VerDetalleAprendizComponent } from 'app/Views/Aprendiz/ver-detalle-aprendiz/ver-detalle-aprendiz.component';
-
+import { CentroFormacionComponent } from "app/Views/centros_data/centro-formacion/centro-formacion.component";
+import {EditComponentCentro} from 'app/Views/centros_data/edit/edit.component'
+import { CreateCentrosComponent } from 'app/Views/centros_data/create-centros/create-centros.component';
+import { CiudadComponent } from "app/Views/ciudad-data/ciudad/ciudad.component";
+import { UpdateCiudadComponent } from "app/Views/ciudad-data/update-ciudad/update-ciudad.component";
+import { CreatedCiudadComponent } from 'app/Views/ciudad-data/created-ciudad/created-ciudad.component';
+import { EmpresaComponent } from "app/Views/Empresa/empresa/empresa.component";
+import { CrearEmpresaComponent } from "app/Views/Empresa/crear-empresa/crear-empresa.component";
+import { EditarEmpresaComponent } from "app/Views/Empresa/editar-empresa/editar-empresa.component";
+import { EpsComponent } from "app/Views/Eps/eps/eps.component";
+import { CrearEpsComponent } from "app/Views/Eps/crear-eps/crear-eps.component";
+import { EditarrEpsComponent } from "app/Views/Eps/editarr-eps/editarr-eps.component";
 
 const Rutas: Routes = [
   {
@@ -248,12 +259,68 @@ const Rutas: Routes = [
   {
     path:"ver-detalle-aprendiz/:id",
     component:VerDetalleAprendizComponent
-  }
+  },
+  {
+    path:"centro-de-formacion",
+    component:CentroFormacionComponent
+  },
+  {
+    path: 'updateCentro/:id',
+    component: EditComponentCentro,
+    // canActivate: [VigilantGuard, GuardRolesGuard]
+  },
+  {
+    path: 'createCentro',
+    component: CreateCentrosComponent,
+    // canActivate: [VigilantGuard, GuardRolesGuard],
+  },
+  {
+    path:"ciudad",
+    component:CiudadComponent
+  },
+  {
+    path: 'updateCiudad/:id',
+    component: UpdateCiudadComponent,
+    // canActivate: [VigilantGuard, GuardRolesGuard]
+  },
+  { 
+    path: 'crearCiudad',
+    component: CreatedCiudadComponent,
+    // canActivate: [VigilantGuard, GuardRolesGuard],
+  },
+  {
+    path:"empresa",
+    component:EmpresaComponent
+  },
+  { 
+    path: 'crearEmpresa',
+    component: CrearEmpresaComponent,
+    // canActivate: [VigilantGuard, GuardRolesGuard],
+  },
+  {
+    path: 'editarEmpresa/:id',
+    component: EditarEmpresaComponent,
+    // canActivate: [VigilantGuard, GuardRolesGuard]
+  },
+  {
+    path:"eps",
+    component:EpsComponent
+  },
+  {
+    path: 'crearEps',
+    component: CrearEpsComponent,
+    // canActivate: [VigilantGuard, GuardRolesGuard],
+  },
+  { 
+    path: 'editarEps/:id',    
+    component: EditarrEpsComponent,
+    // canActivate: [VigilantGuard, GuardRolesGuard]
+  },
 ];
 //procesar rutas
 const filterPermisess = () => {
   let permisos: Routes = []
-  const modules = JSON.parse(localStorage.getItem('modules'))
+  const modules = JSON.parse(sessionStorage.getItem('modules'))
   console.log(modules);
   Rutas.forEach((route, indexR) => {
     for (let i of modules) {

@@ -24,9 +24,9 @@
                   </thead>
                   <tbody>
                     <tr>
-                      <td>{{ dataAprendiz.nombres }}</td>
-                      <td>{{ dataAprendiz.apellidos }}</td>
-                      <td>{{ dataAprendiz.genero }}</td>
+                      <td>{{ dataAprendiz?.nombres }}</td>
+                      <td>{{ dataAprendiz?.apellidos }}</td>
+                      <td>{{ dataAprendiz?.genero }}</td>
                     </tr>
                   </tbody>
                 </table>
@@ -51,8 +51,8 @@
                   </thead>
                   <tbody>
                     <tr>
-                      <td>{{ dataAprendiz.identificacion }}</td>
-                      <td>{{ dataAprendiz.telefono }}</td>
+                      <td>{{ dataAprendiz?.identificacion }}</td>
+                      <td>{{ dataAprendiz?.telefono }}</td>
                     </tr>
                   </tbody>
                 </table>
@@ -80,9 +80,9 @@
                   </thead>
                   <tbody>
                     <tr>
-                      <td>{{ dataAprendiz.discapacidad }}</td>
-                      <td>{{ dataAprendiz.ficha }}</td>
-                      <td>{{ dataAprendiz.municipio_nacimiento }}</td>
+                      <td>{{ dataAprendiz?.discapacidad }}</td>
+                      <td>{{ dataAprendiz?.ficha }}</td>
+                      <td>{{ dataAprendiz?.municipio_nacimiento }}</td>
                     </tr>
                   </tbody>
                 </table>
@@ -107,8 +107,8 @@
                   </thead>
                   <tbody>
                     <tr>
-                      <td>{{ dataAprendiz.incio_productiva }}</td>
-                      <td>{{ dataAprendiz.inicio_lectiva }}</td>
+                      <td>{{ dataAprendiz?.incio_productiva }}</td>
+                      <td>{{ dataAprendiz?.inicio_lectiva }}</td>
                     </tr>
                   </tbody>
                 </table>
@@ -125,7 +125,7 @@
               matInput
               placeholder="incio productiva"
               type="text"
-              [value]="dataAprendiz.incio_productiva"
+              [value]="dataAprendiz?.incio_productiva"
             />
           </mat-form-field>
         </div>
@@ -135,7 +135,7 @@
               matInput
               placeholder="inicio lectiva"
               type="text"
-              [value]="dataAprendiz.inicio_lectiva"
+              [value]="dataAprendiz?.inicio_lectiva"
             />
           </mat-form-field>
         </div>
@@ -158,8 +158,8 @@
                   </thead>
                   <tbody>
                     <tr>
-                      <td>{{ dataAprendiz.correo_misena }}</td>
-                      <td>{{ dataAprendiz.correo_alternativo }}</td>
+                      <td>{{ dataAprendiz?.correo_misena }}</td>
+                      <td>{{ dataAprendiz?.correo_alternativo }}</td>
                     </tr>
                   </tbody>
                 </table>

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { catchError } from 'rxjs';
 import { ResponseI } from '../../models/response.interface';
 import { Observable, throwError } from 'rxjs'
@@ -19,10 +19,14 @@ export class AprendizService {
 
   constructor(private http : HttpClient) { }
 
-  getAprendices(): Observable<ResponseI>{
+  getAprendices(user_id_centro: string, user_id_perfil: string): Observable<ResponseI>{
     let urlApi = 'aprendices'
     let direccion = BaseUrlService + urlApi
-    return this.http.get<ResponseI>(direccion)
+      const params = new HttpParams()
+    .set('id_centro', user_id_centro)
+    .set('id_perfil', user_id_perfil);
+
+    return this.http.get<ResponseI>(direccion,  { params: params })
     .pipe(
       catchError(err => {
         // console.log("Error en el servidor");
@@ -123,15 +127,17 @@ export class AprendizService {
     )
   }
   //excel
-  createDocuments ( documento:string, ruta: File) : Observable<ResponseI>{
-    const fd = new FormData();
+createDocuments(centroId: string, documento: string, ruta: File): Observable<ResponseI> {
+  const fd = new FormData();
 
-    fd.append('documento', documento);
-    fd.append('ruta', ruta);
-    let urlApi = 'importRegistro';
-    let direccion = BaseUrlService + urlApi
-    return this.http.post<ResponseI>(direccion,fd)
-  }
+  fd.append('id_centro_formacion', centroId); 
+  fd.append('documento', documento);
+  fd.append('ruta', ruta);
+  
+  let urlApi = 'importRegistro';
+  let direccion = BaseUrlService + urlApi;
+  return this.http.post<ResponseI>(direccion, fd);
+}
   getDatosAprendiz(id: string):Observable<ResponseI>{
     let url = 'Aprendiz'
     

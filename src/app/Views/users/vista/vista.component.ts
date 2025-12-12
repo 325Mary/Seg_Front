@@ -13,6 +13,9 @@ import Swal from 'sweetalert2';
 export class VistaComponent implements OnInit {
 
   users: any
+  user_id_centro = sessionStorage.getItem("user_id_centro");
+  user_id_perfil = sessionStorage.getItem("user_id_perfil");
+
   constructor(private api: UsersService, private route: Router) { }
 
   ngOnInit(): void {
@@ -20,8 +23,9 @@ export class VistaComponent implements OnInit {
   }
 
   obtenerUsers() {
-    this.api.getAllusers().subscribe(data => {
+    this.api.getAllusers(this.user_id_centro, this.user_id_perfil).subscribe(data => {
       this.users = data.results
+      console.log(this.users);
     })
   }
 

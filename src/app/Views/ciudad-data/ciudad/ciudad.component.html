@@ -1,0 +1,60 @@
+<div class="col-md-12 containerphater">
+  <div class="card">
+    <div class="card-header card-header-sena-azul flex">
+      <div class="tittle_card-table">
+        <h4 class="card-title mt-0">Ciudades</h4>
+        <p class="card-category">
+          En este apartado podrás ver todas las ciudades registradas en el sistema
+        </p>
+      </div>
+      <div class="button-card-table">
+        <button type="button" class="btn btn-success" [routerLink]="['/crearCiudad']">
+          Nueva Ciudad
+        </button>
+      </div>
+    </div>
+
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table">
+          <thead class="text-verde-sena">
+            <tr>
+              <th>Nombre</th>
+              <th>Departamento</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let ciudad of Ciudades">
+              <td>{{ ciudad.nombre }}</td>
+              <td>{{ ciudad.Departamento?.departamento }}</td>
+             
+              <td>
+                <div class="container d-flex gap-2">
+                  <i 
+                    tooltip="Actualizar datos de la ciudad {{ ciudad.nombre }}"
+                    placement="bottom"
+                    showDelay="200"
+                    class="butonW"
+                    [routerLink]="['/updateCiudad/', ciudad.id_ciudad]"
+                  >
+                    <span class="fa-solid fa-pen-to-square"></span>
+                  </i>
+                  <i 
+                    tooltip="Eliminar ciudad {{ ciudad.nombre }}"
+                    placement="bottom"
+                    showDelay="200"
+                    class="butonW"
+                    (click)="deleteCiudad(ciudad.id_ciudad)"
+                  >
+                    <span class="fa-solid fa-trash text-danger"></span>
+                  </i>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

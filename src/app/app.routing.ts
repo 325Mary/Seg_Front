@@ -8,7 +8,7 @@ import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.compon
 import { VigilantGuard } from './Guards/vigilant.guard'
 import { NotfoudComponent } from './Views/SystemMessagues/notfoud/notfoud.component'
 
-import {PublicComponent} from "./views/Public/public/public.component";
+import {PublicComponent} from "./Views/Public/public/public.component";
 // import { NotfoudComponent } from './Views/SystemMessagues/notfoud/notfoud.component';
 
 const routes: Routes = [

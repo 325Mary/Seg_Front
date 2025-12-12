@@ -25,6 +25,8 @@ export class ReassignAprendizComponent implements OnInit {
   fases: EstadoFaseI[] = [];
   novedades: NoveltyI[] = [];
   usuarios: User[];
+    user_id_centro = sessionStorage.getItem("user_id_centro");
+  user_id_perfil = sessionStorage.getItem("user_id_perfil");
 
   assignmentEditForm = new FormGroup({
     aprendiz_id: new FormControl(""),
@@ -89,7 +91,7 @@ export class ReassignAprendizComponent implements OnInit {
   }
 
   getDataForm() {
-    this.assignmentapiservice.getDataForm().subscribe(
+    this.assignmentapiservice.getDataForm(this.user_id_centro, this.user_id_perfil).subscribe(
       (data) => {
         // console.log(data.results);
 
@@ -118,47 +120,50 @@ export class ReassignAprendizComponent implements OnInit {
   }
 
   PutForm(dataForm: AssignmentI) {
-    let usuario_responsable_actualizado = dataForm.usuario_responsable_id;
-    let usuario_responsable_actual = this.postassignment.usuario_responsable_id;
+  let usuario_responsable_actualizado = dataForm.usuario_responsable_id;
+  let usuario_responsable_actual = this.postassignment.usuario_responsable_id;
 
-    // console.log(dataForm);
+  if (usuario_responsable_actualizado != usuario_responsable_actual) {
+    const dataToSend = {
+      ...this.postassignment,
+      usuario_responsable_id: usuario_responsable_actualizado,
+      estado_fase_id: this.assignment.estado_fase_id,
+      novedad_id: this.assignment.novedad_id
+    };
 
-    if (usuario_responsable_actualizado != usuario_responsable_actual) {
-      this.assignmentapiservice
-        .putAssignment(dataForm, this.id_asignacion)
-        .subscribe((data) => {
-          if (data.status == "success") {
-            Swal.fire({
-              title: "Aprendiz Reasignado",
-              text: "Aprendiz Reasignado Correctamente",
-              icon: "success",
+    this.assignmentapiservice
+      .putAssignment(dataToSend as AssignmentI, this.id_asignacion)
+      .subscribe((data) => {
+        if (data.status == "success") {
+          Swal.fire({
+            title: "Aprendiz Reasignado",
+            text: "Aprendiz Reasignado Correctamente",
+            icon: "success",
+          });
+
+          this.assignmentapiservice
+            .postAssignment(this.postassignment)
+            .subscribe((data) => {
+              // console.log(data);
             });
 
-            this.assignmentapiservice
-              .postAssignment(this.postassignment)
-              .subscribe((data) => {
-                // console.log(data);
-              });
-
-            this.router.navigate(["list-assignments"]);
-          } else {
-            Swal.fire({
-              title: "Error",
-              text: "Hay un error de servidor",
-              icon: "error",
-            });
-          }
-        });
-    } else {
-      Swal.fire({
-        position: "top-end",
-        icon: "warning",
-        title: "Por favor asigna a un instructor diferente",
-        showConfirmButton: false,
-        timer: 1500,
+          this.router.navigate(["list-assignments"]);
+        } else {
+          Swal.fire({
+            title: "Error",
+            text: "Hay un error de servidor",
+            icon: "error",
+          });
+        }
       });
-    }
-
-    //   // console.log(dataForm);
+  } else {
+    Swal.fire({
+      position: "top-end",
+      icon: "warning",
+      title: "Por favor asigna a un instructor diferente",
+      showConfirmButton: false,
+      timer: 1500,
+    });
   }
+}
 }

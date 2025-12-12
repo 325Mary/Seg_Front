@@ -1,0 +1,72 @@
+<div class="col-md-12 containerphater">
+  <div class="card">
+    <div class="card-header card-header-sena-azul flex">
+      <div class="tittle_card-table">
+        <h4 class="card-title mt-0">Centros de Formación</h4>
+        <p class="card-category">
+          En este apartado podrás ver todos los centros de formación registrados en el sistema
+        </p>
+      </div>
+      <div class="button-card-table">
+        <button type="button" class="btn btn-success" [routerLink]="['/createCentro']">
+          Nuevo Centro
+        </button>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table">
+          <thead class="text-verde-sena">
+            <tr>
+              <th>Nombre</th>
+              <th>Código</th>
+              <th>Dirección</th>
+              <th>Teléfono</th>
+              <th>Correo institucional</th>
+              <th>Responsable</th>
+              <th>Estado</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let centro of CentrosFormacion">
+              <td>{{ centro.nombre }}</td>
+              <td>{{ centro.codigo }}</td>
+              <td>{{ centro.direccion }}</td>
+              <td>{{ centro.telefono }}</td>
+              <td>{{ centro.email }}</td>
+              <td>{{ centro.responsable }}</td>
+              <td>
+                <span [ngClass]="{'text-success': centro.estado, 'text-danger': !centro.estado}">
+                  {{ centro.estado ? 'Activo' : 'Inactivo' }}
+                </span>
+              </td>
+              <td class="">
+                <div class="container d-flex gap-2">
+                  <i 
+                    tooltip="Actualizar datos del centro {{ centro.nombre }}"
+                    placement="bottom"
+                    showDelay="200"
+                    class="butonW"
+                    [routerLink]="['/updateCentro/', centro.id_centro_formacion]"
+                  >
+                    <span class="fa-solid fa-pen-to-square"></span>
+                  </i>
+                  <i 
+                    tooltip="Eliminar centro {{ centro.nombre }}"
+                    placement="bottom"
+                    showDelay="200"
+                    class="butonW"
+                    (click)="deleteCentro(centro.id_centro_formacion)"
+                  >
+                    <span class="fa-solid fa-trash text-danger"></span>
+                  </i>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div> 
+</div>

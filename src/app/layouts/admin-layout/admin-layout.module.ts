@@ -34,9 +34,18 @@ import { RegisterCertificacionComponent } from "app/Views/Certificacion/register
 import { ReporteAprendicesComponent } from '../../Views/Reportes/reporte-aprendices/reporte-aprendices.component';
 import { ReporteUsuariosComponent } from '../../Views/Reportes/reporte-usuarios/reporte-usuarios.component';
 import { ListaMisAsignadosComponent } from '../../Views/Reportes/lista-mis-asignados/lista-mis-asignados.component';
+import { ListMyAssingmentsComponent } from 'app/Views/Assignments/list-my-assingments/list-my-assingments.component';
 
 import { CreateComponentModulePermiss } from '../../Views/module-permissions/create/create.component';
 import { UpdateComponentModulePermiss } from '../../Views/module-permissions/update/update.component';
+
+import { EditComponentCentro } from 'app/Views/centros_data/edit/edit.component';
+import { CreateCentrosComponent } from 'app/Views/centros_data/create-centros/create-centros.component';
+import { UpdateCiudadComponent } from 'app/Views/ciudad-data/update-ciudad/update-ciudad.component';
+import { CreatedCiudadComponent } from 'app/Views/ciudad-data/created-ciudad/created-ciudad.component';
+import { CrearEmpresaComponent } from 'app/Views/Empresa/crear-empresa/crear-empresa.component';
+import { EditarEmpresaComponent } from 'app/Views/Empresa/editar-empresa/editar-empresa.component';
+import { cr } from 'chart.js/dist/chunks/helpers.core';
 
 @NgModule({
   imports: [
@@ -77,6 +86,13 @@ import { UpdateComponentModulePermiss } from '../../Views/module-permissions/upd
     ListaMisAsignadosComponent,
     UpdateComponentModulePermiss,
     CreateComponentModulePermiss,
+    EditComponentCentro,
+    CreateCentrosComponent,
+    UpdateCiudadComponent,
+    CreatedCiudadComponent,
+    CrearEmpresaComponent,
+    EditarEmpresaComponent,
+    
   ],
 })
 export class AdminLayoutModule {}

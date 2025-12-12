@@ -13,12 +13,15 @@ export class ListAprendicesPorCertificarComponent implements OnInit {
   constructor( private certificacionServices: CertificacionService) { }
   pageActual: number = 1;
   ListAprendicesPC?:certificacion[] = []; 
+      user_id_centro = sessionStorage.getItem("user_id_centro");
+  user_id_perfil = sessionStorage.getItem("user_id_perfil");
+
 
   ngOnInit(): void {
     this.getAprendicesPC()
   }
   getAprendicesPC(){
-    this.certificacionServices.getAllPorCertificar().subscribe(data=>{
+    this.certificacionServices.getAllPorCertificar(this.user_id_centro, this.user_id_perfil).subscribe(data=>{
       this.ListAprendicesPC = data.results
       // console.log(this.ListAprendicesPC);
     })

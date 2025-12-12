@@ -23,6 +23,8 @@ export class UpdateAssignmentComponent implements OnInit {
   fases: EstadoFaseI[] = [];
   novedades: NoveltyI[] = [];
   usuarios: User[];
+    user_id_centro = sessionStorage.getItem("user_id_centro");
+  user_id_perfil = sessionStorage.getItem("user_id_perfil");
 
   assignmentEditForm = new FormGroup({
     aprendiz_id: new FormControl(""),
@@ -92,7 +94,7 @@ export class UpdateAssignmentComponent implements OnInit {
   }
 
   getDataForm() {
-    this.assignmentapiservice.getDataForm().subscribe((data) => {
+    this.assignmentapiservice.getDataForm(this.user_id_centro, this.user_id_perfil).subscribe((data) => {
       if (data.status != 'success') {
         Swal.fire({
           title: 'Error',

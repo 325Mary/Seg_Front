@@ -138,6 +138,7 @@
                                             <span><strong> Obligatorio</strong></span>
                                         </div>
                                     </div>
+                                    
                                 </div>
                                 <div class="row">
                                     <div class="col-sm-5 col-md-4 col-lg-3 p-2 offset-lg-2">
@@ -209,11 +210,15 @@
                                             <span class="text-danger">*</span>:
                                         </label>
                                         <mat-form-field appearance="fill">
-                                            <mat-label>{{aprendicesReForm.get('municipio_nacimiento').value}}</mat-label>
+                                            <mat-label>Selecciona Municipio</mat-label>
+
                                             <mat-select formControlName="municipio_nacimiento">
-                                                <mat-option *ngFor="let municipio of municipios" value="{{municipio.municipio}}">{{municipio.municipio}}</mat-option>
+                                                <mat-option *ngFor="let municipio of municipios" [value]="municipio.id_municipio">
+                                                    {{ municipio.municipio }}
+                                                </mat-option>
                                             </mat-select>
                                         </mat-form-field>
+
                                         <!-- <input formControlName="genero" type="text" placeholder="Ingrese Genero"
                                             class="form-control"> -->
                                         <small class="text-danger"></small>
@@ -229,22 +234,21 @@
                                         </label>
                                         <mat-form-field appearance="fill">
                                             <mat-label>Selecciona tu Centro</mat-label>
-                                            <mat-select formControlName="centro">
-                                                <mat-option value="CTPI">CTPI</mat-option>
-                                                <mat-option value="SENA CENTRO AGROPECUARIO">SENA CENTRO
-                                                    AGROPECUARIO</mat-option>
-                                                <mat-option value="CENTRO INDUSTRIAL -POPAYAN-">CENTRO INDUSTRIAL
-                                                    -POPAYAN-</mat-option>
-                                                <mat-option value="SENA CENTRO DE COMERCIO Y SERVICIOS">SENA CENTRO DE
-                                                    COMERCIO Y SERVICIOS</mat-option>
+                                        <mat-select formControlName="centro_id" required>
+                                                <mat-option *ngFor="let centro of centros" [value]="centro.id_centro_formacion">
+                                                {{ centro.nombre }}
+                                                </mat-option>
                                             </mat-select>
                                             <div class="text-danger">
                                                 <label
-                                                    *ngIf="aprendicesReForm.get('centro').hasError('required') && aprendicesReForm.get('centro')?.touched"><strong
-                                                        class="text-danger">Campo requerido </strong></label>
+                                                    *ngIf="aprendicesReForm.get('centro_id')?.hasError('required') && aprendicesReForm.get('centro_id')?.touched">
+                                                    <strong class="text-danger">Campo requerido </strong>
+                                                </label>
                                             </div>
-                                        </mat-form-field>
-                                    </div>
+
+                                            </mat-form-field>
+                                        </div>
+                                        
                                     <div class="col-sm-6 col-md-4 col-lg-3 p-2 offset-lg">
                                         <!-- <h4>Registrar el programa</h4> -->
 
@@ -379,7 +383,27 @@
                                         </div>
                                     </div>
 
-
+                                    <div class="col-sm-5 col-md-4 col-lg-3 p-2 offset-lg">
+                                        <label class="mt-2 font-weight-bold">
+                                            Modalidad
+                                            <span class="text-danger">*</span>:
+                                        </label>
+                                        <mat-form-field appearance="fill">
+                                            <mat-label>Selecciona tu Modalidad</mat-label>
+                                            <mat-select formControlName="modalidad">
+                                                <mat-option value="CONTRATO DE APRENDIZAJE">CONTRATO DE APRENDIZAJE</mat-option>
+                                                <mat-option value="PASANTIA">PASANTIA</mat-option>
+                                                <mat-option value="VINCULO LABORAL">VINCULO LABORAL</mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                        <!-- <input formControlName="modalidad" type="text" placeholder="Ingrese modalidad"
+                                            class="form-control"> -->
+                                        <small class="text-danger"></small>
+                                        <div class="text-danger"
+                                            *ngIf="aprendicesReForm.get('modalidad')?.hasError('required') && aprendicesReForm.get('modalidad')?.touched">
+                                            <span><strong> Obligatorio</strong></span>
+                                        </div>
+                                    </div>
 
                                 </div>
                                 <div class="mb-3 col-7 d-flex justify-content-between m-auto">

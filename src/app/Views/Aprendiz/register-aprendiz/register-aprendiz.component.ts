@@ -4,6 +4,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Aprendiz_re_DTO } from 'app/models/Aprendiz/aprendiz_RE_DTO';
 import { AprendizService } from 'app/Services/aprendiz/aprendiz.service';
 import { MunicipioService } from 'app/Services/municipio/municipio.service';
+import { CentroFormacionService } from '../../../Services/CentroFormacion/centro-formacion.service';
 import * as moment from "moment";
 import Swal from 'sweetalert2';
 @Component({
@@ -31,8 +32,10 @@ export class RegisterAprendizComponent implements OnInit {
   fechadia= 1
   fecha_contrato_inicio:any
   fecha_nacimiento = '2021-01-01'
-
+   centros: any[] = []; 
   municipios : any 
+  user_id_centro = sessionStorage.getItem("user_id_centro");
+  user_id_perfil = sessionStorage.getItem("user_id_perfil");
 
   fecha_max= moment().subtract(14, 'y').format()
   listPrograms: any
@@ -46,6 +49,7 @@ export class RegisterAprendizComponent implements OnInit {
     private aprendizService: AprendizService,
     private aRoute: ActivatedRoute ,
     private municipio : MunicipioService ,
+    private centroService: CentroFormacionService, 
     ) {
     this.aprendicesReForm = this.fb.group({
       nombres: ['', [Validators.maxLength(25), Validators.required]],
@@ -57,7 +61,7 @@ export class RegisterAprendizComponent implements OnInit {
       // correo_misena: ['', [Validators.required, Validators.email, Validators.maxLength(50)]],
       correo_alternativo: ['', [Validators.required, Validators.email, Validators.maxLength(50)]],
       municipio_nacimiento: ['', Validators.required],
-      centro: ['', [Validators.maxLength(70), Validators.required]],
+      centro_id: ['', Validators.required],
       programa_id: ['', Validators.required],
       inicio_lectiva: ['', Validators.required],
       incio_productiva: ['', Validators.required],
@@ -75,7 +79,7 @@ export class RegisterAprendizComponent implements OnInit {
       direccion: ['', [Validators.maxLength(50), Validators.required]],
       telefono_empresa: ['', [Validators.required, Validators.max(10000000000)]],
       correo: ['', [Validators.required, Validators.email, Validators.maxLength(100)]],
-      // modalidad: ['', Validators.required],
+      modalidad: ['', Validators.required],
       observacion: ['', [Validators.required, Validators.maxLength(25)]],
       // representante_legal: ['', [Validators.required, Validators.maxLength(40)]],
       // identificacion_representante: ['', [Validators.required, Validators.max(10000000000)]],
@@ -103,12 +107,12 @@ export class RegisterAprendizComponent implements OnInit {
     this.getPrograms()
     // console.log(moment().subtract(14, 'y').format());
     this.getAllMuunicipios()
+    this.getAllCentros()
   }
 
   getAllMuunicipios () {
     this.municipio.getAllMunicipios().subscribe(municipio => {
-      this.municipios = municipio.results
-      // console.log(this.municipios);
+    this.municipios = municipio.results[0];
       
     })
   }
@@ -130,7 +134,7 @@ export class RegisterAprendizComponent implements OnInit {
       // correo_misena: this.aprendicesReForm.get('correo_misena')?.value,
       correo_alternativo: this.aprendicesReForm.get('correo_alternativo')?.value,
       municipio_id: this.aprendicesReForm.get('municipio_nacimiento')?.value,
-      centro: this.aprendicesReForm.get('centro')?.value,
+      id_centro_formacion: this.aprendicesReForm.get('centro')?.value,
       programa_id: this.aprendicesReForm.get('programa_id')?.value,
       inicio_lectiva: this.aprendicesReForm.get('inicio_lectiva')?.value,
       incio_productiva: this.aprendicesReForm.get('incio_productiva')?.value,
@@ -147,7 +151,7 @@ export class RegisterAprendizComponent implements OnInit {
       direccion: this.aprendicesReForm.get('direccion')?.value,
       telefono_empresa: this.aprendicesReForm.get('telefono_empresa')?.value,
       correo: this.aprendicesReForm.get('correo')?.value,
-      // modalidad: this.aprendicesReForm.get('modalidad')?.value,
+      modalidad: this.aprendicesReForm.get('modalidad')?.value,
       observacion: this.aprendicesReForm.get('observacion')?.value,
       // representante_legal: this.aprendicesReForm.get('representante_legal')?.value,
       // identificacion_representante: this.aprendicesReForm.get('identificacion_representante')?.value,
@@ -253,7 +257,7 @@ export class RegisterAprendizComponent implements OnInit {
           direccion: data[0].direccion,
           telefono_empresa: data[0].telefono,
           correo: data[0].correo,
-          // modalidad: data[0].modalidad,
+          modalidad: data[0].modalidad,
           observacion: data[0].observacion,
           // representante_legal: data[0].representante_legal,
           // identificacion_representante: data[0].identificacion_representante,
@@ -305,6 +309,11 @@ export class RegisterAprendizComponent implements OnInit {
       .add(this.fechadia, "days")
         .toDate();
     }
+  }
+   getAllCentros() {
+    this.centroService.getcentroFormacion(this.user_id_centro, this.user_id_perfil).subscribe((response: any) => {
+      this.centros = response.results;
+    });
   }
 
 }

@@ -24,8 +24,8 @@ export class EditComponent implements OnInit {
     private activateRoute : ActivatedRoute) { }
 
   ngOnInit(): void { 
-    this.id_user = localStorage.getItem('id_user') 
-    this. id_aprendiz = localStorage.getItem('id_aprendiz') 
+    this.id_user = sessionStorage.getItem('id_user') 
+    this. id_aprendiz = sessionStorage.getItem('id_aprendiz') 
     this.obtenerMyphoto(this.id_user , this. id_aprendiz )
   }
 

@@ -18,6 +18,8 @@ export class ListAssignmentsComponent implements OnInit, OnDestroy {
   pageActual: number = 1;
   susbscription: Subscription;
   retroalimentacion: boolean = false;
+    user_id_centro = sessionStorage.getItem("user_id_centro");
+  user_id_perfil = sessionStorage.getItem("user_id_perfil");
 
   constructor(
     private assignmentapiservice: AssignmentService,
@@ -29,18 +31,18 @@ export class ListAssignmentsComponent implements OnInit, OnDestroy {
     this.getAssignments();
     this.setpermisos();
 
-    // this.susbscription = this.assignmentapiservice.refresh$.subscribe(() => {
-    //   this.getAssignments();
-    // });
-    // console.log(this.assignments);
+    
+    
+    
+    
   }
   ngOnDestroy(): void {
-    // this.susbscription.unsubscribe();
-    // console.log('Observable destruido');
+    
+    
   }
 
   setpermisos() {
-    const permisos = JSON.parse(localStorage.getItem("data_perfil"));
+    const permisos = JSON.parse(sessionStorage.getItem("data_perfil"));
 
     const resultadoretroalimentacion = (valor) => valor.url_item_modulo == "/retroalimentacion/";
     const permisosretroalimentacion = permisos.some(resultadoretroalimentacion);
@@ -49,7 +51,7 @@ export class ListAssignmentsComponent implements OnInit, OnDestroy {
   }
 
   getAssignments() {
-    this.assignmentapiservice.getAllAssignments().subscribe(
+    this.assignmentapiservice.getAllAssignments(this.user_id_centro, this.user_id_perfil).subscribe(
       (data) => {
         if (data.status == "success") {
           this.assignments = data.results;
@@ -121,38 +123,38 @@ export class ListAssignmentsComponent implements OnInit, OnDestroy {
   }
 
   segAprobados(id: string) {
-    // console.log({assigmnet});
-    // console.log(id);
+    
+    
 
     this.seguimientoService.segAprobados(id).subscribe(
       (data) => {
-        // console.log(data);
+        
         const hoy = moment().format("YYYY-MM-DD");
-        // console.log({hoy});
+        
         if (data.status == "success") {
           let results = data.results;
 
-          // console.log(results);
+          
           for (let seguimiento of results) {
 
             const estado_seg = seguimiento.tipo_seguimiento_id;
             if (estado_seg == "1") {
               if (seguimiento.estado_documento != "Aprobado") {
-                // console.log(
-                //   "es diferente de aprobado " + estado_seg + " " + id
-                // );
+                
+                
+                
                 if (!(seguimiento.Asignacion.fecha_seguimiento_inicial >= hoy)) {
-                  // console.log("estas atrasado" + " " + id + " " + estado_seg);
+                  
                   
                   this.assignmentapiservice.changeStatusSeg1("Atrasado", id).subscribe()
 
                 } else {
-                  // console.log("no estas atrasado" + " " + id + " " + estado_seg);
+                  
                   this.assignmentapiservice.changeStatusSeg1("No estas Atrasado", id).subscribe()
 
                 }
               }else if(seguimiento.estado_documento == "Aprobado"){
-                // console.log('estas Aprobado'  + " " + estado_seg);
+                
 
                 this.assignmentapiservice.changeStatusSeg1("Aprobado", id).subscribe()
 
@@ -160,71 +162,71 @@ export class ListAssignmentsComponent implements OnInit, OnDestroy {
             }
             if (estado_seg == "2") {
               if (seguimiento.estado_documento != "Aprobado") {
-                // console.log("es diferente de aprobado " + estado_seg + " " + id);
+                
                 if (!(seguimiento.Asignacion.fecha_seguimiento_parcial >= hoy)) {
-                  // console.log("estas atrasado case 2");
+                  
                   this.assignmentapiservice.changeStatusSeg2("Atrasado", id).subscribe()
 
                 } else {
-                  // console.log("no estas atrasado" + " " + id + " " + estado_seg);
+                  
                   this.assignmentapiservice.changeStatusSeg2("No estas Atrasado", id).subscribe()
                 }
               }
               if(seguimiento.estado_documento == "Aprobado"){
-                // console.log('estas Aprobado'  + " " + estado_seg);
+                
                 
                 this.assignmentapiservice.changeStatusSeg2("Aprobado", id).subscribe()
-                // return;
+                
               }
 
-              // console.log('entre al if ');
-                // return;
+              
+                
 
               
             }else {
               if (!(seguimiento.Asignacion.fecha_seguimiento_parcial >= hoy)) {
-                // console.log(seguimiento.Asignacion.fecha_seguimiento_parcial);
-                // console.log("estas atrasado case 2");
+                
+                
                 this.assignmentapiservice.changeStatusSeg2("Atrasado", id).subscribe()
 
               } else {
-                // console.log("no estas atrasado" + " " + id + " " + estado_seg);
+                
                 this.assignmentapiservice.changeStatusSeg2("No estas Atrasado", id).subscribe()
-                // return;
+                
               }
-              // console.log('No hay 2');
-              // console.log('entre al else ');
+              
+              
 
               
             }
             if (estado_seg == "3") {
-              // case "3":
+              
               if (seguimiento.estado_documento != "Aprobado") {
-                // console.log(
-                //   "es diferente de aprobado " + estado_seg + " " + id
-                // );
+                
+                
+                
                 if (!(seguimiento.Asignacion.fecha_seguimiento_final >= hoy)) {
-                  // console.log("estas atrasado case 3");
+                  
                   this.assignmentapiservice.changeStatusSeg3("Atrasado", id).subscribe()
                 } else {
                   this.assignmentapiservice.changeStatusSeg3("No estas Atrasado", id).subscribe()
                   
                 }
               }else if(seguimiento.estado_documento == "Aprobado"){
-                // console.log('estas Aprobado'  + " " + estado_seg);
+                
                 this.assignmentapiservice.changeStatusSeg3("Aprobado", id).subscribe()
               }
             }else {
               if (!(seguimiento.Asignacion.fecha_seguimiento_final >= hoy)) {
-                // console.log(seguimiento.Asignacion.fecha_seguimiento_final);
-                // console.log("estas atrasado case 3");
+                
+                
                 this.assignmentapiservice.changeStatusSeg3("Atrasado", id).subscribe()
 
               } else {
-                // console.log("no estas atrasado" + " " + id + " " + estado_seg);
+                
                 this.assignmentapiservice.changeStatusSeg3("No estas Atrasado", id).subscribe()
               }
-              // console.log('No hay 3');
+              
               
             }
           }
@@ -232,12 +234,12 @@ export class ListAssignmentsComponent implements OnInit, OnDestroy {
           let asignacion = data.results;
 
           if (!(asignacion.fecha_seguimiento_inicial >= hoy)) {
-            // console.log(
-            //   "estas atrasado porque no tienes seguimientos" + " " + id 
-            // );
+            
+            
+            
             this.assignmentapiservice.changeStatusSeg1("Atrasado", id).subscribe()
           } else {
-            // console.log("no estas atrasado" + " " + id);
+            
             this.assignmentapiservice.changeStatusSeg1("No estas Atrasado", id).subscribe()
           }
         }
