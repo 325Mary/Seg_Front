@@ -335,21 +335,43 @@ export class RegisterSeguimientoComponent implements OnInit {
         if (asignacion.status == 'success') {
           this.assignment = asignacion.results
           console.log(this.assignment);
-          const datosEmail = {
-            tittle: `Nuevo seguimiento subido por el instructor ${this.assignment.User.nombres} ${this.assignment.User.apellidos} `,
-            emailReseptores: emailusers,
-            subtitulo: `info del seguimiento subido por el ${this.assignment.User.nombres} ${this.assignment.User.apellidos} `,
-            // text: `` ,
-            html: `
-            El presente correo es para notificar que se ha subido el seguimiento del aprendiz.
-            Nombre completo del instructor: ${this.assignment.User.nombres} ${this.assignment.User.apellidos} <br> 
-            Nombre completo del aprendiz: ${this.assignment.Aprendiz.nombres} ${this.assignment.Aprendiz.apellidos}  <br>
-            Identificación: ${this.assignment.Aprendiz.identificacion} <br>
-            Ficha de formación: ${this.assignment.Aprendiz.ficha} <br>
-            Teléfono de contacto: ${this.assignment.Aprendiz.telefono} <br>
-            fecha de inicio: ${this.assignment.Aprendiz.incio_productiva} <br>
-            `
-          }
+         const datosEmail = {
+          title: `Nuevo seguimiento subido por el instructor ${this.assignment.User.nombres} ${this.assignment.User.apellidos}`,
+          emailReceptores: emailusers,
+          subtitulo: `Información del seguimiento subido por ${this.assignment.User.nombres} ${this.assignment.User.apellidos}`,
+          html: `
+            <p>Cordial saludo.</p>
+            
+            <p>
+              El presente correo es para notificar que se ha subido un nuevo seguimiento 
+              de etapa productiva.
+            </p>
+            
+            <section style="margin: 20px 0; padding: 15px; background-color: #f5f5f5; border-left: 4px solid #673AB7;">
+              <h3 style="margin-top: 0; color: #673AB7;">Información del Instructor</h3>
+              <p><strong>Nombre completo:</strong> ${this.assignment.User.nombres} ${this.assignment.User.apellidos}</p>
+            </section>
+            
+            <section style="margin: 20px 0; padding: 15px; background-color: #f5f5f5; border-left: 4px solid #2196F3;">
+              <h3 style="margin-top: 0; color: #2196F3;">Información del Aprendiz</h3>
+              <p><strong>Nombre completo:</strong> ${this.assignment.Aprendiz.nombres} ${this.assignment.Aprendiz.apellidos}</p>
+              <p><strong>Identificación:</strong> ${this.assignment.Aprendiz.identificacion}</p>
+              <p><strong>Teléfono de contacto:</strong> ${this.assignment.Aprendiz.telefono}</p>
+            </section>
+            
+            <section style="margin: 20px 0; padding: 15px; background-color: #f5f5f5; border-left: 4px solid #9C27B0;">
+              <h3 style="margin-top: 0; color: #9C27B0;">Información Académica</h3>
+              <p><strong>Ficha de formación:</strong> ${this.assignment.Aprendiz.ficha}</p>
+              <p><strong>Fecha de inicio:</strong> ${this.assignment.Aprendiz.incio_productiva}</p>
+            </section>
+            
+            <div style="margin: 20px 0; padding: 15px; background-color: #e3f2fd; border-left: 4px solid #2196F3;">
+              <p style="margin: 0;">
+                📋 El seguimiento se encuentra disponible para su revisión en el sistema.
+              </p>
+            </div>
+          `
+        };
           this.emailService.sendEmail(datosEmail).subscribe((data) => { })
           
         }

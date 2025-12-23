@@ -279,21 +279,39 @@ export class RegistrarBitacoraComponent implements OnInit {
 
   bodyUploadBitacora(datos: any) {
     this.aprendizservices.getProgramsByID(datos.aprendiz.Aprendiz.programa_id).subscribe(programa => {
-      const datosEmail = {
-        tittle: `: Nueva bitácora subida del aprendiz ${datos.aprendiz.Aprendiz.nombres} ${datos.aprendiz.Aprendiz.apellidos} `,
-        emailReseptores: [`${datos.aprendiz.User.correo_institucional}`],
-        subtitulo: `informacion nueva bitacora subida por ${datos.aprendiz.Aprendiz.nombres} ${datos.aprendiz.Aprendiz.apellidos}`,
-        // text: `` ,
-        html: `<p>Cordial saludo.</p><br>
-        <span>El presente correo es para notificar que se ha subido la bitácora del aprendiz :</span> <br>
-        Nombre completo : ${datos.aprendiz.Aprendiz.nombres} ${datos.aprendiz.Aprendiz.apellidos}  <br>
-        Identificación : ${datos.aprendiz.Aprendiz.identificacion} <br>
-        Programa de formación : ${programa.results.programa_formacion} <br>
-        Ficha de formación : ${datos.aprendiz.Aprendiz.ficha} <br>
-        Teléfono de contacto : ${datos.aprendiz.Aprendiz.telefono} <br>
-        fecha inicio : ${datos.aprendiz.Aprendiz.incio_productiva} <br>
-        `,
-      }
+    const datosEmail = {
+  title: `Nueva bitácora subida del aprendiz ${datos.aprendiz.Aprendiz.nombres} ${datos.aprendiz.Aprendiz.apellidos}`,
+  emailReceptores: [datos.aprendiz.User.correo_institucional],
+  subtitulo: `Nueva bitácora subida por ${datos.aprendiz.Aprendiz.nombres} ${datos.aprendiz.Aprendiz.apellidos}`,
+  html: `
+    <p>Cordial saludo.</p>
+    
+    <p>
+      El presente correo es para notificar que se ha subido una nueva bitácora de seguimiento 
+      de etapa productiva.
+    </p>
+    
+    <section style="margin: 20px 0; padding: 15px; background-color: #f5f5f5; border-left: 4px solid #2196F3;">
+      <h3 style="margin-top: 0; color: #2196F3;">Información del Aprendiz</h3>
+      <p><strong>Nombre completo:</strong> ${datos.aprendiz.Aprendiz.nombres} ${datos.aprendiz.Aprendiz.apellidos}</p>
+      <p><strong>Identificación:</strong> ${datos.aprendiz.Aprendiz.identificacion}</p>
+      <p><strong>Teléfono de contacto:</strong> ${datos.aprendiz.Aprendiz.telefono}</p>
+    </section>
+    
+    <section style="margin: 20px 0; padding: 15px; background-color: #f5f5f5; border-left: 4px solid #9C27B0;">
+      <h3 style="margin-top: 0; color: #9C27B0;">Información Académica</h3>
+      <p><strong>Programa de formación:</strong> ${programa.results.programa_formacion}</p>
+      <p><strong>Ficha de formación:</strong> ${datos.aprendiz.Aprendiz.ficha}</p>
+      <p><strong>Fecha de inicio:</strong> ${datos.aprendiz.Aprendiz.incio_productiva}</p>
+    </section>
+    
+    <div style="margin: 20px 0; padding: 15px; background-color: #e8f5e9; border-left: 4px solid #4CAF50;">
+      <p style="margin: 0;">
+        📋 Por favor, revise la bitácora a la brevedad posible para realizar el seguimiento correspondiente.
+      </p>
+    </div>
+  `
+};
       this.emailService.sendEmail(datosEmail).subscribe((data) => { })
     })
   }

@@ -321,7 +321,15 @@
     </div>
     <div class="modal-body" style="height: 80vh">
         <div class="container d-flex justify-content-center">
-            <iframe [src]="safeSrc" style="height: 80vh; width: 100%" frameborder="0"></iframe>
+            <div *ngIf="!safeSrc || safeSrc === ''">
+                <p>Cargando documento...</p>
+            </div>
+            <iframe *ngIf="safeSrc && safeSrc !== ''" 
+                    [src]="safeSrc" 
+                    style="height: 80vh; width: 100%" 
+                    frameborder="0"
+                    (error)="onIframeError()">
+            </iframe>
         </div>
     </div>
     <div class="modal-footer"></div>

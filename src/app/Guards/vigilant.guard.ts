@@ -1,39 +1,48 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivate, RouterStateSnapshot, UrlTree } from '@angular/router';
-import { Observable } from 'rxjs';
-import { CookieService } from 'ngx-cookie-service'
-import { Router } from '@angular/router'
+import { ActivatedRouteSnapshot, CanActivate, RouterStateSnapshot, Router } from '@angular/router';
+import { Observable, of } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
+import { LoginService } from '../Services/login/login.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class VigilantGuard implements CanActivate {
-  constructor(private route: Router, private cookies: CookieService) {}
-  
-  acessToken: boolean = false
-  
-  redirectTo() {
-    const token = sessionStorage.getItem('token');
-    
-    if (token === null || token === "" || token === undefined) {
-      this.acessToken = false;
-      
-      sessionStorage.clear();
-      
-      this.route.navigate(['login']).then(() => {
-        window.history.replaceState(null, '', '/login');
-        window.history.pushState(null, '', '/login');
-      });
-    } else {
-      this.acessToken = true;
-    }
-  }
+  constructor(
+    private router: Router,
+    private loginService: LoginService
+  ) {}
 
   canActivate(
     route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    this.redirectTo()
-    return this.acessToken
+    state: RouterStateSnapshot
+  ): Observable<boolean> {
+    const token = sessionStorage.getItem('token');
+    const perfilId = sessionStorage.getItem('perfil_id');
+    
+    if (!token ||  !perfilId) {
+      this.redirectToLogin();
+      return of(false);
+    }
+
+    return this.loginService.validateToken().pipe(
+      map(isValid => {
+        if (isValid) {
+          return true;
+        } else {
+          this.redirectToLogin();
+          return false;
+        }
+      }),
+      catchError(() => {
+        this.redirectToLogin();
+        return of(false);
+      })
+    );
   }
 
+  private redirectToLogin(): void {
+    sessionStorage.clear();
+    this.router.navigate(['/login']);
+  }
 }

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {HttpClient } from '@angular/common/http'
-import {Observable ,Subject, tap} from 'rxjs'
+import {map, Observable ,of,Subject, tap} from 'rxjs'
 import {ResponseI} from '../../models/response.interface'
 import { BaseUrlService } from '../../../GlobalConstanst'
 import { catchError ,throwError} from 'rxjs';
@@ -81,4 +81,27 @@ export class LoginService {
 
   }
 
+   validateToken(): Observable<boolean> {
+    const token = sessionStorage.getItem('token');
+    
+    if (!token) {
+      return of(false);
+    }
+
+    const direction = this.url + "validateToken";
+    
+    return this.http.get<ResponseI>(direction).pipe(
+      map(response => {
+        return response.valid === true;
+      }),
+      catchError(() => {
+        return of(false);
+      })
+    );
+  }
+
+  logout(): Observable<any> {
+    sessionStorage.clear();
+    return of(true);
+  }
 }

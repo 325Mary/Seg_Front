@@ -51,12 +51,6 @@ import { CreateCentrosComponent } from 'app/Views/centros_data/create-centros/cr
 import { CiudadComponent } from "app/Views/ciudad-data/ciudad/ciudad.component";
 import { UpdateCiudadComponent } from "app/Views/ciudad-data/update-ciudad/update-ciudad.component";
 import { CreatedCiudadComponent } from 'app/Views/ciudad-data/created-ciudad/created-ciudad.component';
-import { EmpresaComponent } from "app/Views/Empresa/empresa/empresa.component";
-import { CrearEmpresaComponent } from "app/Views/Empresa/crear-empresa/crear-empresa.component";
-import { EditarEmpresaComponent } from "app/Views/Empresa/editar-empresa/editar-empresa.component";
-import { EpsComponent } from "app/Views/Eps/eps/eps.component";
-import { CrearEpsComponent } from "app/Views/Eps/crear-eps/crear-eps.component";
-import { EditarrEpsComponent } from "app/Views/Eps/editarr-eps/editarr-eps.component";
 
 const Rutas: Routes = [
   {
@@ -287,34 +281,6 @@ const Rutas: Routes = [
     path: 'crearCiudad',
     component: CreatedCiudadComponent,
     // canActivate: [VigilantGuard, GuardRolesGuard],
-  },
-  {
-    path:"empresa",
-    component:EmpresaComponent
-  },
-  { 
-    path: 'crearEmpresa',
-    component: CrearEmpresaComponent,
-    // canActivate: [VigilantGuard, GuardRolesGuard],
-  },
-  {
-    path: 'editarEmpresa/:id',
-    component: EditarEmpresaComponent,
-    // canActivate: [VigilantGuard, GuardRolesGuard]
-  },
-  {
-    path:"eps",
-    component:EpsComponent
-  },
-  {
-    path: 'crearEps',
-    component: CrearEpsComponent,
-    // canActivate: [VigilantGuard, GuardRolesGuard],
-  },
-  { 
-    path: 'editarEps/:id',    
-    component: EditarrEpsComponent,
-    // canActivate: [VigilantGuard, GuardRolesGuard]
   },
 ];
 //procesar rutas

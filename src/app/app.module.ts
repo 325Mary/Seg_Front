@@ -1,7 +1,7 @@
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule , CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS  } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { AppRoutingModule } from './app.routing';
 import { ComponentsModule } from './components/components.module';
@@ -57,12 +57,7 @@ import { CentroFormacionComponent } from './Views/centros_data/centro-formacion/
 import { CiudadComponent } from './Views/ciudad-data/ciudad/ciudad.component';
 import { UpdateCiudadComponent } from './Views/ciudad-data/update-ciudad/update-ciudad.component';
 import { CreatedCiudadComponent } from './Views/ciudad-data/created-ciudad/created-ciudad.component';
-import { EmpresaComponent } from './Views/Empresa/empresa/empresa.component';
-import { CrearEmpresaComponent } from './Views/Empresa/crear-empresa/crear-empresa.component';
-import { EditarEmpresaComponent } from './Views/Empresa/editar-empresa/editar-empresa.component';
-import { EpsComponent } from './Views/Eps/eps/eps.component';
-import { CrearEpsComponent } from './Views/Eps/crear-eps/crear-eps.component';
-import { EditarrEpsComponent } from './Views/Eps/editarr-eps/editarr-eps.component';
+import { AuthInterceptor } from './Guards/auth.interceptor';
   
 @NgModule({
   imports: [
@@ -122,17 +117,19 @@ import { EditarrEpsComponent } from './Views/Eps/editarr-eps/editarr-eps.compone
     DetectarFormatoFechaPipe,
     CentroFormacionComponent,
     CiudadComponent,
-    EmpresaComponent,
-    EpsComponent,
-    CrearEpsComponent,
-    EditarrEpsComponent,
     // ReporteAprendicesComponent,
     // RegisterAprendizComponent,
 
   ],
-  providers: [],
+  providers: [
+    {provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true}
+  ],
   schemas : [CUSTOM_ELEMENTS_SCHEMA],
   bootstrap: [AppComponent],
+  
 
 })
 export class AppModule { }
+ 

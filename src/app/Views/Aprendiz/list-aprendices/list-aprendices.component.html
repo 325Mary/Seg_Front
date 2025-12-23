@@ -14,33 +14,35 @@
               <h6>{{ nombreDoc }}</h6>
             </div>
             
-            <div class="col-xl-4 col-lg-5 d-flex justify-content-end col-12">
+            <!-- NUEVO: Botón Descargar Plantilla -->
+            <div class="col-xl-4 col-lg-5 col-12 mb-2 px-1">
+              <button 
+                class="btn btn-info w-100" 
+                mat-raised-button 
+                (click)="descargarPlantillaExcel()"
+                [disabled]="descargandoPlantilla">
+                <i class="fa-solid fa-download"></i>
+                {{ descargandoPlantilla ? 'Descargando...' : 'Descargar Plantilla' }}
+              </button>
+            </div>
+            
+            <div class="col-xl-4 col-lg-5 col-12 mb-2 px-1">
               <button class="btn btn-success upload w-100" mat-raised-button (click)="fileInput.click()">
+                <i class="fa-solid fa-upload"></i>
                 Cargar Excel
               </button>
               <input hidden #fileInput type="file" (change)="onDocumentChange($event)" accept=".xlsx" />
             </div>
             
-            <!-- Botón Subir - solo visible cuando docValido es true y NO está en preview -->
-            <div class="col-2 d-flex justify-content-end">
-              <button 
-                *ngIf="docValido == true && !showPreview" 
-                (click)="sendFile()" 
-                class="btn btn-success upload w-100"
-                [disabled]="!canSendFile()"
-                [class.btn-secondary]="!canSendFile()"
-                [title]="(isPerfil4 && !selectedCentro) ? 'Seleccione un centro de formación' : 'Subir archivo'">
-                Subir
-              </button>
-            </div>
+            
           </div>
         </div>
 
         <!-- Alerta informativa para perfil 4 -->
-        <div *ngIf="isPerfil4 && docValido && !selectedCentro && !showPreview" class="alert alert-warning mt-3" role="alert">
+        <!-- <div *ngIf="isPerfil4 && docValido && !selectedCentro && !showPreview" class="alert alert-warning mt-3" role="alert">
           <i class="fa-solid fa-exclamation-triangle"></i>
           <strong>Atención:</strong> Debes seleccionar un centro de formación antes de importar el archivo Excel.
-        </div>
+        </div> -->
 
         <!-- Modal de Vista Previa -->
         <div *ngIf="showPreview" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 99999; display: flex; align-items: center; justify-content: center;" (click)="closePreview()">

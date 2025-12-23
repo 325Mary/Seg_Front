@@ -205,5 +205,9 @@ createDocuments(centroId: string, documento: string, ruta: File): Observable<Res
       return this.http.get<ResponseI>(BaseUrlService.concat(`programs`))
     }
 
-
+    descargarPlantillaExcel() {
+  return this.http.get<ResponseI>(BaseUrlService.concat(`plantillaAprendiz`), { 
+    responseType: 'blob' as 'json' 
+  });
+}
 }

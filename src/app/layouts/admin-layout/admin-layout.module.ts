@@ -43,8 +43,6 @@ import { EditComponentCentro } from 'app/Views/centros_data/edit/edit.component'
 import { CreateCentrosComponent } from 'app/Views/centros_data/create-centros/create-centros.component';
 import { UpdateCiudadComponent } from 'app/Views/ciudad-data/update-ciudad/update-ciudad.component';
 import { CreatedCiudadComponent } from 'app/Views/ciudad-data/created-ciudad/created-ciudad.component';
-import { CrearEmpresaComponent } from 'app/Views/Empresa/crear-empresa/crear-empresa.component';
-import { EditarEmpresaComponent } from 'app/Views/Empresa/editar-empresa/editar-empresa.component';
 import { cr } from 'chart.js/dist/chunks/helpers.core';
 
 @NgModule({
@@ -90,8 +88,6 @@ import { cr } from 'chart.js/dist/chunks/helpers.core';
     CreateCentrosComponent,
     UpdateCiudadComponent,
     CreatedCiudadComponent,
-    CrearEmpresaComponent,
-    EditarEmpresaComponent,
     
   ],
 })

@@ -240,42 +240,90 @@ export class RetroalimentacionSeguimientoComponent implements OnInit {
     });
   }
   sendEnvioEmailSegAprobado(datos: any) {
-    console.log(datos)
-    const datosEmail = {
-      tittle: `: los documentos por certificar se Se Aprobo por el instructor  ${datos.results.User.nombres} ${datos.results.User.apelidlidos}`,
-      emailReseptores: [datos.results.User.correo_institucional],
-      subtitulo: `✅✅se aprobo el seguimiento✅✅`,
-      // text: `` ,
-      html: `
-      El presente correo es para notificar que se ha Aprbado el seguimiento del aprendiz.
-      Nombre completo del instructor: ${datos.results.User.nombres} ${datos.results.User.apellidos} <br>
-      Nombre completo del aprendiz: ${datos.results.Aprendiz.nombres} ${datos.results.Aprendiz.apellidos} <br>
-      Identificación:  ${datos.results.Aprendiz.identificacion} <br>
-      Ficha de formación: ${datos.results.Aprendiz.ficha} <br>
-      Teléfono de contacto: ${datos.results.Aprendiz.telefono} <br>
-      fecha de inicio: ${datos.results.Aprendiz.incio_productiva} <br>
-      `,
-    }
+   const datosEmail = {
+  title: `Seguimiento aprobado - Aprendiz ${datos.results.Aprendiz.nombres} ${datos.results.Aprendiz.apellidos}`,
+  emailReceptores: [datos.results.User.correo_institucional],
+  subtitulo: `Seguimiento de etapa productiva aprobado`,
+  html: `
+    <p>Cordial saludo.</p>
+    
+    <div style="margin: 20px 0; padding: 15px; background-color: #e8f5e9; border-left: 4px solid #4CAF50;">
+      <p style="margin: 0;">
+        ✅ <strong>Seguimiento aprobado</strong> - El seguimiento de etapa productiva ha sido aprobado 
+        y los documentos están listos para certificar.
+      </p>
+    </div>
+    
+    <section style="margin: 20px 0; padding: 15px; background-color: #f5f5f5; border-left: 4px solid #673AB7;">
+      <h3 style="margin-top: 0; color: #673AB7;">Información del Instructor</h3>
+      <p><strong>Nombre completo:</strong> ${datos.results.User.nombres} ${datos.results.User.apellidos}</p>
+    </section>
+    
+    <section style="margin: 20px 0; padding: 15px; background-color: #f5f5f5; border-left: 4px solid #2196F3;">
+      <h3 style="margin-top: 0; color: #2196F3;">Información del Aprendiz</h3>
+      <p><strong>Nombre completo:</strong> ${datos.results.Aprendiz.nombres} ${datos.results.Aprendiz.apellidos}</p>
+      <p><strong>Identificación:</strong> ${datos.results.Aprendiz.identificacion}</p>
+      <p><strong>Teléfono de contacto:</strong> ${datos.results.Aprendiz.telefono}</p>
+    </section>
+    
+    <section style="margin: 20px 0; padding: 15px; background-color: #f5f5f5; border-left: 4px solid #9C27B0;">
+      <h3 style="margin-top: 0; color: #9C27B0;">Información Académica</h3>
+      <p><strong>Ficha de formación:</strong> ${datos.results.Aprendiz.ficha}</p>
+      <p><strong>Fecha de inicio:</strong> ${datos.results.Aprendiz.incio_productiva}</p>
+    </section>
+    
+    <div style="margin: 20px 0; padding: 15px; background-color: #e3f2fd; border-left: 4px solid #2196F3;">
+      <p style="margin: 0;">
+        📋 Puede proceder con el proceso de certificación de la etapa productiva.
+      </p>
+    </div>
+  `
+};
     this.emailService.sendEmail(datosEmail).subscribe((data) => { })
   }
 
   sendEnvioEmailNoAprobado(datos: any) {
     console.log(datos)
-    const datosEmail = {
-      tittle: `los documentos por certificar no fueron Aprobos por el instructor  ${datos.results.User.nombres} ${datos.results.User.apelidlidos}`,
-      emailReseptores: [datos.results.User.correo_institucional],
-      subtitulo: `❌❌No se aprobo el seguimiento❌❌`,
-      // text: `` ,
-      html: `
-      El presente correo es para notificar que se ha Aprbado el seguimiento del aprendiz.
-      Nombre completo del instructor: ${datos.results.User.nombres} ${datos.results.User.apellidos} <br>
-      Nombre completo del aprendiz: ${datos.results.Aprendiz.nombres} ${datos.results.Aprendiz.apellidos} <br>
-      Identificación:  ${datos.results.Aprendiz.identificacion} <br>
-      Ficha de formación: ${datos.results.Aprendiz.ficha} <br>
-      Teléfono de contacto: ${datos.results.Aprendiz.telefono} <br>
-      fecha de inicio: ${datos.results.Aprendiz.incio_productiva} <br>
-      `,
-    }
+ const datosEmail = {
+  title: `Seguimiento no aprobado - Aprendiz ${datos.results.Aprendiz.nombres} ${datos.results.Aprendiz.apellidos}`, // ✅ Sin emoji
+  emailReceptores: [datos.results.User.correo_institucional],
+  subtitulo: `Seguimiento de etapa productiva no aprobado`,
+  html: `
+    <p>Cordial saludo.</p>
+    
+    <div style="margin: 20px 0; padding: 15px; background-color: #ffebee; border-left: 4px solid #f44336;">
+      <p style="margin: 0;">
+        ❌ <strong>Seguimiento no aprobado</strong> - El seguimiento de etapa productiva no ha sido aprobado. 
+        Los documentos requieren correcciones antes de certificar.
+      </p>
+    </div>
+    
+    <section style="margin: 20px 0; padding: 15px; background-color: #f5f5f5; border-left: 4px solid #673AB7;">
+      <h3 style="margin-top: 0; color: #673AB7;">Información del Instructor</h3>
+      <p><strong>Nombre completo:</strong> ${datos.results.User.nombres} ${datos.results.User.apellidos}</p>
+    </section>
+    
+    <section style="margin: 20px 0; padding: 15px; background-color: #f5f5f5; border-left: 4px solid #2196F3;">
+      <h3 style="margin-top: 0; color: #2196F3;">Información del Aprendiz</h3>
+      <p><strong>Nombre completo:</strong> ${datos.results.Aprendiz.nombres} ${datos.results.Aprendiz.apellidos}</p>
+      <p><strong>Identificación:</strong> ${datos.results.Aprendiz.identificacion}</p>
+      <p><strong>Teléfono de contacto:</strong> ${datos.results.Aprendiz.telefono}</p>
+    </section>
+    
+    <section style="margin: 20px 0; padding: 15px; background-color: #f5f5f5; border-left: 4px solid #9C27B0;">
+      <h3 style="margin-top: 0; color: #9C27B0;">Información Académica</h3>
+      <p><strong>Ficha de formación:</strong> ${datos.results.Aprendiz.ficha}</p>
+      <p><strong>Fecha de inicio:</strong> ${datos.results.Aprendiz.inicio_productiva}</p>
+    </section>
+    
+    <div style="margin: 20px 0; padding: 15px; background-color: #fff3cd; border-left: 4px solid #ffc107;">
+      <p style="margin: 0;">
+        ⚠️ <strong>Acción requerida:</strong> Por favor, revise las observaciones del instructor, 
+        realice las correcciones necesarias en los documentos y vuelva a enviarlos para aprobación.
+      </p>
+    </div>
+  `
+};
     this.emailService.sendEmail(datosEmail).subscribe((data) => { })
   }
 }

@@ -275,41 +275,75 @@ export class RetroalimentacionBitacoraComponent implements OnInit {
     this.emailService.getDadataAprendiz(datos.id_bitacora).subscribe(data => {
       let datosEmail: any
       console.log(data.results);
-      if (datos.estado_documento == "Aprobado") {
-        datosEmail = {
-          tittle: `❗${data.results[0].nombres} acaban de revisar tu bitacora ${data.results[0].tipo_seguimiento}❗ `,
-          emailReseptores: [`${data.results[0].correo_misena}`],
-          subtitulo: `estado birtacora ${data.results[0].tipo_seguimiento}`,
-          // text: `` ,
-          html: `
-          ✅
-          El presente correo es para notificar que se ha Aprobado la bitácora del aprendiz :📚 <br>
-          Nombre completo: ${data.results[0].nombres} ${data.results[0].apellidos} <br>
-          Identificación:${data.results[0].identificacion}<br>
-          Programa de formación : ${data.results[0].programa_id} <br> 
-          Ficha de formación:${data.results[0].ficha}<br>
-          Teléfono de contacto:${data.results[0].telefono}<br>
-          fecha de inicio:${data.results[0].incio_productiva}<br>
-          ✅`,
-        }
-      } else {
-        datosEmail = {
-          tittle: `❗${data.results[0].nombres} acaban de revisar tu bitacora ${data.results[0].tipo_seguimiento}❗ `,
-          emailReseptores: [`${data.results[0].correo_misena}`],
-          subtitulo: `estado birtacora ${data.results[0].tipo_seguimiento}`,
-          // text: `` ,
-          html: `.❌
-          El presente correo es para notificar que se ha No se Aprobado  la bitácora del aprendiz :📚 <br>
-          Nombre completo: ${data.results[0].nombres} ${data.results[0].apellidos} <br>
-          Identificación:${data.results[0].identificacion}<br>
-          Programa de formación : ${data.results[0].programa_id} <br> 
-          Ficha de formación:${data.results[0].ficha}<br>
-          Teléfono de contacto:${data.results[0].telefono}<br>
-          fecha de inicio:${data.results[0].incio_productiva}<br>
-          ❌`,
-        }
-      }
-      console.log(datosEmail);
+     if (datos.estado_documento === "Aprobado") {
+  datosEmail = {
+    title: `Bitácora ${data.results[0].tipo_seguimiento} aprobada`,
+    emailReceptores: [data.results[0].correo_misena],
+    subtitulo: `Estado de bitácora ${data.results[0].tipo_seguimiento}`,
+    html: `
+      <p>Cordial saludo.</p>
+      
+      <div style="margin: 20px 0; padding: 15px; background-color: #e8f5e9; border-left: 4px solid #4CAF50;">
+        <p style="margin: 0;">
+          ✅ <strong>¡Felicitaciones!</strong> Su bitácora <strong>${data.results[0].tipo_seguimiento}</strong> ha sido aprobada.
+        </p>
+      </div>
+      
+      <section style="margin: 20px 0; padding: 15px; background-color: #f5f5f5; border-left: 4px solid #2196F3;">
+        <h3 style="margin-top: 0; color: #2196F3;">Información del Aprendiz</h3>
+        <p><strong>Nombre completo:</strong> ${data.results[0].nombres} ${data.results[0].apellidos}</p>
+        <p><strong>Identificación:</strong> ${data.results[0].identificacion}</p>
+        <p><strong>Teléfono de contacto:</strong> ${data.results[0].telefono}</p>
+      </section>
+      
+      <section style="margin: 20px 0; padding: 15px; background-color: #f5f5f5; border-left: 4px solid #9C27B0;">
+        <h3 style="margin-top: 0; color: #9C27B0;">Información Académica</h3>
+        <p><strong>Programa de formación:</strong> ${data.results[0].programa_id}</p>
+        <p><strong>Ficha de formación:</strong> ${data.results[0].ficha}</p>
+        <p><strong>Fecha de inicio:</strong> ${data.results[0].incio_productiva}</p>
+      </section>
+      
+      <p>Puede continuar con el proceso de seguimiento de su etapa productiva.</p>
+    `
+  };
+} else {
+  datosEmail = {
+    title: `Bitácora ${data.results[0].tipo_seguimiento} requiere correcciones`,
+    emailReceptores: [data.results[0].correo_misena],
+    subtitulo: `Estado de bitácora ${data.results[0].tipo_seguimiento}`,
+    html: `
+      <p>Cordial saludo.</p>
+      
+      <div style="margin: 20px 0; padding: 15px; background-color: #ffebee; border-left: 4px solid #f44336;">
+        <p style="margin: 0;">
+          ❌ Su bitácora <strong>${data.results[0].tipo_seguimiento}</strong> no ha sido aprobada y requiere correcciones.
+        </p>
+      </div>
+      
+      <section style="margin: 20px 0; padding: 15px; background-color: #f5f5f5; border-left: 4px solid #2196F3;">
+        <h3 style="margin-top: 0; color: #2196F3;">Información del Aprendiz</h3>
+        <p><strong>Nombre completo:</strong> ${data.results[0].nombres} ${data.results[0].apellidos}</p>
+        <p><strong>Identificación:</strong> ${data.results[0].identificacion}</p>
+        <p><strong>Teléfono de contacto:</strong> ${data.results[0].telefono}</p>
+      </section>
+      
+      <section style="margin: 20px 0; padding: 15px; background-color: #f5f5f5; border-left: 4px solid #9C27B0;">
+        <h3 style="margin-top: 0; color: #9C27B0;">Información Académica</h3>
+        <p><strong>Programa de formación:</strong> ${data.results[0].programa_id}</p>
+        <p><strong>Ficha de formación:</strong> ${data.results[0].ficha}</p>
+        <p><strong>Fecha de inicio:</strong> ${data.results[0].inicio_productiva}</p>
+      </section>
+      
+      <div style="margin: 20px 0; padding: 15px; background-color: #fff3cd; border-left: 4px solid #ffc107;">
+        <p style="margin: 0;">
+          ⚠️ <strong>Acción requerida:</strong> Por favor, revise las observaciones del instructor, 
+          realice las correcciones necesarias y vuelva a enviar su bitácora.
+        </p>
+      </div>
+    `
+  };
+}
+      // console.log(datosEmail);
 
       this.emailService.sendEmail(datosEmail).subscribe((data) => { })
     })

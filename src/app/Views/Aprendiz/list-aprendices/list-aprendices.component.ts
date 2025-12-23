@@ -30,28 +30,20 @@ export class ListAprendicesComponent implements OnInit {
   listCentros: any[] = [];
   selectedCentro: string = '';
   isPerfil4: boolean = false;
-
-  readonly DATE_COLUMNS = [
-    'FechaNacimiento', 
-    'InicioLectiva', 
-    'FinLectiva', 
-    'InicioProductiva', 
-    'FinProductiva', 
-    'ContratoInicio', 
-    'ContratoFin', 
-    'FechaRegistro'
-  ];
+  descargandoPlantilla = false; 
+  
 
   readonly REQUIRED_COLUMNS = [
-    // 'NIT', 'RazonSocial', 'Empresa', 'DepartamentoEmpresa', 'CiudadEmpresa',
-    // 'DireccionEmpresa', 'TelefonoEmpresa', 'CorreoEmpresa', 'RepresentanteLegal',
-    // 'IdentificacionRepresentanteLegal', 'TipoDocumento', 'Numerodocumento',
-    // 'Nombres', 'Apellidos', 'FechaNacimiento', 'Genero', 'Telefono',
-    // 'CorreoElectronico', 'CorreoMisena', 'DepartamentoAprendiz', 'MunicipioAprendiz',
-    // 'Centro', 'Especialidad', 'Ficha', 'InicioLectiva', 'FinLectiva',
-    // 'InicioProductiva', 'FinProductiva', 'ContratoInicio', 'ContratoFin',
-    // 'Regional', 'FaseAprendiz', 'NitEPS', 'EPS', 'NitARL', 'ARL', 'Modalidad'
-  ];
+    'NIT', 'Razon Social', 'Departamento empresa', 'Ciudad empresa',
+    'Dirección', 'Teléfono empresa', 'Correo electrónico',
+    'Tipo documento', 'Numero documento', 'Apellidos', 'Nombres',
+    'Fecha Nacimiento', 'Género', 'Discapacidad', 'Teléfono',
+    'Correo electónico', 'Departamento código', 'Departamento',
+    'Municipio código', 'Municipio', 'Especialidad', 'Ficha',
+    'Inicio lectiva', 'Fin lectiva', 'Inicio productiva', 'Fin productiva',
+    'Contrato inicio', 'Contrato Fin', 'Regional', 'Fase',
+    'Nit EPS', 'EPS', 'Nit ARL', 'ARL', 'Fecha registro', 'Modalidad'
+];
 
   constructor(
     private aprendicesService: AprendizService,
@@ -219,92 +211,476 @@ export class ListAprendicesComponent implements OnInit {
     return new Date(date_info.getFullYear(), date_info.getMonth(), date_info.getDate(), hours, minutes, seconds);
   }
 
-  onDocumentChange(event): void {
-    const selectedFile = event.target.files[0];
-    
-   
-    this.resetFileState();
+ 
+  // ⚠️ PRIMERO: Actualiza la lista de columnas de fecha para que coincida EXACTAMENTE con tu Excel
 
-    if (!selectedFile) return;
+readonly DATE_COLUMNS = [
+  'Fecha Nacimiento',      
+  // ← NOTA: Con espacio, no FechaNacimiento
+  'Inicio lectiva',        
+  // ← NOTA: Con espacio y minúscula
+  'Fin lectiva',
+  'Inicio productiva',
+  'Fin productiva',
+  'Contrato inicio',
+  'Contrato Fin',
+  'Fecha registro'
+];
 
-    if (selectedFile.size > 2000000) {
-      Swal.fire({ title: "Error", text: "El archivo excede 2MB", icon: "error" });
-      return;
-    }
 
-    if (!selectedFile.name.endsWith('.xlsx')) {
-      Swal.fire({ title: "Error", text: "El archivo debe ser .xlsx", icon: "error" });
-      return;
-    }
 
-    this.nombreDoc = selectedFile.name;
-    this.file = selectedFile;
+// Reemplaza el método onDocumentChange COMPLETO
 
-    const reader = new FileReader();
-    reader.onload = (e: any) => {
-      try {
-        const data = new Uint8Array(e.target.result);
-        const workbook = XLSX.read(data, { type: 'array', raw: false });
-        const worksheet = workbook.Sheets[workbook.SheetNames[0]];
-        const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, raw: false, defval: '' });
+onDocumentChange(event): void {
+  const selectedFile = event.target.files[0];
+  
+  this.resetFileState();
 
-        if (jsonData.length < 2) {
-          throw new Error('Excel vacío');
+  if (!selectedFile) return;
+
+  if (selectedFile.size > 2000000) {
+    Swal.fire({ title: "Error", text: "El archivo excede 2MB", icon: "error" });
+    return;
+  }
+
+  if (!selectedFile.name.endsWith('.xlsx')) {
+    Swal.fire({ title: "Error", text: "El archivo debe ser .xlsx", icon: "error" });
+    return;
+  }
+
+  this.nombreDoc = selectedFile.name;
+  this.file = selectedFile;
+
+  const reader = new FileReader();
+  reader.onload = (e: any) => {
+    try {
+      const data = new Uint8Array(e.target.result);
+      
+      const workbook = XLSX.read(data, { 
+        type: 'array',
+        cellDates: false,
+        cellNF: false,
+        cellText: false,
+        raw: true
+      });
+      
+      const worksheet = workbook.Sheets[workbook.SheetNames[0]];
+      const range = XLSX.utils.decode_range(worksheet['!ref']);
+      
+      
+      // ========== LEER ENCABEZADOS ==========
+      const headers: string[] = [];
+      for (let col = range.s.c; col <= range.e.c; col++) {
+        const cellAddress = XLSX.utils.encode_cell({ r: range.s.r, c: col });
+        const cell = worksheet[cellAddress];
+        headers.push(cell ? String(cell.v).trim() : '');
+      }
+      
+      this.excelHeaders = headers;
+      console.log('📋 Headers originales del Excel:', this.excelHeaders);
+      
+      
+      // ========== LEER DATOS Y CONVERTIR FECHAS ==========
+      const rows: any[] = [];
+      const dateColumnsMap = new Map<string, boolean>();
+      
+      
+      // Identificar qué columnas son de fecha
+      headers.forEach(header => {
+        const normalizedHeader = this.normalizeText(header);
+        const isDateColumn = this.DATE_COLUMNS.some(col => 
+          this.normalizeText(col) === normalizedHeader
+        );
+        dateColumnsMap.set(header, isDateColumn);
+      });
+      
+      console.log('📅 Columnas que se convertirán:', Array.from(dateColumnsMap.entries()).filter(([k,v]) => v).map(([k]) => k));
+      
+      for (let row = range.s.r + 1; row <= range.e.r; row++) {
+        const rowData: any = {};
+        let isEmptyRow = true;
+        
+        for (let col = range.s.c; col <= range.e.c; col++) {
+          const cellAddress = XLSX.utils.encode_cell({ r: row, c: col });
+          const cell = worksheet[cellAddress];
+          const header = headers[col - range.s.c];
+          
+          if (cell) {
+            let cellValue = cell.w || String(cell.v);
+            cellValue = String(cellValue).trim();
+            
+            
+            // 🔄 CONVERTIR FECHAS automáticamente
+            if (dateColumnsMap.get(header) && cellValue) {
+              const originalValue = cellValue;
+              cellValue = this.convertToStandardDateFormat(cellValue);
+              
+              if (originalValue !== cellValue) {
+                console.log(`🔄 Conversión: "${originalValue}" → "${cellValue}"`);
+              }
+            }
+            
+            rowData[header] = cellValue;
+            if (cellValue !== '') isEmptyRow = false;
+          } else {
+            rowData[header] = '';
+          }
         }
+        
+        if (!isEmptyRow) {
+          rows.push(rowData);
+        }
+      }
+      
+      this.excelData = rows;
+      
+      console.log('📊 Total filas:', this.excelData.length);
+      console.log('🔍 Primera fila de datos:', this.excelData[0]);
+      
+      
+      // ========== DETECTAR COLUMNAS DE FECHA ==========
+      const dateColumnsFound: string[] = [];
+      this.excelHeaders.forEach(header => {
+        const normalizedHeader = this.normalizeText(header);
+        const matchingColumn = this.DATE_COLUMNS.find(dateCol => 
+          this.normalizeText(dateCol) === normalizedHeader
+        );
+        if (matchingColumn) {
+          dateColumnsFound.push(header);
+        }
+      });
+      
+      console.log('📅 Columnas de fecha detectadas:', dateColumnsFound);
+      
+      if (dateColumnsFound.length === 0) {
+        console.warn('⚠️ NO se detectaron columnas de fecha. Verifica DATE_COLUMNS.');
+      }
+      
+      
+      // ========== VALIDAR FECHAS ==========
+      const dateValidation = this.validateAllDates(this.excelData, this.excelHeaders);
+      
+      console.log(`🔍 Resultado validación: ${dateValidation.valid ? '✅ VÁLIDO' : '❌ ERRORES'}`);
+      console.log(`📝 Errores encontrados: ${dateValidation.errors.length}`);
+      
+      if (!dateValidation.valid) {
+        this.docValido = false;
+        
+        
+        // Mostrar TODOS los errores en consola para debug
+        console.error('❌ TODOS LOS ERRORES DE FECHA:', dateValidation.errors);
+        
+        const errorsToShow = dateValidation.errors.slice(0, 20);
+        const moreErrors = dateValidation.errors.length > 20 
+          ? `<br><br><strong style="color: #d33;">... y ${dateValidation.errors.length - 20} errores más</strong>` 
+          : '';
+        
+        Swal.fire({
+          title: "❌ Errores de formato de fecha",
+          html: `
+            <div style="text-align: left; max-height: 600px; overflow-y: auto; padding: 10px;">
+              <p style="font-size: 16px;"><strong>Se encontraron ${dateValidation.errors.length} fechas con formato incorrecto:</strong></p>
+              <ul style="font-size: 13px; line-height: 1.8; background: #fff3cd; padding: 15px; border-radius: 5px; margin: 10px 0;">
+                ${errorsToShow.map(err => `<li style="margin-bottom: 5px;">${err}</li>`).join('')}
+              </ul>
+              ${moreErrors}
+              <br>
+              <div style="background: #d4edda; border: 2px solid #39A900; padding: 15px; border-radius: 8px; margin-top: 15px;">
+                <p style="color: #155724; font-weight: bold; margin: 0; font-size: 16px;">
+                  ✓ Formato OBLIGATORIO: <span style="color: #39A900; font-size: 18px;">DD/MM/AAAA</span>
+                </p>
+                <p style="color: #155724; margin: 8px 0 0 0; font-size: 14px;">
+                  Ejemplo correcto: <strong>15/03/2024</strong>
+                </p>
+              </div>
+              <div style="background: #f8d7da; border: 2px solid #d33; padding: 15px; border-radius: 8px; margin-top: 10px;">
+                <p style="color: #721c24; font-weight: bold; margin: 0; font-size: 15px;">
+                  ✗ Formatos NO permitidos:
+                </p>
+                <ul style="color: #721c24; margin: 8px 0 0 0; font-size: 13px; line-height: 1.6;">
+                  <li>2024-03-15 (ISO con guiones)</li>
+                  <li>03/15/2024 (formato US - mes primero)</li>
+                  <li>2024/03/15 (año primero)</li>
+                  <li>15-03-2024 (guiones en lugar de barras)</li>
+                  <li>45678 (números seriales de Excel)</li>
+                  <li>Texto como "TECNÓLOGO..." en columnas de fecha</li>
+                </ul>
+              </div>
+            </div>
+          `,
+          icon: 'error',
+          width: '800px',
+          confirmButtonText: 'Entendido',
+          confirmButtonColor: '#d33',
+          customClass: {
+            popup: 'swal-wide'
+          }
+        });
+        return;
+      }
 
-        this.excelHeaders = jsonData[0] as string[];
-        this.excelData = jsonData.slice(1).map((row: any) => {
-          const rowData: any = {};
-          this.excelHeaders.forEach((header, index) => {
-            let value = row[index];
-            
-            if (value === undefined || value === null || value === '') {
-              rowData[header] = '';
-              return;
-            }
-            
-            // Formatear fechas - ELIMINAR TIMESTAMP
-            const normalizedHeader = this.normalizeText(header);
-            const isDateColumn = this.DATE_COLUMNS.some(col => 
-              this.normalizeText(col) === normalizedHeader
-            );
-            
-            if (isDateColumn) {
-              value = this.formatExcelDate(value);
-              console.log(`Columna ${header} - Valor formateado:`, value);
-            }
-            
-            rowData[header] = value;
-          });
-          return rowData;
-        }).filter(row => Object.values(row).some(val => val !== ''));
-
-        console.log('DATOS PROCESADOS:', this.excelData);
-
-        if (this.validateExcelColumns(this.excelHeaders)) {
-          this.docValido = true;
-          this.showPreview = true;
-          Swal.fire({
-            title: "¡Éxito!",
-            html: `Registros: ${this.excelData.length}`,
-            icon: 'success',
-            confirmButtonColor: "#39A900",
-            timer: 2000
-          });
-        } else {
+      
+      // ========== VALIDAR COLUMNAS REQUERIDAS ==========
+      if (this.REQUIRED_COLUMNS.length > 0) {
+        if (!this.validateExcelColumns(this.excelHeaders)) {
           this.docValido = false;
           Swal.fire({
-            title: "Error en estructura",
-            html: this.validationErrors.join('<br>'),
-            icon: 'error'
+            title: "❌ Error en estructura del archivo",
+            html: `
+              <div style="text-align: left;">
+                ${this.validationErrors.map(err => `<p style="color: #d33;">• ${err}</p>`).join('')}
+              </div>
+            `,
+            icon: 'error',
+            confirmButtonColor: '#d33'
           });
+          return;
         }
-      } catch (error) {
-        Swal.fire({ title: "Error", text: error.message, icon: "error" });
       }
-    };
-    reader.readAsArrayBuffer(selectedFile);
+      
+      
+      // ========== TODO VALIDADO ✅ ==========
+      this.docValido = true;
+      this.showPreview = true;
+      
+      
+      
+    } catch (error) {
+      console.error('❌ Error crítico al procesar Excel:', error);
+      Swal.fire({ 
+        title: "Error al leer archivo", 
+        text: error.message || 'No se pudo procesar el archivo Excel', 
+        icon: "error",
+        confirmButtonColor: '#d33'
+      });
+    }
+  };
+  
+  reader.readAsArrayBuffer(selectedFile);
+}
+
+
+/**
+ * 🔄 Convierte fechas a formato DD/MM/AAAA
+ * Soporta: 27/10/2025, 27/10/2025 09:10:00, 2025/10/27, 2025-10-27, números seriales
+ * ❌ NO convierte texto (retorna el valor original para que falle la validación)
+ */
+convertToStandardDateFormat(dateStr: string): string {
+  if (!dateStr || dateStr.trim() === '') return '';
+  
+  let trimmed = dateStr.trim();
+  
+  try {
+    
+    // ❌ PRIMERO: Rechazar si contiene LETRAS (no intentar convertir)
+    if (/[a-zA-ZáéíóúÁÉÍÓÚñÑ]/.test(trimmed)) {
+      console.warn(`❌ Texto detectado (no se puede convertir): "${trimmed}"`);
+      return trimmed; 
+      // Retornar tal cual para que falle la validación
+    }
+    
+    
+    // ❌ Rechazar si es muy largo (probablemente texto)
+    if (trimmed.length > 25) {
+      console.warn(`❌ Valor muy largo (no es fecha): "${trimmed}"`);
+      return trimmed;
+    }
+    
+    
+    // ✂️ Quitar hora si existe (27/10/2025 09:10:00 → 27/10/2025)
+    if (trimmed.includes(' ')) {
+      trimmed = trimmed.split(' ')[0];
+    }
+    if (trimmed.includes('T')) {
+      trimmed = trimmed.split('T')[0];
+    }
+    
+    
+    // 🔢 Detectar número serial de Excel (45678 o 45678.5)
+    if (/^\d+(\.\d+)?$/.test(trimmed)) {
+      const serial = parseFloat(trimmed);
+      const date = this.excelSerialToDate(serial);
+      return `${String(date.getDate()).padStart(2, '0')}/${String(date.getMonth() + 1).padStart(2, '0')}/${date.getFullYear()}`;
+    }
+    
+    
+    // 🔀 Convertir formato con guiones a barras (2025-10-27 → 2025/10/27)
+    if (trimmed.includes('-')) {
+      trimmed = trimmed.replace(/-/g, '/');
+    }
+    
+    
+    // 📅 Procesar fecha con barras
+    if (trimmed.includes('/')) {
+      const parts = trimmed.split('/');
+      if (parts.length === 3) {
+        
+        // ✅ Detectar si es AAAA/MM/DD (año primero)
+        if (parts[0].length === 4) {
+          const year = parts[0];
+          const month = parts[1].padStart(2, '0');
+          const day = parts[2].padStart(2, '0');
+          return `${day}/${month}/${year}`;
+        }
+        
+        // ✅ Ya está en DD/MM/AAAA o MM/DD/AAAA
+        else {
+          const day = parts[0].padStart(2, '0');
+          const month = parts[1].padStart(2, '0');
+          const year = parts[2];
+          
+          
+          // Validar que sea una fecha válida
+          const dayNum = parseInt(day, 10);
+          const monthNum = parseInt(month, 10);
+          
+          if (monthNum >= 1 && monthNum <= 12 && dayNum >= 1 && dayNum <= 31) {
+            return `${day}/${month}/${year}`;
+          }
+        }
+      }
+    }
+    
+    
+    // ❌ No se pudo convertir - retornar original para que falle validación
+    console.warn(`⚠️ No se pudo convertir a fecha: "${trimmed}"`);
+    return trimmed;
+    
+  } catch (error) {
+    console.error('Error al convertir fecha:', dateStr, error);
+    return trimmed;
   }
+}
+
+/**
+ * ✅ Valida que una fecha esté en formato DD/MM/AAAA DESPUÉS de conversión
+ */
+validateDateFormat(dateStr: string): boolean {
+  if (!dateStr || dateStr.trim() === '') return true;
+  
+  const trimmed = dateStr.trim();
+  
+  
+  // ❌ IMPORTANTE: Rechazar si contiene LETRAS (es TEXTO, no fecha)
+  if (/[a-zA-ZáéíóúÁÉÍÓÚñÑ]/.test(trimmed)) {
+    console.warn(`❌ VALIDACIÓN FALLIDA: Contiene letras: "${trimmed}"`);
+    return false;
+  }
+  
+  
+  // ❌ Rechazar texto muy largo (no es fecha)
+  if (trimmed.length > 25) {
+    console.warn(`❌ VALIDACIÓN FALLIDA: Muy largo: "${trimmed}"`);
+    return false;
+  }
+  
+  
+  // ✅ Validar formato DD/MM/AAAA
+  const dateRegex = /^(\d{2})\/(\d{2})\/(\d{4})$/;
+  const match = trimmed.match(dateRegex);
+  
+  if (!match) {
+    console.warn(`❌ VALIDACIÓN FALLIDA: No cumple formato DD/MM/AAAA: "${trimmed}"`);
+    return false;
+  }
+  
+  const day = parseInt(match[1], 10);
+  const month = parseInt(match[2], 10);
+  const year = parseInt(match[3], 10);
+  
+  if (month < 1 || month > 12) {
+    console.warn(`❌ VALIDACIÓN FALLIDA: Mes inválido (${month}): "${trimmed}"`);
+    return false;
+  }
+  
+  if (day < 1 || day > 31) {
+    console.warn(`❌ VALIDACIÓN FALLIDA: Día inválido (${day}): "${trimmed}"`);
+    return false;
+  }
+  
+  if (year < 1900 || year > 2100) {
+    console.warn(`❌ VALIDACIÓN FALLIDA: Año inválido (${year}): "${trimmed}"`);
+    return false;
+  }
+  
+  const daysInMonth = new Date(year, month, 0).getDate();
+  if (day > daysInMonth) {
+    console.warn(`❌ VALIDACIÓN FALLIDA: Día ${day} no existe en mes ${month}: "${trimmed}"`);
+    return false;
+  }
+  
+  return true;
+}
+
+
+
+// ✅ Validar todas las fechas con mensajes detallados
+validateAllDates(data: any[], headers: string[]): { valid: boolean, errors: string[] } {
+  const errors: string[] = [];
+  const warnings: string[] = [];
+  const dateColumnIndices: { index: number, name: string }[] = [];
+  
+  
+  // Identificar columnas de fecha
+  headers.forEach((header, index) => {
+    const normalizedHeader = this.normalizeText(header);
+    const isDateColumn = this.DATE_COLUMNS.some(col => 
+      this.normalizeText(col) === normalizedHeader
+    );
+    if (isDateColumn) {
+      dateColumnIndices.push({ index, name: header });
+    }
+  });
+  
+  console.log('📅 Columnas de fecha que se validarán:', dateColumnIndices.map(d => d.name));
+  
+  if (dateColumnIndices.length === 0) {
+    console.warn('⚠️ ADVERTENCIA: No se detectaron columnas de fecha para validar');
+  }
+  
+  
+  // Validar cada fila
+  data.forEach((row, rowIndex) => {
+    dateColumnIndices.forEach(({ name }) => {
+      const value = row[name];
+      
+      if (value && value.trim() !== '') {
+        const trimmedValue = value.trim();
+        
+        
+        // Validar que después de la conversión esté en formato correcto
+        if (!this.validateDateFormat(trimmedValue)) {
+          let errorMsg = `<strong>Fila ${rowIndex + 2}</strong>, columna "<strong>${name}</strong>": "<span style="color: #d33; font-family: monospace;">${trimmedValue}</span>"`;
+          
+          
+          // ❌ Dar pistas ESPECÍFICAS sobre el error
+          if (/[a-zA-Z]/.test(trimmedValue)) {
+            errorMsg += ' <span style="color: #d33; font-weight: bold;">→ ¡CONTIENE TEXTO! Debe ser una fecha DD/MM/AAAA</span>';
+          } else if (trimmedValue.length > 25) {
+            errorMsg += ' <span style="color: #d33; font-weight: bold;">→ Texto muy largo, no es una fecha válida</span>';
+          } else if (!/^\d{2}\/\d{2}\/\d{4}$/.test(trimmedValue)) {
+            errorMsg += ' <span style="color: #d33;">→ No tiene formato DD/MM/AAAA</span>';
+          } else {
+            errorMsg += ' <span style="color: #d33;">→ Fecha inválida (verifica día/mes/año)</span>';
+          }
+          
+          errors.push(errorMsg);
+        }
+      }
+    });
+  });
+  
+  if (errors.length > 0) {
+    console.error('❌ ERRORES DE VALIDACIÓN DE FECHAS:', errors);
+  } else {
+    console.log('✅ Todas las fechas son válidas o fueron convertidas correctamente');
+  }
+  
+  return {
+    valid: errors.length === 0,
+    errors: errors
+  };
+}
 
   closePreview() {
     this.showPreview = false;
@@ -425,4 +801,63 @@ export class ListAprendicesComponent implements OnInit {
     const centro = this.listCentros.find(c => c.id_centro_formacion == this.selectedCentro);
     return centro ? centro.nombre : '';
   }
+
+  descargarPlantillaExcel() {
+    this.descargandoPlantilla = true;
+    
+    Swal.fire({
+      title: 'Generando plantilla...',
+      html: '<div class="spinner-border text-success"></div><br>Por favor espera',
+      allowOutsideClick: false,
+      showConfirmButton: false
+    });
+    
+    this.aprendicesService.descargarPlantillaExcel().subscribe(
+      (blob: any) => {
+        
+        // Crear URL del blob
+        const urlBlob = window.URL.createObjectURL(blob);
+        
+        
+        // Crear elemento <a> para descargar
+        const link = document.createElement('a');
+        link.href = urlBlob;
+        link.download = `plantilla_etapa_productiva_${new Date().getTime()}.xlsx`;
+        
+        
+        // Simular click para descargar
+        document.body.appendChild(link);
+        link.click();
+        
+        
+        // Limpiar
+        document.body.removeChild(link);
+        window.URL.revokeObjectURL(urlBlob);
+        
+        
+        // Cerrar alerta y mostrar éxito
+        Swal.close();
+        Swal.fire({
+          title: '¡Descarga exitosa!',
+          text: 'La plantilla se ha descargado correctamente',
+          icon: 'success',
+          confirmButtonColor: '#39A900',
+          timer: 2000
+        });
+        
+        this.descargandoPlantilla = false;
+      },
+      error => {
+        console.error('Error al descargar plantilla:', error);
+        Swal.fire({
+          title: 'Error',
+          text: 'No se pudo descargar la plantilla. Intenta nuevamente.',
+          icon: 'error',
+          confirmButtonColor: '#d33'
+        });
+        this.descargandoPlantilla = false;
+      }
+    );
+  }
+
 }

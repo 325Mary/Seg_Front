@@ -219,73 +219,84 @@ export class CreateAssignmentComponent implements OnInit {
   }
 
   bodyEmailAprendiz(datos) {
-    const datosEmail = {
-      tittle: `Asignación instructor  ${datos.profesor.nombres}  ${datos.profesor.apellidos} para etapa practica ⚠️ `,
-      emailReseptores: [`${datos.aprendiz.correo_misena}`],
-      subtitulo: `informacion asignacion etapa pratica`,
-      // text: `data del text en cuestion ` ,
-      html: `<p> Cordial saludo.</p> <br>
-      <section>
-            <span>
-            El presente correo es para notificar que se ha realizado la asignación del instructor que estará encargado de realizar el seguimiento de la etapa productiva.
-            A continuación, se detalla la información del instructor encargado: 
-            <br>
-            Nombre instructor	: ${datos.profesor.nombres}  ${datos.profesor.apellidos} 
-            <br>
-            Correo del instructor : ${datos.profesor.correo_institucional} 
-            <br>
-    	      teléfono de contacto:	${datos.profesor.numero_telefono}
-            </span>
-          </section>
-          <br>
-          ⚠️El instructor se comunicará en los próximos 15 días hábiles , 
-          <br>
-          si pasados estos días no se concreta comunicación, por favor contacte el instructor asignado.⚠️
-          ` ,
-    }
+  const datosEmail = {
+  title: `Asignación de instructor ${datos.profesor.nombres} ${datos.profesor.apellidos} para etapa práctica ⚠️`,
+  emailReceptores: [datos.aprendiz.correo_misena],
+  subtitulo: 'Información asignación etapa práctica',
+  html: `
+    <p>Cordial saludo.</p>
+    
+    <p>
+      El presente correo es para notificar que se ha realizado la asignación del instructor 
+      que estará encargado de realizar el seguimiento de la etapa productiva.
+    </p>
+    
+    <p>A continuación, se detalla la información del instructor encargado:</p>
+    
+    <section style="margin: 20px 0; padding: 15px; background-color: #f5f5f5; border-left: 4px solid #4CAF50;">
+      <p><strong>Nombre del instructor:</strong> ${datos.profesor.nombres} ${datos.profesor.apellidos}</p>
+      <p><strong>Correo del instructor:</strong> ${datos.profesor.correo_institucional}</p>
+      <p><strong>Teléfono de contacto:</strong> ${datos.profesor.numero_telefono}</p>
+    </section>
+    
+    <div style="margin: 20px 0; padding: 15px; background-color: #fff3cd; border-left: 4px solid #ffc107;">
+      <p style="margin: 0;">
+        ⚠️ <strong>Importante:</strong> El instructor se comunicará en los próximos 15 días hábiles. 
+        Si pasados estos días no se concreta comunicación, por favor contacte al instructor asignado.
+      </p>
+    </div>
+  `
+};
     this.emailService.sendEmail(datosEmail).subscribe((data) => { })
   }
   bodyEmailInstructor(datos) {
+    console.log( 'datos instructor', datos);
     const datosEmail = {
-      tittle: `Nueva asignación de aprendiz  ${datos.aprendiz.nombres}  ${datos.aprendiz.apellidos} ⚠️`,
-      emailReseptores: [`${datos.profesor.correo_institucional}`],
-      subtitulo: 'informacion asignacion aprendiz para la etapa pratica',
-      // text: `se te asigno el aprendiz conun aprendiz`,
-      html: `
-      <h1> Cordial saludo.</h1> 
-      <br>
-      <section>
-            <span>
-            El presente correo es para notificar una nueva asignación de aprendiz para su etapa práctica, la información del aprendiz asignado es la siguiente:
-            <br>
-            Nombre Aprendiz	: ${datos.aprendiz.nombres}  ${datos.aprendiz.apellidos}
-            <br>
-            Correo del Aprendiz : ${datos.aprendiz.correo_misena} 
-            <br>
-    	      Identificación:	${datos.aprendiz.identificacion}
-            <br>
-    	      Programa de formación:	${datos.aprendiz.programa_formacion}
-            <br>
-    	      Ficha de formación:	${datos.aprendiz.ficha}
-            <br>
-    	      Teléfono de contacto:	${datos.aprendiz.telefono}
-            <br>
-    	      Correo de la empresa:	${datos.aprendiz.correo}
-            <br>
-    	      dirección de la empresa:	${datos.aprendiz.direccion}
-            <br>
-    	      modalidad:	${datos.aprendiz.modalidad}
-            <br>
-    	      fecha de inicio:	${datos.aprendiz.incio_productiva}
-            <br>
-    	      fecha final:	${datos.aprendiz.incio_productiva}
-            </span>
-          </section>
-          <br>
-          ⚠️ Comunica con el parendiz en los siguientes 15 dias habiles  ⚠️, 
-          <br>
-          ` ,
-    }
+  title: `Nueva asignación de aprendiz ${datos.aprendiz.nombres} ${datos.aprendiz.apellidos} ⚠️`,
+  emailReceptores: [datos.profesor.correo_institucional],
+  subtitulo: 'Información asignación aprendiz para la etapa práctica',
+  html: `
+    <p>Cordial saludo.</p>
+    
+    <p>
+      El presente correo es para notificar una nueva asignación de aprendiz para su etapa práctica. 
+      La información del aprendiz asignado es la siguiente:
+    </p>
+    
+    <section style="margin: 20px 0; padding: 15px; background-color: #f5f5f5; border-left: 4px solid #2196F3;">
+      <h3 style="margin-top: 0; color: #2196F3;">Información del Aprendiz</h3>
+      <p><strong>Nombre:</strong> ${datos.aprendiz.nombres} ${datos.aprendiz.apellidos}</p>
+      <p><strong>Identificación:</strong> ${datos.aprendiz.identificacion}</p>
+      <p><strong>Correo MISENA:</strong> ${datos.aprendiz.correo_misena}</p>
+      <p><strong>Teléfono de contacto:</strong> ${datos.aprendiz.telefono}</p>
+    </section>
+    
+    <section style="margin: 20px 0; padding: 15px; background-color: #f5f5f5; border-left: 4px solid #9C27B0;">
+      <h3 style="margin-top: 0; color: #9C27B0;">Información Académica</h3>
+      <p><strong>Programa de formación:</strong> ${datos.aprendiz.programa_formacion}</p>
+      <p><strong>Ficha de formación:</strong> ${datos.aprendiz.ficha}</p>
+      <p><strong>Modalidad:</strong> ${datos.aprendiz.modalidad}</p>
+    </section>
+    
+    <section style="margin: 20px 0; padding: 15px; background-color: #f5f5f5; border-left: 4px solid #FF9800;">
+      <h3 style="margin-top: 0; color: #FF9800;">Información de la Empresa</h3>
+      <p><strong>Correo de la empresa:</strong> ${datos.aprendiz.correo}</p>
+      <p><strong>Dirección de la empresa:</strong> ${datos.aprendiz.direccion}</p>
+    </section>
+    
+    <section style="margin: 20px 0; padding: 15px; background-color: #f5f5f5; border-left: 4px solid #4CAF50;">
+      <h3 style="margin-top: 0; color: #4CAF50;">Periodo de Etapa Productiva</h3>
+      <p><strong>Fecha de inicio:</strong> ${datos.aprendiz.incio_productiva}</p>
+      <p><strong>Fecha de finalización:</strong> ${datos.aprendiz.fin_productiva}</p>
+    </section>
+    
+    <div style="margin: 20px 0; padding: 15px; background-color: #fff3cd; border-left: 4px solid #ffc107;">
+      <p style="margin: 0;">
+        ⚠️ <strong>Importante:</strong> Por favor, comuníquese con el aprendiz en los próximos 15 días hábiles.
+      </p>
+    </div>
+  `
+};
     this.emailService.sendEmail(datosEmail).subscribe((data) => { })
 
   }
